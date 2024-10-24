@@ -1,55 +1,56 @@
-#include "salas.h"
-#include "usuario.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "bancoDados.h"
 
 #define PATH_USUARIO "./databases/usuario.csv"
 #define PATH_SALA "./databases/sala.csv"
 
-void carregarTodosUsuarios(p_usuario * usuarios){
-
+int carregarTodosUsuarios(p_usuario *usuarios){
     FILE *arquivo = fopen(PATH_USUARIO, "r");
-    if (!arquivo) {
-        printf("\nBanco de Dados n„o encontrado!\n");
-        return;
+
+    if (!arquivo) {//Arquivo n√£o encontrado
+        printf("\nBanco de Dados n√£o encontrado!\n");
+        return 0;
     }
     char linha[256];
     int posicaoLinha = 0;
+
     while (fgets(linha, sizeof(linha), arquivo)) {
         linha[strcspn(linha, "\n")] = 0;
         char *registro = strtok(linha, ",");
         int coluna = 0;
+        usuarios[posicaoLinha] = (p_usuario) malloc(sizeof(struct Usuario));
         while (registro && coluna < 6) {
             switch (coluna) {
                 case 0:
                 //MATRICULA
-                    usuarios[posicaoLinha]->matricula = registro;
+                    usuarios[posicaoLinha]->matricula = atoi(registro);
                     break;
                 case 1:
                 //PERFIL DE ACESSO
-                    strcpy(usuarios[posicaoLinha]->perfil,registro);
+                    strncpy(usuarios[posicaoLinha]->perfil,registro,31);
                     usuarios[posicaoLinha]->perfil[31] = '\0';
                     break;
                 case 2:
                 //SENHA
-                    strcpy(usuarios[posicaoLinha]->senha,registro);
+                    strncpy(usuarios[posicaoLinha]->senha,registro,51);
                     usuarios[posicaoLinha]->senha[51] = '\0';
                     break;
                 case 3:
                 //NOME
-                    strcpy(usuarios[posicaoLinha]->nome,registro);
+                    strncpy(usuarios[posicaoLinha]->nome,registro,31);
                     usuarios[posicaoLinha]->nome[31] = '\0';
                     break;
                 case 4:
                 //SETOR
-                    strcpy(usuarios[posicaoLinha]->setor,registro);
+                    strncpy(usuarios[posicaoLinha]->setor,registro,41);
                     usuarios[posicaoLinha]->setor[41] = '\0';
                     break;
                 case 5:
                 //CARGO
-                    strcpy(usuarios[posicaoLinha]->perfil,registro);
-                    usuarios[posicaoLinha]->perfil[51] = '\0';
+                    strncpy(usuarios[posicaoLinha]->cargo,registro,51);
+                    usuarios[posicaoLinha]->cargo[51] = '\0';
                     break;
             }
             registro = strtok(NULL, ",");
@@ -58,34 +59,35 @@ void carregarTodosUsuarios(p_usuario * usuarios){
         posicaoLinha++;
     }
     fclose(arquivo);
+    return posicaoLinha;
 }
 
-void salvarNovoUsuario(usuario * user){
+void salvarNovoUsuario(p_usuario user){
     FILE *arquivo = fopen(PATH_USUARIO,"a");
     if (!arquivo) {
-        printf("\nBanco de Dados n„o encontrado!\n");
+        printf("\nBanco de Dados n√£o encontrado!\n");
         return;
     }
-    fprintf(arquivo, "%d,%s,%s,%s,%s,%s\n", user->matricula,user->perfil,user->nome,
+    fprintf(arquivo, "%d,%s,%s,%s,%s,%s\n", user->matricula,user->perfil,
     user->senha,user->nome,user->setor,user->cargo);
     fclose(arquivo);
 }
-
-void alterarUsuario(usuario * user){
+/*
+void alterarUsuario(usuario user){
     remove(PATH_USUARIO);
     FILE * arquivo = fopen(PATH_USUARIO,"wt");
     if (!arquivo) {
-        printf("\nBanco de Dados n„o encontrado!\n");
+        printf("\nBanco de Dados n√£o encontrado!\n");
         return;
     }
     //for (int i = 0; i < posicaoAtual;i++){
-        fprintf(arquivo, "%d,%s,%s,%s,%s,%s\n", user->matricula,user->perfil,user->nome,
-    user->senha,user->nome,user->setor,user->cargo);
+        fprintf(arquivo, "%d,%s,%s,%s,%s,%s\n", user.matricula,user.perfil,
+    user.senha,user.nome,user.setor,user.cargo);
     //}
     fclose(arquivo);
 }
 
-void excluirUsuario(usuario *usuario);
+void excluirUsuario(usuario *usuario);*/
 
 void carregarTodasSalasReuniao();
 
