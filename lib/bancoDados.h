@@ -3,6 +3,7 @@
 
 //#include "salas.h"
 #include "usuario.h"
+#include "utils.h"
 
 /**
 * Carrega os dados de todos os Usuarios (Primeira carga) e retorna a posição do ultimo índice
@@ -11,22 +12,25 @@
 int carregarTodosUsuarios(p_usuario *usuarios);
 
 /**
-*Salva um Novo usuario no banco de dados (Arquivo CSV)
-*@param usuario Struct do novo usuário
+* Salva um Novo usuario no banco de dados (Arquivo CSV)
+* @param usuario Struct do novo usuário
+* @return Retorna 0 se usuario não for salvo e 1 se for salvo
 */
-void salvarNovoUsuario(p_usuario usuario);
+int salvarNovoUsuario(p_usuario usuario);
 
 /**
-*Altera as informações do Usuario
-*@param usuario Ponteiro para o usuário a ser alterado
+* Altera as informações do Usuario
+* @param usuario Ponteiro para o usuário a ser alterado
+* @return Retorna 0 se usuario não for alterado e 1 se for alterado
 */
-void alterarUsuario(p_usuario usuario);
+int alterarUsuario(p_usuario usuario);
 
 /**
-*Excluir as informações do Usuario
-*@param usuario Ponteiro para o usuário a ser deletado
+* Excluir as informações do Usuario
+* @param usuario Ponteiro para o usuário a ser deletado, OBS.: TRATAR O PONTEIRO ANTES DE ENVIAR (NULL OU VAZIO)
+* @return Retorna 0 se usuario não for excluído e 1 se for excluído
 */
-void excluirUsuario(p_usuario usuario);
+int excluirUsuario(p_usuario usuario);
 
 /**
 * Carrega as informações de todas as salas (Primeira Carga)
@@ -37,7 +41,7 @@ void excluirUsuario(p_usuario usuario);
 *Salva as informações da sala de reunião
 *@param sala Ponteiro para uma nova sala
 */
-////void salvarSalaReuniao(salas sala);
+//void salvarSalaReuniao(salas sala);
 
 /**
 * Altera as informações da sala de reunião
@@ -50,6 +54,5 @@ void excluirUsuario(p_usuario usuario);
 *@param sala Ponteiro para a sala a ser excluída
 */
 //void excluirSala(salas sala);
-
 
 #endif

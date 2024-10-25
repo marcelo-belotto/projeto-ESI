@@ -4,7 +4,7 @@
 #include "bancoDados.h"
 
 #define PATH_USUARIO "./databases/usuario.csv"
-#define PATH_SALA "./databases/sala.csv"
+//#define PATH_SALA "./databases/sala.csv"
 
 int carregarTodosUsuarios(p_usuario *usuarios){
     FILE *arquivo = fopen(PATH_USUARIO, "r");
@@ -62,34 +62,108 @@ int carregarTodosUsuarios(p_usuario *usuarios){
     return posicaoLinha;
 }
 
-void salvarNovoUsuario(p_usuario user){
+int salvarNovoUsuario(p_usuario usuario){
     FILE *arquivo = fopen(PATH_USUARIO,"a");
     if (!arquivo) {
         printf("\nBanco de Dados não encontrado!\n");
-        return;
+        return 0;
     }
-    fprintf(arquivo, "%d,%s,%s,%s,%s,%s\n", user->matricula,user->perfil,
-    user->senha,user->nome,user->setor,user->cargo);
-    fclose(arquivo);
+    if (usuario->matricula != 0){
+        to_uppercase(usuario->perfil);
+        fprintf(arquivo, "%d,%s,%s,%s,%s,%s\n", usuario->matricula,usuario->perfil,
+        usuario->senha,usuario->nome,usuario->setor,usuario->cargo);
+        fclose(arquivo);
+        return 1;
+    }else{
+        return 0;
+    }
 }
-/*
-void alterarUsuario(usuario user){
+
+int alterarUsuario(p_usuario usuario){
+    char caminhoTemp[] = "./databases/temp.csv";
+    int encontrado = 0;
+    FILE *arquivo = fopen(PATH_USUARIO,"r+");
+    FILE *arquivoTemp = fopen(caminhoTemp,"w");
+    
+
+    if (!arquivo){
+        printf("Banco de dados não encontrado!\n");
+        fclose(arquivo);
+        fclose(arquivoTemp);
+        return 0;
+    }
+
+    char linha[256];
+    char linhaAux[256];
+    int posicaoLinha = 0;
+
+    while (fgets(linha, sizeof(linha), arquivo)) {
+        strcpy(linhaAux,linha);
+        linha[strcspn(linha, "\n")] = 0;
+        char *registro = strtok(linha, ",");
+
+        if (atoi(registro) == usuario->matricula){
+            to_uppercase(usuario->perfil);
+            fprintf(arquivoTemp, "%d,%s,%s,%s,%s,%s\n", usuario->matricula,usuario->perfil,
+        usuario->senha,usuario->nome,usuario->setor,usuario->cargo);
+            encontrado = 1;
+        }else{
+            fputs(linhaAux,arquivoTemp);
+        }
+
+        posicaoLinha++;
+    }
+    
+    fclose(arquivo);
+    fclose(arquivoTemp);
+
     remove(PATH_USUARIO);
-    FILE * arquivo = fopen(PATH_USUARIO,"wt");
-    if (!arquivo) {
-        printf("\nBanco de Dados não encontrado!\n");
-        return;
-    }
-    //for (int i = 0; i < posicaoAtual;i++){
-        fprintf(arquivo, "%d,%s,%s,%s,%s,%s\n", user.matricula,user.perfil,
-    user.senha,user.nome,user.setor,user.cargo);
-    //}
-    fclose(arquivo);
+    rename(caminhoTemp,PATH_USUARIO);
+
+    return encontrado;
 }
 
-void excluirUsuario(usuario *usuario);*/
+int excluirUsuario(p_usuario usuario){
+    char caminhoTemp[] = "./databases/temp.csv";
 
-void carregarTodasSalasReuniao();
+    FILE *arquivo = fopen(PATH_USUARIO,"r+");
+    FILE *arquivoTemp = fopen(caminhoTemp,"w");
+    
+
+    if (!arquivo){
+        printf("Banco de dados não encontrado!\n");
+        fclose(arquivo);
+        fclose(arquivoTemp);
+        return 0;
+    }
+
+    char linha[256];
+    char linhaAux[256];
+    int posicaoLinha = 0;
+
+    while (fgets(linha, sizeof(linha), arquivo)) {
+        strcpy(linhaAux,linha);
+        linha[strcspn(linha, "\n")] = 0;
+        char *registro = strtok(linha, ",");
+
+        if (atoi(registro) != usuario->matricula){
+            fputs(linhaAux,arquivoTemp);
+        }
+
+        posicaoLinha++;
+    }
+    
+    fclose(arquivo);
+    fclose(arquivoTemp);
+
+    remove(PATH_USUARIO);
+    rename(caminhoTemp,PATH_USUARIO);
+
+    return 1;
+}
+
+
+//void carregarTodasSalasReuniao(p_salas *salas);
 
 void salvarSalasReuniao();
 
