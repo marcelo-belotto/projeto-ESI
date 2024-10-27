@@ -8,6 +8,10 @@
  */
 void to_uppercase(char *str);
 
-
+/**
+ * Função para limpar o buffer - alternativa ao fflush(stdin)
+ * @return 0 para concluído
+ */
+int clear_input_buffer();
 
 #endif

@@ -1,7 +1,10 @@
 #ifndef BANCO_DE_DADOS
 #define BANCO_DE_DADOS
 
-//#include "salas.h"
+#define PATH_USUARIO "./databases/usuario.csv"
+#define PATH_SALA "./databases/sala.csv"
+
+#include "salas.h"
 #include "usuario.h"
 #include "utils.h"
 
@@ -32,27 +35,27 @@ int alterarUsuario(p_usuario usuario);
 */
 int excluirUsuario(p_usuario usuario);
 
-/**
-* Carrega as informações de todas as salas (Primeira Carga)
-*/
-//void carregarTodasSalasReuniao(p_salas * salas);
+// /**
+// * Carrega as informações de todas as salas (Primeira Carga)
+// */
+int carregarTodasSalasReuniao(p_salas * salas);
 
-/**
-*Salva as informações da sala de reunião
-*@param sala Ponteiro para uma nova sala
-*/
-//void salvarSalaReuniao(salas sala);
+// /**
+// *Salva as informações da sala de reunião
+// *@param sala Ponteiro para uma nova sala
+// */
+int salvarSalasReuniao(p_salas sala);
 
-/**
-* Altera as informações da sala de reunião
-*@param sala Ponteiro para a sala a ser alterada
-*/
-//void alterarSalarReuniao(salas sala);
+// /**
+// * Altera as informações da sala de reunião
+// *@param sala Ponteiro para a sala a ser alterada
+// */
+int alterarSalasReuniao(p_salas sala);
 
-/**
-* Exclui uma sala de reunião
-*@param sala Ponteiro para a sala a ser excluída
-*/
-//void excluirSala(salas sala);
+// /**
+// * Exclui uma sala de reunião
+// *@param sala Ponteiro para a sala a ser excluída
+// */
+int excluirSalas(p_salas sala);
 
 #endif
