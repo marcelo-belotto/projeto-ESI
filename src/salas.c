@@ -1,12 +1,11 @@
 #include <stdio.h>
-#include "salas.h"
+#include "../lib/salas.h"
 #include <locale.h>
 #include <stdlib.h>
-#include "bancoDados.h"
 
 
 void inicializarSalas() {
-    //Preenche todas as posições do vetor com NULL
+    //Preenche todas as posiï¿½ï¿½es do vetor com NULL
     for (int i = 0; i < MAX; i++) {
         v[i] = NULL;
     }
@@ -14,23 +13,23 @@ void inicializarSalas() {
 
 void cadastrarSala(int i) {
     if (v[i] != NULL) {
-        printf("\nPosição já preenchida!");
+        printf("\nPosiï¿½ï¿½o jï¿½ preenchida!");
         return;
     }
 
     v[i] = (p_salas) malloc(sizeof(struct Salas));
     fflush(stdin);
 
-    printf("\nNúmero da sala: ");
+    printf("\nNï¿½mero da sala: ");
         scanf("%d", &v[i]->numeroSala);
         fflush(stdin);
 
     printf("\nDigite o tipo da sala
-            \nPG - Pequenos Grupos (até 5 pessoas)
+            \nPG - Pequenos Grupos (atï¿½ 5 pessoas)
             \nPGAV - Pequenos Grupos (com recursos audiovisuais)
-            \nGG - Grandes Grupos (até 12 pessoas)
+            \nGG - Grandes Grupos (atï¿½ 12 pessoas)
             \nGGAV - Pequenos Grupos (com recursos audiovisuais)
-            \nAU - Auditório (até 100 pessoas)\n");
+            \nAU - Auditï¿½rio (atï¿½ 100 pessoas)\n");
         fgets(v[i]->tipo, 40, stdin);
         v[i]->tipo[strcspn(v[i]->tipo, "\n")] = '\0';
         fflush(stdin);
@@ -48,7 +47,7 @@ void cadastrarSala(int i) {
     void listarSalas() {
         carregarTodasSalasReuniao(v);
         for (int i = 0; i < MAX; i++) {
-            printf("\nNúmero da sala: %d", v[i]->numeroSala);
+            printf("\nNï¿½mero da sala: %d", v[i]->numeroSala);
             printf("\nTipo da sala: %s", v[i]->tipo);
             printf("\nStatus atual da sala: %s", v[i]->status);
             printf("\n");
@@ -58,7 +57,7 @@ void cadastrarSala(int i) {
 void excluirSala(int i) {
     int numeroSala;
 
-    printf("Digite o número da sala que deseja excluir: ");
+    printf("Digite o nï¿½mero da sala que deseja excluir: ");
         scanf("%d", &numeroSala);
         fflush(stdin);
 
@@ -67,19 +66,19 @@ void excluirSala(int i) {
         if (v[i]!= NULL && v[i]->numeroSala == numeroSala) {
             free(v[i]);
             v[i] = NULL;
-            printf("Sala excluída com sucesso!");
+            printf("Sala excluï¿½da com sucesso!");
             return;
         }
     }
 
-    printf("Sala não encontrada!");
+    printf("Sala nï¿½o encontrada!");
     salvarSalasReuniao(&v[i]);
 }
 
 void alterarSala(int i) {
     int numeroSala;
 
-    printf("Digite o número da sala que deseja alterar: ");
+    printf("Digite o nï¿½mero da sala que deseja alterar: ");
         scanf("%d", &numeroSala);
         fflush(stdin);
 
@@ -100,5 +99,5 @@ void alterarSala(int i) {
         }
     }
 
-    printf("Sala não encontrada!");
+    printf("Sala nï¿½o encontrada!");
 }

@@ -59,6 +59,7 @@
   "files.associations": {
     "*.c": "c",
     "*.md": "markdown",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "bancodados.h": "c"
   }
 }

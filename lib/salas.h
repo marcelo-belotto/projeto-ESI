@@ -1,7 +1,9 @@
 #ifndef SALAS_H
     #define SALAS_H
-
+    
     #define MAX 20
+
+    #include "bancoDados.h"
 
     typedef struct Salas {
         char tipo[40];
