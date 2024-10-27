@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "bancoDados.h"
+#include "../lib/bancoDados.h"
 
 //USUARIO
 
