@@ -1,7 +1,7 @@
 #ifndef SALAS_H
     #define SALAS_H
     
-    #define MAX 20
+    #define MAX_SALAS 20
 
     #include "bancoDados.h"
 
@@ -11,9 +11,9 @@
         char status[40];
     } salas;
 
-    typedef salas *p_salas;
+    typedef salas *pSalas;
 
-    extern p_salas v[MAX];
+    extern pSalas vSalas[MAX];
 
     void inicializarSalas();
 

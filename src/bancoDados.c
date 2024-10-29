@@ -5,7 +5,7 @@
 
 //USUARIO
 
-int carregarTodosUsuarios(p_usuario *usuarios){
+int carregarTodosUsuarios(pUsuario *usuarios){
     FILE *arquivo = fopen(PATH_USUARIO, "r");
 
     if (arquivo == NULL) {//Arquivo não encontrado
@@ -16,7 +16,7 @@ int carregarTodosUsuarios(p_usuario *usuarios){
     int posicaoLinha = 0;
 
     while (fgets(linha, sizeof(linha), arquivo)) {
-        usuarios[posicaoLinha] = (p_usuario)malloc(sizeof(struct Usuario));
+        usuarios[posicaoLinha] = (pUsuario)malloc(sizeof(struct Usuario));
         sscanf(linha,
         "%d,%30[^,],%50[^,],%30[^,],%40[^,],%50[^\n]",
         &usuarios[posicaoLinha]->matricula,
@@ -33,14 +33,14 @@ int carregarTodosUsuarios(p_usuario *usuarios){
     return posicaoLinha;
 }
 
-int salvarNovoUsuario(p_usuario usuario){
+int salvarNovoUsuario(pUsuario usuario){
     FILE *arquivo = fopen(PATH_USUARIO,"a");
     if (arquivo == NULL) {
         printf("\nBanco de Dados não encontrado!\n");
         return 0;
     }
     if (usuario->matricula != 0){
-        to_uppercase(usuario->perfil);
+        toUppercase(usuario->perfil);
         fprintf(arquivo, "%d,%s,%s,%s,%s,%s\n", usuario->matricula,usuario->perfil,
         usuario->senha,usuario->nome,usuario->setor,usuario->cargo);
         fclose(arquivo);
@@ -51,7 +51,7 @@ int salvarNovoUsuario(p_usuario usuario){
     }
 }
 
-int alterarUsuario(p_usuario usuario){
+int alterarUsuario(pUsuario usuario){
     char *caminhoTemp = "./databases/temp.csv";
     int encontrado = 0;
     FILE *arquivo = fopen(PATH_USUARIO,"r+");
@@ -75,7 +75,7 @@ int alterarUsuario(p_usuario usuario){
         char *registro = strtok(linha, ",");
 
         if (atoi(registro) == usuario->matricula){
-            to_uppercase(usuario->perfil);
+            toUppercase(usuario->perfil);
             fprintf(arquivoTemp, "%d,%s,%s,%s,%s,%s\n", usuario->matricula,usuario->perfil,
         usuario->senha,usuario->nome,usuario->setor,usuario->cargo);
             encontrado = 1;
@@ -95,7 +95,7 @@ int alterarUsuario(p_usuario usuario){
     return encontrado;
 }
 
-int excluirUsuario(p_usuario usuario){
+int excluirUsuario(pUsuario usuario){
     char *caminhoTemp = "./databases/temp.csv";
 
     FILE *arquivo = fopen(PATH_USUARIO,"r+");
@@ -136,7 +136,7 @@ int excluirUsuario(p_usuario usuario){
 
 //SALAS
 
-int carregarTodasSalasReuniao(p_salas *salas){
+int carregarTodasSalasReuniao(pSalas *salas){
     FILE *arquivo = fopen(PATH_SALA, "r");
 
     if (arquivo == NULL) {//Arquivo não encontrado
@@ -147,7 +147,7 @@ int carregarTodasSalasReuniao(p_salas *salas){
     int posicaoLinha = 0;
 
     while (fgets(linha, sizeof(linha), arquivo)) {
-        salas[posicaoLinha] = (p_salas) malloc(sizeof(struct Salas));
+        salas[posicaoLinha] = (pSalas) malloc(sizeof(struct Salas));
         sscanf(linha,
         "%d,%39[^,],%39[^\n]",
         &salas[posicaoLinha]->numeroSala,
@@ -160,15 +160,15 @@ int carregarTodasSalasReuniao(p_salas *salas){
     return posicaoLinha;
 }
 
-int salvarSalasReuniao(p_salas sala){
+int salvarSalasReuniao(pSalas sala){
     FILE *arquivo = fopen(PATH_SALA,"a");
     if (arquivo == NULL) {
         printf("\nBanco de Dados não encontrado!\n");
         return 0;
     }
     if (sala->numeroSala != 0){
-        to_uppercase(sala->status);
-        to_uppercase(sala->tipo);
+        toUppercase(sala->status);
+        toUppercase(sala->tipo);
         fprintf(arquivo, "%d,%s,%s\n", sala->numeroSala,sala->tipo,sala->status);
         fclose(arquivo);
         return 1;
@@ -177,7 +177,7 @@ int salvarSalasReuniao(p_salas sala){
     }
 }
 
-int alterarSalasReuniao(p_salas sala){
+int alterarSalasReuniao(pSalas sala){
     char caminhoTemp[] = "./databases/temp.csv";
     int encontrado = 0;
     FILE *arquivo = fopen(PATH_SALA,"r+");
@@ -201,8 +201,8 @@ int alterarSalasReuniao(p_salas sala){
         char *registro = strtok(linha, ",");
 
         if (atoi(registro) == sala->numeroSala){
-            to_uppercase(sala->status);
-            to_uppercase(sala->tipo);
+            toUppercase(sala->status);
+            toUppercase(sala->tipo);
             fprintf(arquivoTemp, "%d,%s,%s\n", sala->numeroSala,sala->tipo,sala->status);
             encontrado = 1;
         }else{
@@ -221,7 +221,7 @@ int alterarSalasReuniao(p_salas sala){
     return encontrado;
 }
 
-int excluirSalas(p_salas sala){
+int excluirSalas(pSalas sala){
      char caminhoTemp[] = "./databases/temp.csv";
 
     FILE *arquivo = fopen(PATH_SALA,"r+");

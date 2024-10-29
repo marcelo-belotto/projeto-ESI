@@ -5,7 +5,7 @@
 ID, PERFIL DE ACESSO, SENHA, BANCO DE DADOS [ID, NOME, SETOR, CARGO]
 */
 
-#define MAX 100
+#define MAX_USUARIOS 100
 
 typedef struct Usuario
 {
@@ -18,19 +18,18 @@ typedef struct Usuario
 
 } usuario;
 
-typedef usuario *p_usuario; 
+typedef usuario *pUsuario; 
 
-extern p_usuario v[MAX];
+extern pUsuario vUsuarios[MAX];
 
-void inicializar_usuario();
+void inicializarUsuario();
 
-void cadastro_usuario(int i);
+void cadastroUsuario(int i);
 
-void excluir_usuario(int i);
+void excluirUsuario(int i);
 
-void alterar_usuario(int i);
+void alterarUsuario(int i);
 
-void listar_reservas(int i);
-
+int localizarUsuario(int matricula, char *senha);
 
 #endif //USUARIO_H

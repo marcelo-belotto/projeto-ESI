@@ -5,51 +5,52 @@
 
 
 void inicializarSalas() {
-    //Preenche todas as posiï¿½ï¿½es do vetor com NULL
-    for (int i = 0; i < MAX; i++) {
-        v[i] = NULL;
+    //Preenche todas as posições do vetor com NULL 
+    for (int i = 0; i < MAX_SALAS; i++) {
+        vSalas[i] = NULL;
     }
 }
 
 void cadastrarSala(int i) {
-    if (v[i] != NULL) {
-        printf("\nPosiï¿½ï¿½o jï¿½ preenchida!");
+    if (vSalas[i] != NULL) {
+        printf("\nPosições já preenchida!");
         return;
     }
 
-    v[i] = (p_salas) malloc(sizeof(struct Salas));
+    vSalas[i] = (pSalas) malloc(sizeof(struct Salas));
     fflush(stdin);
 
-    printf("\nNï¿½mero da sala: ");
-        scanf("%d", &v[i]->numeroSala);
+    printf("\nNúmero da sala: ");
+        scanf("%d", &vSalas[i]->numeroSala);
         fflush(stdin);
 
     printf("\nDigite o tipo da sala
-            \nPG - Pequenos Grupos (atï¿½ 5 pessoas)
+            \nPG - Pequenos Grupos (até 5 pessoas)
             \nPGAV - Pequenos Grupos (com recursos audiovisuais)
-            \nGG - Grandes Grupos (atï¿½ 12 pessoas)
+            \nGG - Grandes Grupos (até 12 pessoas)
             \nGGAV - Pequenos Grupos (com recursos audiovisuais)
-            \nAU - Auditï¿½rio (atï¿½ 100 pessoas)\n");
-        fgets(v[i]->tipo, 40, stdin);
-        v[i]->tipo[strcspn(v[i]->tipo, "\n")] = '\0';
+            \nAU - Auditï¿½rio (até 100 pessoas)\n");
+
+        fgets(vSalas[i]->tipo, 40, stdin);
+        vSalas[i]->tipo[strcspn(vSalas[i]->tipo, "\n")] = '\0';
         fflush(stdin);
 
     printf("\nDigite o status atual da sala: ");
-        fgets(v[i]->status, 40, stdin);
-        v[i]->status[strcspn(v[i]->status, "\n")] = '\0';
+        fgets(vSalas[i]->status, 40, stdin);
+        vSalas[i]->status[strcspn(vSalas[i]->status, "\n")] = '\0';
         fflush(stdin);
 
     printf("\nSala cadastrada com sucesso!");
 
-    salvarSalasReuniao(&v[i]);
+    salvarSalasReuniao(&vSalas[i]);
 }
     
     void listarSalas() {
-        carregarTodasSalasReuniao(v);
-        for (int i = 0; i < MAX; i++) {
-            printf("\nNï¿½mero da sala: %d", v[i]->numeroSala);
-            printf("\nTipo da sala: %s", v[i]->tipo);
-            printf("\nStatus atual da sala: %s", v[i]->status);
+        carregarTodasSalasReuniao(vSalas);
+        for (int i = 0; i < MAX_SALAS; i++) {
+            printf("\nNúmero da sala: %d", vSalas[i]->numeroSala);
+            printf("\nTipo da sala: %s", vSalas[i]->tipo);
+            printf("\nStatus atual da sala: %s", vSalas[i]->status);
             printf("\n");
         }
     }
@@ -57,22 +58,22 @@ void cadastrarSala(int i) {
 void excluirSala(int i) {
     int numeroSala;
 
-    printf("Digite o nï¿½mero da sala que deseja excluir: ");
+    printf("Digite o número da sala que deseja excluir: ");
         scanf("%d", &numeroSala);
         fflush(stdin);
 
-    for (int i = 0; i < MAX; i++) {
-        excluirSala(v[i]);
-        if (v[i]!= NULL && v[i]->numeroSala == numeroSala) {
-            free(v[i]);
-            v[i] = NULL;
+    for (int i = 0; i < MAX_SALAS; i++) {
+        excluirSala(vSalas[i]);
+        if (vSalas[i]!= NULL && vSalas[i]->numeroSala == numeroSala) {
+            free(vSalas[i]);
+            vSalas[i] = NULL;
             printf("Sala excluï¿½da com sucesso!");
             return;
         }
     }
 
     printf("Sala nï¿½o encontrada!");
-    salvarSalasReuniao(&v[i]);
+    salvarSalasReuniao(&vSalas[i]);
 }
 
 void alterarSala(int i) {
@@ -82,16 +83,16 @@ void alterarSala(int i) {
         scanf("%d", &numeroSala);
         fflush(stdin);
 
-    for (int i = 0; i < MAX; i++) {
-        if (v[i]!= NULL && v[i]->numeroSala == numeroSala) {
+    for (int i = 0; i < MAX_SALAS; i++) {
+        if (vSalas[i]!= NULL && vSalas[i]->numeroSala == numeroSala) {
             printf("Digite o novo tipo da sala: ");
-                fgets(v[i]->tipo, 40, stdin);
-                v[i]->tipo[strcspn(v[i]->tipo, "\n")] = '\0';
+                fgets(vSalas[i]->tipo, 40, stdin);
+                vSalas[i]->tipo[strcspn(vSalas[i]->tipo, "\n")] = '\0';
                 fflush(stdin);
 
             printf("Digite o novo status da sala: ");
-                fgets(v[i]->status, 40, stdin);
-                v[i]->status[strcspn(v[i]->status, "\n")] = '\0';
+                fgets(vSalas[i]->status, 40, stdin);
+                vSalas[i]->status[strcspn(vSalas[i]->status, "\n")] = '\0';
                 fflush(stdin);
 
             printf("Sala alterada com sucesso!");

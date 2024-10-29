@@ -60,6 +60,7 @@
     "*.c": "c",
     "*.md": "markdown",
     "stdio.h": "c",
-    "bancodados.h": "c"
+    "bancodados.h": "c",
+    "reservas.h": "c"
   }
 }
