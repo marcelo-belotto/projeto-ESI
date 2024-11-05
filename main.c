@@ -3,7 +3,7 @@
 #include <time.h>
 #include <math.h>
 #include <locale.h>
-#include "Menu.h"
+#include "./lib/menu.h"
 
 /**
 * @author Vinicius Silva

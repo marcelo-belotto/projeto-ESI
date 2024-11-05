@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "salas.h"
+#include "../lib/salas.h"
 #include <locale.h>
 #include <stdlib.h>
 

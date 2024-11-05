@@ -13,7 +13,7 @@
 
     typedef salas *pSalas;
 
-    extern pSalas vSalas[MAX];
+    extern pSalas vSalas[MAX_SALAS];
 
     void inicializarSalas();
 

@@ -3,6 +3,7 @@
 #include "../lib/usuario.h"
 #include "../lib/utils.h"
 #include "../lib/reservas.h"
+#include "../lib/menu.h"
 
 void logarMenu(){
         int matricula;
