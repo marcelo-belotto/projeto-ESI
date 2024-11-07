@@ -4,6 +4,17 @@
 #include <stdlib.h>
 
 int posicaoNovoUsuario = 0;
+
+/**
+ * @brief Inicializa o array de usuários e carrega os usuários existentes.
+ *
+ * Esta função inicializa o array de usuários, definindo todas as posições como NULL,
+ * e em seguida carrega todos os usuários existentes do armazenamento para o array.
+ *
+ * @return void
+ *
+ * @note Esta função modifica as variáveis globais vUsuarios e posicaoNovoUsuario.
+ */
 void inicializarUsuario(){
     // varrer o vetor e colocar NULL em todas as posicoes
     for (int i = 0; i < MAX_USUARIOS; i++) {
@@ -11,6 +22,7 @@ void inicializarUsuario(){
     }
     posicaoNovoUsuario = carregarTodosUsuarios(vUsuarios);
 }
+
 
 void cadastroUsuario(int i){
     

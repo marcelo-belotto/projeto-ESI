@@ -117,7 +117,17 @@ void excluirSala() {
 }
 
 
-void alterarSala(int i) {
+/**
+ * @brief Altera as informações de uma sala de reunião existente.
+ *
+ * Esta função solicita ao usuário o número da sala que deseja alterar,
+ * busca a sala correspondente no array de salas e permite a alteração
+ * do tipo e status da sala.
+ *
+ * @param Não necessita de parametros externos.
+ * @return Não retorna nenhum valor.
+ */
+void alterarSala() {
     int numeroSala;
 
     printf("Digite o número da sala que deseja alterar: ");
@@ -143,3 +153,4 @@ void alterarSala(int i) {
 
     printf("Sala não encontrada!");
 }
+
