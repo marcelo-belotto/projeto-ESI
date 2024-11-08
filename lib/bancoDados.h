@@ -19,21 +19,21 @@ int carregarTodosUsuarios(pUsuario *usuarios);
 * @param usuario Struct do novo usuário
 * @return Retorna 0 se usuario não for salvo e 1 se for salvo
 */
-int salvarNovoUsuario(pUsuario usuario);
+int salvarNovoUsuarioDb(pUsuario usuario);
 
 /**
 * Altera as informações do Usuario
 * @param usuario Ponteiro para o usuário a ser alterado
 * @return Retorna 0 se usuario não for alterado e 1 se for alterado
 */
-int alterarUsuario(pUsuario usuario);
+int alterarUsuarioDb(pUsuario usuario);
 
 /**
 * Excluir as informações do Usuario
 * @param usuario Ponteiro para o usuário a ser deletado, OBS.: TRATAR O PONTEIRO ANTES DE ENVIAR (NULL OU VAZIO)
 * @return Retorna 0 se usuario não for excluído e 1 se for excluído
 */
-int excluirUsuario(pUsuario usuario);
+int excluirUsuarioDb(pUsuario usuario);
 
 /**
 * Carrega as informações de todas as salas (Primeira Carga)
@@ -44,18 +44,18 @@ int carregarTodasSalasReuniao(pSalas *salas);
 *Salva as informações da sala de reunião
 *@param sala Ponteiro para uma nova sala
 */
-int salvarSalasReuniao(pSalas sala);
+int salvarSalasReuniaoDb(pSalas sala);
 
 /**
 * Altera as informações da sala de reunião
 *@param sala Ponteiro para a sala a ser alterada
 */
-int alterarSalasReuniao(pSalas sala);
+int alterarSalasReuniaoDb(pSalas sala);
 
 /**
 * Exclui uma sala de reunião
 *@param sala Ponteiro para a sala a ser excluída
 */
-int excluirSalas(pSalas sala);
+int excluirSalasReuniaoDb(pSalas sala);
 
 #endif

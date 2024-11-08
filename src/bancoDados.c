@@ -33,7 +33,7 @@ int carregarTodosUsuarios(pUsuario *usuarios){
     return posicaoLinha;
 }
 
-int salvarNovoUsuario(pUsuario usuario){
+int salvarNovoUsuarioDb(pUsuario usuario){
     FILE *arquivo = fopen(PATH_USUARIO,"a");
     if (arquivo == NULL) {
         printf("\nBanco de Dados não encontrado!\n");
@@ -51,7 +51,7 @@ int salvarNovoUsuario(pUsuario usuario){
     }
 }
 
-int alterarUsuario(pUsuario usuario){
+int alterarUsuarioDb(pUsuario usuario){
     char *caminhoTemp = "./databases/temp.csv";
     int encontrado = 0;
     FILE *arquivo = fopen(PATH_USUARIO,"r+");
@@ -95,7 +95,7 @@ int alterarUsuario(pUsuario usuario){
     return encontrado;
 }
 
-int excluirUsuario(pUsuario usuario){
+int excluirUsuarioDb(pUsuario usuario){
     char *caminhoTemp = "./databases/temp.csv";
 
     FILE *arquivo = fopen(PATH_USUARIO,"r+");
@@ -160,7 +160,7 @@ int carregarTodasSalasReuniao(pSalas *salas){
     return posicaoLinha;
 }
 
-int salvarSalasReuniao(pSalas sala){
+int salvarSalasReuniaoDb(pSalas sala){
     FILE *arquivo = fopen(PATH_SALA,"a");
     if (arquivo == NULL) {
         printf("\nBanco de Dados não encontrado!\n");
@@ -177,7 +177,7 @@ int salvarSalasReuniao(pSalas sala){
     }
 }
 
-int alterarSalasReuniao(pSalas sala){
+int alterarSalasReuniaoDb(pSalas sala){
     char caminhoTemp[] = "./databases/temp.csv";
     int encontrado = 0;
     FILE *arquivo = fopen(PATH_SALA,"r+");
@@ -221,7 +221,7 @@ int alterarSalasReuniao(pSalas sala){
     return encontrado;
 }
 
-int excluirSalas(pSalas sala){
+int excluirSalasReuniaoDb(pSalas sala){
      char caminhoTemp[] = "./databases/temp.csv";
 
     FILE *arquivo = fopen(PATH_SALA,"r+");

@@ -8,6 +8,8 @@
 /**
 * @author Vinicius Silva
 * @author Marcelo Felipe
+* @author Lucas Vieira
+* @author Gabriel Danilo
 * @since 
 */
             
