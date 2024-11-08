@@ -20,15 +20,15 @@ typedef struct Usuario
 
 typedef usuario *pUsuario; 
 
-extern pUsuario vUsuarios[MAX];
+extern pUsuario vUsuarios[MAX_USUARIOS];
 
 void inicializarUsuario();
 
-void cadastroUsuario(int i);
+void cadastroUsuario();
 
-void excluirUsuario(int i);
+void excluirUsuario();
 
-void alterarUsuario(int i);
+void alterarUsuario();
 
 int localizarUsuario(int matricula, char *senha);
 

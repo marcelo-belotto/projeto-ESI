@@ -1,7 +1,7 @@
 #ifndef SALAS_H
     #define SALAS_H
     
-    #define MAX_SALAS 20
+    #define MAX_SALAS 100
 
     #include "bancoDados.h"
 
@@ -17,12 +17,12 @@
 
     void inicializarSalas();
 
-    void cadastrarSala(int i);
+    void cadastrarSala();
     
     void listarSalas();
 
-    void excluirSala(int i);
+    void excluirSala();
 
-    void alterarSala(int i);
+    void alterarSala();
 
 #endif

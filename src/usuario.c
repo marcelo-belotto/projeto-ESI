@@ -2,6 +2,7 @@
 #include "../lib/salas.h"
 #include <locale.h>
 #include <stdlib.h>
+#include <string.h>
 
 int posicaoNovoUsuario = 0;
 
@@ -15,102 +16,106 @@ int posicaoNovoUsuario = 0;
  *
  * @note Esta função modifica as variáveis globais vUsuarios e posicaoNovoUsuario.
  */
-void inicializarUsuario(){
-    // varrer o vetor e colocar NULL em todas as posicoes
+void inicializarUsuario() {
+    // Varre o vetor e coloca NULL em todas as posições
     for (int i = 0; i < MAX_USUARIOS; i++) {
         vUsuarios[i] = NULL;
     }
     posicaoNovoUsuario = carregarTodosUsuarios(vUsuarios);
 }
 
-
-void cadastroUsuario(int i){
-    
-    if(vUsuarios[posicaoNovoUsuario] != NULL) {
-        printf("Posicao ja preenchida \n");
+void cadastroUsuario() {
+    if (vUsuarios[posicaoNovoUsuario] != NULL) {
+        printf("Posição já preenchida.\n");
         return;
     }
-        vUsuarios[posicaoNovoUsuario] = (pUsuario) malloc(sizeof(struct Usuario)); // malloc => alocaao memoria
-        clearInputBuffer();
-            printf("Digite a matrícula do usúario: \n");
-                scanf("%d", vUsuarios[posicaoNovoUsuario]->matricula);
-        clearInputBuffer();
-            printf("Escolha o perfil de acesso: \n");
-                scanf("%[^\n]", vUsuarios[posicaoNovoUsuario]->perfil);
-        clearInputBuffer();
-            printf("Digite a senha: \n");
-                scanf("%[^\n]", vUsuarios[posicaoNovoUsuario]->senha);
-        clearInputBuffer();
-            printf("Cadastrado com sucesso !");
-        posicaoNovoUsuario++;
 
+    // Aloca memória para o novo usuário
+    vUsuarios[posicaoNovoUsuario] = (pUsuario) malloc(sizeof(struct Usuario));
+    if (vUsuarios[posicaoNovoUsuario] == NULL) {
+        printf("Erro de alocação de memória.\n");
+        return;
     }
 
-void excluirUsuario(int i){ // Somente ADM pode entrar
+    clearInputBuffer();
+    printf("Digite a matrícula do usuário: \n");
+    scanf("%d", &vUsuarios[posicaoNovoUsuario]->matricula);
 
-    int matricula;
-    int matricula_adm;
+    clearInputBuffer();
+    printf("Escolha o perfil de acesso: \n");
+    scanf("%30[^\n]", vUsuarios[posicaoNovoUsuario]->perfil);
+
+    clearInputBuffer();
+    printf("Digite a senha: \n");
+    scanf("%30[^\n]", vUsuarios[posicaoNovoUsuario]->senha);
+
+    printf("Cadastrado com sucesso!\n");
+    posicaoNovoUsuario++;
+}
+
+void excluirUsuario() { // Somente ADM pode entrar
+    int matricula, matricula_adm;
 
     fflush(stdin);
-
     printf("Digite a sua matrícula: \n");
-        scanf("%d", &matricula_adm);
-    
-    /* Necessario atuar */
+    scanf("%d", &matricula_adm);
+
+    // Verifica se o usuário é um administrador
     for (int i = 0; i < MAX_USUARIOS; i++) {
-        if (vUsuarios[i]!= NULL && vUsuarios[i]->matricula == matricula_adm && vUsuarios[i]->perfil == "ADM") {
-                printf("Digite a sua matrícula do usuário que deseja excluir: \n");
-                    scanf("%d", &matricula);
-                
-                for (int i = 0; i < MAX_USUARIOS; i++) {
-                    if (vUsuarios[i]!= NULL && vUsuarios[i]->matricula == matricula) {
-                        free(vUsuarios[i]);
-                        vUsuarios[i] = NULL;
-                        printf("Usuário excluído com sucesso!");
-                        return;
-                    }
+        if (vUsuarios[i] != NULL && vUsuarios[i]->matricula == matricula_adm && strcmp(vUsuarios[i]->perfil, "ADM") == 0) {
+            printf("Digite a matrícula do usuário que deseja excluir: \n");
+            scanf("%d", &matricula);
+
+            for (int j = 0; j < MAX_USUARIOS; j++) {
+                if (vUsuarios[j] != NULL && vUsuarios[j]->matricula == matricula) {
+                    free(vUsuarios[j]);
+                    vUsuarios[j] = NULL;
+                    printf("Usuário excluído com sucesso!\n");
+                    return;
                 }
+            }
+            printf("Usuário não encontrado.\n");
+            return;
         }
     }
+    printf("Permissão negada. Somente administradores podem excluir usuários.\n");
 }
 
-void alterarUsuario(int i){ // Somente ADM pode entrar
-
-    int matricula;
-    int matricula_adm;
+void alterarUsuario() { // Somente ADM pode entrar
+    int matricula, matricula_adm;
 
     fflush(stdin);
-
     printf("Digite a sua matrícula: \n");
-        scanf("%d", &matricula_adm);
-
+    scanf("%d", &matricula_adm);
 
     for (int i = 0; i < MAX_USUARIOS; i++) {
-        if (vUsuarios[i]!= NULL && vUsuarios[i]->matricula == matricula_adm && vUsuarios[i]->perfil == "ADM") {
-                printf("Digite a sua matrícula do usuário que deseja alterar: \n");
-                    scanf("%d", &matricula);
-                
-                for (int i = 0; i < MAX_USUARIOS; i++) {
-                    if (vUsuarios[i]!= NULL && vUsuarios[i]->matricula == matricula) {
-                        printf("Digite o novo tipo de perfil: ");
-                            fgets(vUsuarios[i]->perfil, 31, stdin);
-                                vUsuarios[i]->perfil[strcspn(vUsuarios[i]->perfil, "\n")] = '\0';
-                                    fflush(stdin);
+        if (vUsuarios[i] != NULL && vUsuarios[i]->matricula == matricula_adm && strcmp(vUsuarios[i]->perfil, "ADM") == 0) {
+            printf("Digite a matrícula do usuário que deseja alterar: \n");
+            scanf("%d", &matricula);
 
-                        printf("Perfil alterado com sucesso!");
-                        return;
-                    }
+            for (int j = 0; j < MAX_USUARIOS; j++) {
+                if (vUsuarios[j] != NULL && vUsuarios[j]->matricula == matricula) {
+                    printf("Digite o novo tipo de perfil: ");
+                    fgets(vUsuarios[j]->perfil, 31, stdin);
+                    vUsuarios[j]->perfil[strcspn(vUsuarios[j]->perfil, "\n")] = '\0';
+                    fflush(stdin);
+
+                    printf("Perfil alterado com sucesso!\n");
+                    return;
                 }
+            }
+            printf("Usuário não encontrado.\n");
+            return;
         }
     }
+    printf("Permissão negada. Somente administradores podem alterar perfis.\n");
 }
 
-struct Usuario localizarUsuario(int matricula, char * senha){
-    for (int i = 0; i < MAX_USUARIOS;i++){
-        if (vUsuarios[i]->matricula == matricula && vUsuarios[i]->senha == senha){
-            return *vUsuarios[i];
+struct Usuario* localizarUsuario(int matricula, char* senha) {
+    for (int i = 0; i < MAX_USUARIOS; i++) {
+        if (vUsuarios[i] != NULL && vUsuarios[i]->matricula == matricula && strcmp(vUsuarios[i]->senha, senha) == 0) {
+            return vUsuarios[i];
         }
     }
-    return;
+    return NULL; // Retorna NULL se o usuário não for encontrado
 }
-

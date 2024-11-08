@@ -2,24 +2,22 @@
 #include "../lib/salas.h"
 #include <locale.h>
 #include <stdlib.h>
+#include <string.h>
 
+#define MAX_SALAS 100
 
 /**
  * @brief Inicializa o array de salas de reunião, definindo todas as posições como NULL.
  *
  * Esta função percorre o array de salas de reunião (vSalas) e define cada posição como NULL.
  * Isso é feito para garantir que o array esteja inicialmente vazio antes de qualquer outra operação.
- *
- * @param Nenhum
- * @return Não retorna nenhum valor.
  */
 void inicializarSalas() {
-    //Preenche todas as posições do vetor com NULL 
+    // Preenche todas as posições do vetor com NULL 
     for (int i = 0; i < MAX_SALAS; i++) {
         vSalas[i] = NULL;
     }
 }
-
 
 /**
  * @brief Cadastra uma nova sala de reunião no sistema.
@@ -27,41 +25,38 @@ void inicializarSalas() {
  * Esta função verifica se a posição especificada no array de salas de reunião (vSalas) já está preenchida.
  * Se a posição estiver vazia, aloca memória para uma nova estrutura de sala e solicita ao usuário os dados da sala.
  * Os dados incluem o número da sala, o tipo da sala e o status atual da sala.
- * Os dados são armazenados na estrutura de sala e salvos no arquivo de dados.
- *
- * @param i Índice da posição no array de salas de reunião onde a nova sala será cadastrada.
- * @return Não retorna nenhum valor.
  */
 void cadastrarSala(int i) {
     if (vSalas[i] != NULL) {
-        printf("\nPosições já preenchida!");
+        printf("\nPosição já preenchida!\n");
         return;
     }
 
     vSalas[i] = (pSalas) malloc(sizeof(struct Salas));
+    if (vSalas[i] == NULL) {
+        printf("Erro ao alocar memória.\n");
+        return;
+    }
+
+    fflush(stdin);
+    printf("\nNúmero da sala: ");
+    scanf("%d", &vSalas[i]->numeroSala);
     fflush(stdin);
 
-    printf("\nNúmero da sala: ");
-        scanf("%d", &vSalas[i]->numeroSala);
-        fflush(stdin);
-
-    printf("\nDigite o tipo da sala
-            \nPG - Pequenos Grupos (até 5 pessoas)
-            \nPGAV - Pequenos Grupos (com recursos audiovisuais)
-            \nGG - Grandes Grupos (até 12 pessoas)
-            \nGGAV - Pequenos Grupos (com recursos audiovisuais)
-            \nAU - Auditório (até 100 pessoas)\n");
-
-        fgets(vSalas[i]->tipo, 40, stdin);
-        vSalas[i]->tipo[strcspn(vSalas[i]->tipo, "\n")] = '\0';
-        fflush(stdin);
+    printf("\nDigite o tipo da sala\n"
+           "PG - Pequenos Grupos (até 5 pessoas)\n"
+           "PGAV - Pequenos Grupos (com recursos audiovisuais)\n"
+           "GG - Grandes Grupos (até 12 pessoas)\n"
+           "GGAV - Grandes Grupos (com recursos audiovisuais)\n"
+           "AU - Auditório (até 100 pessoas)\n");
+    fgets(vSalas[i]->tipo, 40, stdin);
+    vSalas[i]->tipo[strcspn(vSalas[i]->tipo, "\n")] = '\0';
 
     printf("\nDigite o status atual da sala: ");
-        fgets(vSalas[i]->status, 40, stdin);
-        vSalas[i]->status[strcspn(vSalas[i]->status, "\n")] = '\0';
-        fflush(stdin);
+    fgets(vSalas[i]->status, 40, stdin);
+    vSalas[i]->status[strcspn(vSalas[i]->status, "\n")] = '\0';
 
-    printf("\nSala cadastrada com sucesso!");
+    printf("\nSala cadastrada com sucesso!\n");
 
     salvarSalasReuniao(&vSalas[i]);
 }
@@ -71,17 +66,15 @@ void cadastrarSala(int i) {
  *
  * Esta função carrega todas as salas de reunião do arquivo de dados e as exibe na tela.
  * Para cada sala, são mostrados o número da sala, o tipo da sala e o status atual.
- *
- * @param Nenhum
- * @return Não retorna nenhum valor.
  */
 void listarSalas() {
     carregarTodasSalasReuniao(vSalas);
     for (int i = 0; i < MAX_SALAS; i++) {
-        printf("\nNúmero da sala: %d", vSalas[i]->numeroSala);
-        printf("\nTipo da sala: %s", vSalas[i]->tipo);
-        printf("\nStatus atual da sala: %s", vSalas[i]->status);
-        printf("\n");
+        if (vSalas[i] != NULL) {
+            printf("\nNúmero da sala: %d", vSalas[i]->numeroSala);
+            printf("\nTipo da sala: %s", vSalas[i]->tipo);
+            printf("\nStatus atual da sala: %s\n", vSalas[i]->status);
+        }
     }
 }
 
@@ -91,31 +84,26 @@ void listarSalas() {
  * Esta função solicita ao usuário o número da sala a ser excluída,
  * busca a sala correspondente no array de salas, libera a memória
  * alocada para essa sala e atualiza o arquivo de dados.
- *
- * @param Não necessita de parametros externos.
- * @return Não retorna nenhum valor.
  */
 void excluirSala() {
     int numeroSala;
 
     printf("Digite o número da sala que deseja excluir: ");
-        scanf("%d", &numeroSala);
-        fflush(stdin);
+    scanf("%d", &numeroSala);
+    fflush(stdin);
 
     for (int i = 0; i < MAX_SALAS; i++) {
-        excluirSala(vSalas[i]);
-        if (vSalas[i]!= NULL && vSalas[i]->numeroSala == numeroSala) {
+        if (vSalas[i] != NULL && vSalas[i]->numeroSala == numeroSala) {
             free(vSalas[i]);
             vSalas[i] = NULL;
-            printf("Sala excluï¿½da com sucesso!");
+            printf("Sala excluída com sucesso!\n");
+            salvarSalasReuniao(&vSalas[i]);
             return;
         }
     }
 
-    printf("Sala nï¿½o encontrada!");
-    salvarSalasReuniao(&vSalas[i]);
+    printf("Sala não encontrada!\n");
 }
-
 
 /**
  * @brief Altera as informações de uma sala de reunião existente.
@@ -123,34 +111,28 @@ void excluirSala() {
  * Esta função solicita ao usuário o número da sala que deseja alterar,
  * busca a sala correspondente no array de salas e permite a alteração
  * do tipo e status da sala.
- *
- * @param Não necessita de parametros externos.
- * @return Não retorna nenhum valor.
  */
 void alterarSala() {
     int numeroSala;
 
     printf("Digite o número da sala que deseja alterar: ");
-        scanf("%d", &numeroSala);
-        fflush(stdin);
+    scanf("%d", &numeroSala);
+    fflush(stdin);
 
     for (int i = 0; i < MAX_SALAS; i++) {
-        if (vSalas[i]!= NULL && vSalas[i]->numeroSala == numeroSala) {
+        if (vSalas[i] != NULL && vSalas[i]->numeroSala == numeroSala) {
             printf("Digite o novo tipo da sala: ");
-                fgets(vSalas[i]->tipo, 40, stdin);
-                vSalas[i]->tipo[strcspn(vSalas[i]->tipo, "\n")] = '\0';
-                fflush(stdin);
+            fgets(vSalas[i]->tipo, 40, stdin);
+            vSalas[i]->tipo[strcspn(vSalas[i]->tipo, "\n")] = '\0';
 
             printf("Digite o novo status da sala: ");
-                fgets(vSalas[i]->status, 40, stdin);
-                vSalas[i]->status[strcspn(vSalas[i]->status, "\n")] = '\0';
-                fflush(stdin);
+            fgets(vSalas[i]->status, 40, stdin);
+            vSalas[i]->status[strcspn(vSalas[i]->status, "\n")] = '\0';
 
-            printf("Sala alterada com sucesso!");
+            printf("Sala alterada com sucesso!\n");
             return;
         }
     }
 
-    printf("Sala não encontrada!");
+    printf("Sala não encontrada!\n");
 }
-
