@@ -24,6 +24,23 @@ void inicializarUsuario() {
     posicaoNovoUsuario = carregarTodosUsuarios(vUsuarios);
 }
 
+/**
+ * @brief Realiza o cadastro de um novo usuário no sistema.
+ *
+ * Esta função verifica se a posição atual para cadastro está vazia. Caso esteja,
+ * aloca memória para um novo usuário, solicita os dados de matrícula, perfil de acesso e senha,
+ * e os armazena na posição correspondente no vetor de usuários.
+ *
+ * @return void
+ *
+ * @note Esta função modifica as variáveis globais vUsuarios e posicaoNovoUsuario.
+ * @note A função utiliza a função clearInputBuffer() para limpar o buffer de entrada.
+ * @note A função utiliza a função carregarTodosUsuarios() para carregar os usuários existentes.
+ * @note A função utiliza a função printf() para solicitar dados ao usuário e exibir mensagens de status.
+ * @note A função utiliza a função malloc() para alocar memória para um novo usuário.
+ * @note A função utiliza a função scanf() para ler dados do usuário.
+ * @note A função utiliza a função strcmp() para comparar strings.
+ */
 void cadastroUsuario() {
     if (vUsuarios[posicaoNovoUsuario] != NULL) {
         printf("Posição já preenchida.\n");
@@ -53,6 +70,21 @@ void cadastroUsuario() {
     posicaoNovoUsuario++;
 }
 
+
+/**
+ * @brief Exclui um usuário do sistema, acessível apenas para administradores.
+ *
+ * Esta função permite que um administrador exclua um usuário do sistema.
+ * O administrador deve fornecer sua própria matrícula para autenticação
+ * e, em seguida, a matrícula do usuário que deseja excluir.
+ *
+ * @note Esta função modifica a variável global vUsuarios.
+ * @note A função utiliza a função free() para liberar a memória alocada para o usuário excluído.
+ * @note A função utiliza as funções printf() e scanf() para interação com o usuário.
+ * @note A função utiliza a função strcmp() para comparar strings.
+ *
+ * @return void
+ */
 void excluirUsuario() { // Somente ADM pode entrar
     int matricula, matricula_adm;
 
@@ -81,6 +113,22 @@ void excluirUsuario() { // Somente ADM pode entrar
     printf("Permissão negada. Somente administradores podem excluir usuários.\n");
 }
 
+
+/**
+ * @brief Altera o perfil de um usuário, acessível apenas para administradores.
+ *
+ * Esta função permite que um administrador altere o perfil de um usuário no sistema.
+ * O administrador deve fornecer sua própria matrícula para autenticação
+ * e, em seguida, a matrícula do usuário cujo perfil deseja alterar.
+ *
+ * @note Esta função modifica a variável global vUsuarios.
+ * @note A função utiliza as funções printf() e scanf() para interação com o usuário.
+ * @note A função utiliza a função strcmp() para comparar strings.
+ * @note A função utiliza fgets() para ler o novo perfil do usuário.
+ * @note A função utiliza strcspn() para remover o caractere de nova linha do input.
+ *
+ * @return void
+ */
 void alterarUsuario() { // Somente ADM pode entrar
     int matricula, matricula_adm;
 
@@ -110,6 +158,7 @@ void alterarUsuario() { // Somente ADM pode entrar
     }
     printf("Permissão negada. Somente administradores podem alterar perfis.\n");
 }
+
 
 struct Usuario* localizarUsuario(int matricula, char* senha) {
     for (int i = 0; i < MAX_USUARIOS; i++) {

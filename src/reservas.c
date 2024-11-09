@@ -13,13 +13,24 @@ void inicializarReservas()
 }
 
 
-int fazerReserva(int numeroSala, const char* nomeUsuario, time_t dataHoraInicio, time_t dataHoraFim)
+int fazerReserva()
 {
+    int numeroSala;
+    const char* nomeUsuario;
+    time_t dataHoraInicio, dataHoraFim;
+
     if (numReservas >= MAX_RESERVAS)
     {
         printf("Limite máximo de reservas atingido \n");
         return 0;
     }
+
+    printf("Digite o número da sala que deseja reservar: \n");
+        scanf("%d", &numeroSala)
+    fflush(stdin);
+
+    printf("Digite o nome do usuário que irá reservar a sala: \n");
+        scanf("")
 
     if (!verificarDisponibilidade(numeroSala, dataHoraInicio, dataHoraFim)) 
     {
