@@ -3,7 +3,6 @@
 
 
 #include <time.h>
-#include "salas.h"
 
 #define MAX_RESERVAS 100
 
@@ -11,6 +10,7 @@ typedef struct
 {
     int id;
     int numeroSala;
+    int matriculaUsuario;
     char nomeUsuario[50];
     time_t dataHoraInicio;
     time_t dataHoraFim;
@@ -20,11 +20,13 @@ typedef struct
 extern Reserva reservas[MAX_RESERVAS];
 extern int numReservas;
 
+usuario user;
 // Funções para gerenciar as reservas
 void inicializarReservas();
-int fazerReserva(int numeroSala, const char *nomeUsuario, time_t dataHoraInicio, time_t dataHoraFim);
+//int fazerReserva(int numeroSala, const char *nomeUsuario, time_t dataHoraInicio, time_t dataHoraFim);
+int fazerReserva(usuario user);
 void listarReservas();
-int cancelarReserva(int idReserva);
+int cancelarReserva();
 void salvarReservas();
 void carregarReservas();
 

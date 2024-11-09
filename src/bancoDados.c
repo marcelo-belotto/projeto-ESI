@@ -18,13 +18,11 @@ int carregarTodosUsuarios(pUsuario *usuarios){
     while (fgets(linha, sizeof(linha), arquivo)) {
         usuarios[posicaoLinha] = (pUsuario)malloc(sizeof(struct Usuario));
         sscanf(linha,
-        "%d,%30[^,],%50[^,],%30[^,],%40[^,],%50[^\n]",
+        "%d,%30[^,],%50[^,],%30[^\n]",
         &usuarios[posicaoLinha]->matricula,
         usuarios[posicaoLinha]->perfil,
         usuarios[posicaoLinha]->senha,
-        usuarios[posicaoLinha]->nome,
-        usuarios[posicaoLinha]->setor,
-        usuarios[posicaoLinha]->cargo
+        usuarios[posicaoLinha]->nome
         );
         posicaoLinha++;
     }
@@ -41,8 +39,8 @@ int salvarNovoUsuarioDb(pUsuario usuario){
     }
     if (usuario->matricula != 0){
         toUppercase(usuario->perfil);
-        fprintf(arquivo, "%d,%s,%s,%s,%s,%s\n", usuario->matricula,usuario->perfil,
-        usuario->senha,usuario->nome,usuario->setor,usuario->cargo);
+        fprintf(arquivo, "%d,%s,%s,%s\n", usuario->matricula,usuario->perfil,
+        usuario->senha,usuario->nome);
         fclose(arquivo);
         return 1;
     }else{
@@ -54,7 +52,7 @@ int salvarNovoUsuarioDb(pUsuario usuario){
 int alterarUsuarioDb(pUsuario usuario){
     char *caminhoTemp = "./databases/temp.csv";
     int encontrado = 0;
-    FILE *arquivo = fopen(PATH_USUARIO,"r+");
+    FILE *arquivo = fopen(PATH_USUARIO,"r");
     FILE *arquivoTemp = fopen(caminhoTemp,"w");
     
 
@@ -76,8 +74,8 @@ int alterarUsuarioDb(pUsuario usuario){
 
         if (atoi(registro) == usuario->matricula){
             toUppercase(usuario->perfil);
-            fprintf(arquivoTemp, "%d,%s,%s,%s,%s,%s\n", usuario->matricula,usuario->perfil,
-        usuario->senha,usuario->nome,usuario->setor,usuario->cargo);
+            fprintf(arquivoTemp, "%d,%s,%s,%s\n", usuario->matricula,usuario->perfil,
+        usuario->senha,usuario->nome);
             encontrado = 1;
         }else{
             fputs(linhaAux,arquivoTemp);

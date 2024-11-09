@@ -1,8 +1,12 @@
-#include <stdio.h>
+#include "../lib/usuario.h"
+#include "../lib/utils.h"
 #include "../lib/salas.h"
+#include <stdio.h>
 #include <locale.h>
 #include <stdlib.h>
 #include <string.h>
+
+
 
 int posicaoNovoUsuario = 0;
 
@@ -41,6 +45,9 @@ void inicializarUsuario() {
  * @note A função utiliza a função scanf() para ler dados do usuário.
  * @note A função utiliza a função strcmp() para comparar strings.
  */
+
+  // nome matricula perfil senha 
+
 void cadastroUsuario() {
     if (vUsuarios[posicaoNovoUsuario] != NULL) {
         printf("Posição já preenchida.\n");
@@ -53,6 +60,10 @@ void cadastroUsuario() {
         printf("Erro de alocação de memória.\n");
         return;
     }
+
+    clearInputBuffer();
+    printf("Digite o nome: \n");
+    scanf("%30[^\n]", vUsuarios[posicaoNovoUsuario]->nome);
 
     clearInputBuffer();
     printf("Digite a matrícula do usuário: \n");
@@ -140,9 +151,19 @@ void alterarUsuario() { // Somente ADM pode entrar
         if (vUsuarios[i] != NULL && vUsuarios[i]->matricula == matricula_adm && strcmp(vUsuarios[i]->perfil, "ADM") == 0) {
             printf("Digite a matrícula do usuário que deseja alterar: \n");
             scanf("%d", &matricula);
+            
+            printf("Digite o que você desejada alterar:");
+            printf("1.Nome");
+            printf("2.Matricula");
+            printf("3.Perfil");
+            int escolha;
+            scanf("%d", &escolha);
 
-            for (int j = 0; j < MAX_USUARIOS; j++) {
-                if (vUsuarios[j] != NULL && vUsuarios[j]->matricula == matricula) {
+            switch(escolha) {
+                case 1:   
+                    // Alterar perfil         
+                    for (int j = 0; j < MAX_USUARIOS; j++) {
+                    if (vUsuarios[j] != NULL && vUsuarios[j]->matricula == matricula) {
                     printf("Digite o novo tipo de perfil: ");
                     fgets(vUsuarios[j]->perfil, 31, stdin);
                     vUsuarios[j]->perfil[strcspn(vUsuarios[j]->perfil, "\n")] = '\0';
@@ -150,7 +171,46 @@ void alterarUsuario() { // Somente ADM pode entrar
 
                     printf("Perfil alterado com sucesso!\n");
                     return;
+                    }
                 }
+                break;
+
+                case 2:
+                    // Alterar nome
+                    for (int j = 0; j < MAX_USUARIOS; j++) {
+                    if (vUsuarios[j] != NULL && vUsuarios[j]->matricula == matricula) {
+                    printf("Digite o novo nome do usúario: ");
+                    fgets(vUsuarios[j]->nome, 31, stdin);
+                    vUsuarios[j]->nome[strcspn(vUsuarios[j]->nome, "\n")] = '\0';
+                    fflush(stdin);
+
+                    printf("Nome alterado com sucesso!\n");
+                    return;
+                    }
+                }
+                break;
+
+                // scanf("%30[^\n]", vUsuarios[posicaoNovoUsuario]->nome);
+                // scanf("%d", &vUsuarios[posicaoNovoUsuario]->matricula);
+                
+                case 3:
+                for (int j = 0; j < MAX_USUARIOS; j++) {
+                if (vUsuarios[j] != NULL && vUsuarios[j]->matricula == matricula) {
+                    printf("Digite a nova matrícula: ");
+                    scanf("%d", &vUsuarios[posicaoNovoUsuario]->matricula);
+                    //vUsuarios[i]->matricula
+                    //strcspn(vUsuarios[i]->matricula, "\n");
+                    clearInputBuffer();
+
+                    printf("Matrícula alterada com sucesso!\n");
+                    return;
+                    }
+                }
+                break;
+
+                default:
+                printf("Opção inválida !");                
+
             }
             printf("Usuário não encontrado.\n");
             return;
@@ -159,8 +219,8 @@ void alterarUsuario() { // Somente ADM pode entrar
     printf("Permissão negada. Somente administradores podem alterar perfis.\n");
 }
 
-
-struct Usuario* localizarUsuario(int matricula, char* senha) {
+pUsuario localizarUsuario(int matricula, char* senha) {
+    inicializarUsuario();
     for (int i = 0; i < MAX_USUARIOS; i++) {
         if (vUsuarios[i] != NULL && vUsuarios[i]->matricula == matricula && strcmp(vUsuarios[i]->senha, senha) == 0) {
             return vUsuarios[i];
