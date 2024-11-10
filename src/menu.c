@@ -9,34 +9,34 @@ void logarMenu(){
         int matricula;
         char senha_Temporaria[51];
 
-        printf("=== Sistema de Reserva de Sala de Reuniï¿½o ===\n");
-        printf("Digite sua matrï¿½cula:\n");
+        printf("=== Sistema de Reserva de Sala de Reunião ===\n");
+        printf("Digite sua matrícula:\n");
         scanf("%d", &matricula);
         clearInputBuffer();
         printf("Digite sua senha: \n");
         scanf("%51[^\n]", senha_Temporaria);
         clearInputBuffer();
 
-        usuarioTemp = localizarUsuario(matricula,senha_Temporaria);
+        usuarioTemp = localizarUsuario(matricula, senha_Temporaria);
 
-        if(strcmp(usuarioTemp->perfil,"COMUM")) {
+        if(strcmp(usuarioTemp->perfil, "COMUM")) {
                 exibirMenuPadrao();
-        }else if (strcmp(usuarioTemp->perfil,"ADM")) {
+        } else if (strcmp(usuarioTemp->perfil, "ADM")) {
                 exibirMenuADM();
-        }else {
-                printf("Matrï¿½cula do usuï¿½rio ou senha incorreta !\n");
+        } else {
+                printf("Matrícula do usuário ou senha incorreta!\n");
         }
 }
 
 void exibirMenuPadrao() {
-        printf("=== Sistema de Reserva de Sala de Reuniï¿½o ===\n");
+        printf("=== Sistema de Reserva de Sala de Reunião ===\n");
         printf("1. Reservar sala\n");
         printf("2. Cancelar reserva\n");
         printf("3. Listar salas\n");
         printf("4. Sair\n");
         switch(obterOpcao()){
                 case 1:
-                listarSalas();
+                    listarSalas();
                     fazerReserva(usuarioTemp);
                 break;
                 case 2:
@@ -49,17 +49,17 @@ void exibirMenuPadrao() {
                     printf("Saindo ... \n");
                 break;
                 default:
-                    printf("Opï¿½ï¿½o invï¿½lida !");
+                    printf("Opção inválida!\n");
         }
 }
 
 void exibirMenuADM() {
-        printf("=== Sistema de Reserva de Sala de Reuniï¿½o ===\n");
+        printf("=== Sistema de Reserva de Sala de Reunião ===\n");
         printf("1. Reservar sala\n");
         printf("2. Cancelar reserva\n");
         printf("3. Listar reservas\n");
-        printf("4. Excluir usuario\n");
-        printf("5. Alterar usuario\n");
+        printf("4. Excluir usuário\n");
+        printf("5. Alterar usuário\n");
         printf("6. Sair\n");
         switch(obterOpcao()){
                 case 1:
@@ -72,16 +72,16 @@ void exibirMenuADM() {
                     listarReservas();
                 break;
                 case 4:
-                   excluirUsuario();
+                    excluirUsuario();
                 break;
                 case 5:
-                   alterarUsuario();
+                    alterarUsuario();
                 break;
                 case 6:
                     printf("Saindo ... \n");
                 break;
                 default:
-                    printf("Opï¿½ï¿½o invï¿½lida !");
+                    printf("Opção inválida!\n");
         }
 }
 
@@ -89,10 +89,10 @@ int obterOpcao() {
         int opcao;
         clearInputBuffer();
         char buffer[10];
-        printf("Escolha uma opï¿½ï¿½o: ");
+        printf("Escolha uma opção: ");
         do{
-                fgets(buffer,sizeof(buffer),stdin);
-                if (sscanf(buffer,"%d", &opcao) == 0) printf("Valor inserido incorreto, digite novamente!\n");
-        }while (sscanf(buffer,"%d", &opcao) == 0);
+                fgets(buffer, sizeof(buffer), stdin);
+                if (sscanf(buffer, "%d", &opcao) == 0) printf("Valor inserido incorreto, digite novamente!\n");
+        } while (sscanf(buffer, "%d", &opcao) == 0);
         return opcao;
 }

@@ -9,48 +9,48 @@
 pSalas vSalas[MAX_SALAS];
 
 /**
- * @brief Inicializa o array de salas de reuniï¿½o, definindo todas as posiï¿½ï¿½es como NULL.
+ * @brief Inicializa o array de salas de reunião, definindo todas as posições como NULL.
  *
- * Esta funï¿½ï¿½o percorre o array de salas de reuniï¿½o (vSalas) e define cada posiï¿½ï¿½o como NULL.
- * Isso ï¿½ feito para garantir que o array esteja inicialmente vazio antes de qualquer outra operaï¿½ï¿½o.
+ * Esta função percorre o array de salas de reunião (vSalas) e define cada posição como NULL.
+ * Isso é feito para garantir que o array esteja inicialmente vazio antes de qualquer outra operação.
  */
 void inicializarSalas() {
-    // Preenche todas as posiï¿½ï¿½es do vetor com NULL 
+    // Preenche todas as posições do vetor com NULL 
     for (int i = 0; i < MAX_SALAS; i++) {
         vSalas[i] = NULL;
     }
 }
 
 /**
- * @brief Cadastra uma nova sala de reuniï¿½o no sistema.
+ * @brief Cadastra uma nova sala de reunião no sistema.
  *
- * Esta funï¿½ï¿½o verifica se a posiï¿½ï¿½o especificada no array de salas de reuniï¿½o (vSalas) jï¿½ estï¿½ preenchida.
- * Se a posiï¿½ï¿½o estiver vazia, aloca memï¿½ria para uma nova estrutura de sala e solicita ao usuï¿½rio os dados da sala.
- * Os dados incluem o nï¿½mero da sala, o tipo da sala e o status atual da sala.
+ * Esta função verifica se a posição especificada no array de salas de reunião (vSalas) já está preenchida.
+ * Se a posição estiver vazia, aloca memória para uma nova estrutura de sala e solicita ao usuário os dados da sala.
+ * Os dados incluem o número da sala, o tipo da sala e o status atual da sala.
  */
 void cadastrarSala(int i) {
     if (vSalas[i] != NULL) {
-        printf("\nPosiï¿½ï¿½o jï¿½ preenchida!\n");
+        printf("\nPosição já preenchida!\n");
         return;
     }
 
     vSalas[i] = (pSalas) malloc(sizeof(salas));
     if (vSalas[i] == NULL) {
-        printf("Erro ao alocar memï¿½ria.\n");
+        printf("Erro ao alocar memória.\n");
         return;
     }
 
     clearInputBuffer();
-    printf("\nNï¿½mero da sala: ");
+    printf("\nNúmero da sala: ");
     scanf("%d", &vSalas[i]->numeroSala);
     clearInputBuffer();
 
     printf("\nDigite o tipo da sala\n"
-           "PG - Pequenos Grupos (atï¿½ 5 pessoas)\n"
+           "PG - Pequenos Grupos (até 5 pessoas)\n"
            "PGAV - Pequenos Grupos (com recursos audiovisuais)\n"
-           "GG - Grandes Grupos (atï¿½ 12 pessoas)\n"
+           "GG - Grandes Grupos (até 12 pessoas)\n"
            "GGAV - Grandes Grupos (com recursos audiovisuais)\n"
-           "AU - Auditï¿½rio (atï¿½ 100 pessoas)\n");
+           "AU - Auditório (até 100 pessoas)\n");
     fgets(vSalas[i]->tipo, 40, stdin);
     vSalas[i]->tipo[strcspn(vSalas[i]->tipo, "\n")] = '\0';
 
@@ -64,16 +64,16 @@ void cadastrarSala(int i) {
 }
 
 /**
- * @brief Lista todas as salas de reuniï¿½o cadastradas no sistema.
+ * @brief Lista todas as salas de reunião cadastradas no sistema.
  *
- * Esta funï¿½ï¿½o carrega todas as salas de reuniï¿½o do arquivo de dados e as exibe na tela.
- * Para cada sala, sï¿½o mostrados o nï¿½mero da sala, o tipo da sala e o status atual.
+ * Esta função carrega todas as salas de reunião do arquivo de dados e as exibe na tela.
+ * Para cada sala, são mostrados o número da sala, o tipo da sala e o status atual.
  */
 void listarSalas() {
     carregarTodasSalasReuniao(vSalas);
     for (int i = 0; i < MAX_SALAS; i++) {
         if (vSalas[i] != NULL) {
-            printf("\nNï¿½mero da sala: %d", vSalas[i]->numeroSala);
+            printf("\nNúmero da sala: %d", vSalas[i]->numeroSala);
             printf("\nTipo da sala: %s", vSalas[i]->tipo);
             printf("\nStatus atual da sala: %s\n", vSalas[i]->status);
         }
@@ -81,16 +81,16 @@ void listarSalas() {
 }
 
 /**
- * @brief Exclui uma sala de reuniï¿½o do sistema.
+ * @brief Exclui uma sala de reunião do sistema.
  *
- * Esta funï¿½ï¿½o solicita ao usuï¿½rio o nï¿½mero da sala a ser excluï¿½da,
- * busca a sala correspondente no array de salas, libera a memï¿½ria
+ * Esta função solicita ao usuário o número da sala a ser excluída,
+ * busca a sala correspondente no array de salas, libera a memória
  * alocada para essa sala e atualiza o arquivo de dados.
  */
 void excluirSala() {
     int numeroSala;
 
-    printf("Digite o nï¿½mero da sala que deseja excluir: ");
+    printf("Digite o número da sala que deseja excluir: ");
     scanf("%d", &numeroSala);
     fflush(stdin);
 
@@ -98,26 +98,26 @@ void excluirSala() {
         if (vSalas[i] != NULL && vSalas[i]->numeroSala == numeroSala) {
             free(vSalas[i]);
             vSalas[i] = NULL;
-            printf("Sala excluï¿½da com sucesso!\n");
+            printf("Sala excluída com sucesso!\n");
             salvarSalasReuniaoDb(vSalas[i]);
             return;
         }
     }
 
-    printf("Sala nï¿½o encontrada!\n");
+    printf("Sala não encontrada!\n");
 }
 
 /**
- * @brief Altera as informaï¿½ï¿½es de uma sala de reuniï¿½o existente.
+ * @brief Altera as informações de uma sala de reunião existente.
  *
- * Esta funï¿½ï¿½o solicita ao usuï¿½rio o nï¿½mero da sala que deseja alterar,
- * busca a sala correspondente no array de salas e permite a alteraï¿½ï¿½o
+ * Esta função solicita ao usuário o número da sala que deseja alterar,
+ * busca a sala correspondente no array de salas e permite a alteração
  * do tipo e status da sala.
  */
 void alterarSala() {
     int numeroSala;
 
-    printf("Digite o nï¿½mero da sala que deseja alterar: ");
+    printf("Digite o número da sala que deseja alterar: ");
     scanf("%d", &numeroSala);
     fflush(stdin);
 
@@ -136,5 +136,5 @@ void alterarSala() {
         }
     }
 
-    printf("Sala nï¿½o encontrada!\n");
+    printf("Sala não encontrada!\n");
 }

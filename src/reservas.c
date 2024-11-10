@@ -17,25 +17,25 @@ int fazerReserva(pUsuario user) {
 
     if (numReservas >= MAX_RESERVAS)
     {
-        printf("Limite mï¿½ximo de reservas atingido \n");
+        printf("Limite máximo de reservas atingido \n");
         return 0;
     }
 
-    printf("Digite o nï¿½mero da sala que deseja reservar: \n");
+    printf("Digite o número da sala que deseja reservar: \n");
         scanf("%d", &numeroSala);
     clearInputBuffer();
 
-    printf("Digite a data e o horï¿½rio de inï¿½cio da reserva: \n");
+    printf("Digite a data e o horário de início da reserva: \n");
         scanf("%ld", &dataHoraInicio);
     clearInputBuffer();
 
-    printf("Digite a data e o horï¿½rio do fim da reserva: \n");
+    printf("Digite a data e o horário do fim da reserva: \n");
         scanf("%ld", &dataHoraFim);
     clearInputBuffer();
 
     if (!verificarDisponibilidade(numeroSala, dataHoraInicio, dataHoraFim)) 
     {
-        printf("Sala %d nï¿½o estï¿½ disponï¿½vel no perï¿½odo especificado \n", numeroSala);
+        printf("Sala %d não está disponível no período especificado \n", numeroSala);
         return 0;
     }
 
@@ -57,7 +57,7 @@ void listarReservas()
 {
     if(numReservas == 0)
     {
-        printf("Nï¿½o hï¿½ reservas cadastradas \n");
+        printf("Não há reservas cadastradas \n");
         return;
     }
 
@@ -71,7 +71,7 @@ int cancelarReserva() {
     
     int matriculaUsuario;
 
-    printf("Digite a matrï¿½cula do usuï¿½rio: \n");
+    printf("Digite a matrícula do usuário: \n");
         scanf("%d", &matriculaUsuario);
     
     listarReservasPorUsuario(matriculaUsuario);
@@ -91,7 +91,7 @@ int cancelarReserva() {
             return 1;
         }
     }
-    printf("Reserva %d nï¿½o encontrada \n", idReserva);
+    printf("Reserva %d não encontrada \n", idReserva);
     return 0; 
 }
 
@@ -125,18 +125,18 @@ void salvarReservas()
     printf("Reservas salvas com sucesso \n");
 }
 
-// Funï¿½ï¿½o auxiliar para converter string de data para time_t
+// Função auxiliar para converter string de data para time_t
 time_t converterStringParaTime(char* dataHoraStr) {
     struct tm tm;
     memset(&tm, 0, sizeof(struct tm));
-    strftime(dataHoraStr,50, "%Y-%m-%d %H:%M:%S", &tm); // Ajuste o formato conforme necessï¿½rio
+    strftime(dataHoraStr,50, "%Y-%m-%d %H:%M:%S", &tm); // Ajuste o formato conforme necessário
     return mktime(&tm);
 }
 
 void carregarReservas() {
     FILE *arquivo = fopen("reservas.csv", "r");
     if (arquivo == NULL) {
-        printf("Arquivo de reservas nï¿½o encontrado \n");
+        printf("Arquivo de reservas não encontrado \n");
         return;
     }
 
@@ -145,7 +145,7 @@ void carregarReservas() {
 
     while (fgets(buffer, sizeof(buffer), arquivo)) {
         linhaAtual++;
-        if (linhaAtual == 1) continue;  // Pula o cabeï¿½alho
+        if (linhaAtual == 1) continue;  // Pula o cabeçalho
 
         Reserva novaReserva;
         char dataHoraInicioStr[20];
@@ -180,12 +180,12 @@ int verificarDisponibilidade(int numeroSala, time_t dataHoraInicio, time_t dataH
                 (dataHoraFim > reservas[i].dataHoraInicio && dataHoraFim <= reservas[i].dataHoraFim) ||
                 (dataHoraInicio <= reservas[i].dataHoraInicio && dataHoraFim >= reservas[i].dataHoraFim)) 
             {
-                return 0; // Conflito de horï¿½rio
+                return 0; // Conflito de horário
             }
         }
     }
 
-    return 1; //Caso disponï¿½vel
+    return 1; //Caso disponível
 }
 
 void exibirReserva(const Reserva *reserva)
@@ -193,12 +193,12 @@ void exibirReserva(const Reserva *reserva)
     char dataHoraInicioStr[20];
     char dataHoraFimStr[20];
     strftime(dataHoraInicioStr, sizeof(dataHoraInicioStr), "%d/%m/%Y %H:%M", localtime(&reserva->dataHoraInicio));
-    strftime(dataHoraFimStr, sizeof(dataHoraFimStr), "%d/%m/Y %H:%M", localtime(&reserva->dataHoraFim));
+    strftime(dataHoraFimStr, sizeof(dataHoraFimStr), "%d/%m/%Y %H:%M", localtime(&reserva->dataHoraFim));
 
     printf("ID: %d\n", reserva->id);
     printf("Sala: %d\n", reserva->numeroSala);
     printf("Cliente: %s\n", reserva->nomeUsuario);
-    printf("Inï¿½cio: %s\n", dataHoraInicioStr);
+    printf("Início: %s\n", dataHoraInicioStr);
     printf("Fim: %s\n", dataHoraFimStr);
     printf("---------------------------------\n");
 
@@ -218,7 +218,7 @@ void listarReservasPorUsuario(int matriculaUsuario) {
 
     if (!encontrouReserva)
     {
-        printf("Nï¿½o hï¿½ reservas cadastradas para o usuï¿½rio com matrï¿½cula %d\n", matriculaUsuario);
+        printf("Não há reservas cadastradas para o usuário com matrícula %d\n", matriculaUsuario);
     }
 }
 
@@ -226,7 +226,7 @@ int alterarReserva() {
     int matriculaUsuario, idReserva;
     time_t novaDataHoraInicio, novaDataHoraFim;
 
-    printf("Digite a matrï¿½cula do usuï¿½rio: \n");
+    printf("Digite a matrícula do usuário: \n");
         scanf("%d", &matriculaUsuario);
     listarReservasPorUsuario(matriculaUsuario);
 
@@ -246,18 +246,18 @@ int alterarReserva() {
 
     if (reservaIndex == -1)
     {
-        printf("Reserva %d nï¿½o encontrada para o usuï¿½rio de matrï¿½cula %d\n", idReserva, matriculaUsuario);
+        printf("Reserva %d não encontrada para o usuário de matrícula %d\n", idReserva, matriculaUsuario);
         return 0;
     }
 
-    printf("Digite a nova data e horï¿½rio de inï¿½cio da reserva: \n");
+    printf("Digite a nova data e horário de início da reserva: \n");
         scanf("%ld", &novaDataHoraInicio);
-    printf("Digite a nova data e horï¿½rio do fim da reserva: \n");
+    printf("Digite a nova data e horário do fim da reserva: \n");
         scanf("%ld", &novaDataHoraFim);
 
-    // Verifica se o novo perï¿½odo estï¿½ disponï¿½vel
+    // Verifica se o novo período está disponível
     if (!verificarDisponibilidade(reservas[reservaIndex].numeroSala, novaDataHoraInicio, novaDataHoraFim)) {
-        printf("Sala %d nï¿½o estï¿½ disponï¿½vel no perï¿½odo especificado\n", reservas[reservaIndex].numeroSala);
+        printf("Sala %d não está disponível no período especificado\n", reservas[reservaIndex].numeroSala);
         return 0;
     }
 
