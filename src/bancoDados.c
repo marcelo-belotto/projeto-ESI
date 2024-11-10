@@ -5,7 +5,7 @@
 
 //USUARIO
 
-int carregarTodosUsuarios(pUsuario *usuarios){
+int carregarTodosUsuarios(pUser *usuarios){
     FILE *arquivo = fopen(PATH_USUARIO, "r");
 
     if (arquivo == NULL) {//Arquivo não encontrado
@@ -16,7 +16,7 @@ int carregarTodosUsuarios(pUsuario *usuarios){
     int posicaoLinha = 0;
 
     while (fgets(linha, sizeof(linha), arquivo)) {
-        usuarios[posicaoLinha] = (pUsuario)malloc(sizeof(struct Usuario));
+        usuarios[posicaoLinha] = (pUsuario)malloc(sizeof(usuario));
         sscanf(linha,
         "%d,%30[^,],%50[^,],%30[^\n]",
         &usuarios[posicaoLinha]->matricula,

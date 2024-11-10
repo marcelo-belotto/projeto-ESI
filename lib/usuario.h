@@ -1,10 +1,13 @@
 #ifndef USUARIO_H
 #define USUARIO_H
 
+#include "utils.h"
+#include "salas.h"
+#include "bancoDados.h"
+
 #define MAX_USUARIOS 100
 
-typedef struct Usuario
-{
+typedef struct Usuario{
     int matricula;
     char perfil[31];
     char senha[51];
@@ -12,8 +15,6 @@ typedef struct Usuario
 } usuario;
 
 typedef usuario *pUsuario; 
-
-extern usuario;
 
 extern pUsuario vUsuarios[MAX_USUARIOS];
 

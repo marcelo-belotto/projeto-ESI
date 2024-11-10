@@ -1,26 +1,30 @@
 #ifndef SALAS_H
-    #define SALAS_H
-    
-    #define MAX_SALAS 100
+#define SALAS_H
 
-    typedef struct Salas {
-        char tipo[40];
-        int numeroSala;
-        char status[40];
-    } salas;
+#include "utils.h"
+#include "usuario.h"
+#include "bancoDados.h"
 
-    typedef salas *pSalas;
+#define MAX_SALAS 100
 
-    extern pSalas vSalas[MAX_SALAS];
+typedef struct Salas {
+    char tipo[40];
+    int numeroSala;
+    char status[40];
+} salas;
 
-    void inicializarSalas();
+typedef salas *pSalas;
 
-    void cadastrarSala();
-    
-    void listarSalas();
+extern pSalas vSalas[MAX_SALAS];
 
-    void excluirSala();
+void inicializarSalas();
 
-    void alterarSala();
+void cadastrarSala();
+
+void listarSalas();
+
+void excluirSala();
+
+void alterarSala();
 
 #endif

@@ -1,19 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../lib/usuario.h"
-#include "../lib/utils.h"
-#include "../lib/reservas.h"
 #include "../lib/menu.h"
 
-pUsuario usuarioTemp;
-usuario user;
+struct Usuario *usuarioTemp = NULL;
+
 void logarMenu(){
         int matricula;
         char senha_Temporaria[51];
 
-        printf("=== Sistema de Reserva de Sala de Reunião ===\n");
-        printf("Digite sua matrícula:\n");
+        printf("=== Sistema de Reserva de Sala de Reuniï¿½o ===\n");
+        printf("Digite sua matrï¿½cula:\n");
         scanf("%d", &matricula);
         clearInputBuffer();
         printf("Digite sua senha: \n");
@@ -27,12 +24,12 @@ void logarMenu(){
         }else if (strcmp(usuarioTemp->perfil,"ADM")) {
                 exibirMenuADM();
         }else {
-                printf("Matrícula do usuário ou senha incorreta !\n");
+                printf("Matrï¿½cula do usuï¿½rio ou senha incorreta !\n");
         }
 }
 
 void exibirMenuPadrao() {
-        printf("=== Sistema de Reserva de Sala de Reunião ===\n");
+        printf("=== Sistema de Reserva de Sala de Reuniï¿½o ===\n");
         printf("1. Reservar sala\n");
         printf("2. Cancelar reserva\n");
         printf("3. Listar salas\n");
@@ -40,10 +37,10 @@ void exibirMenuPadrao() {
         switch(obterOpcao()){
                 case 1:
                 listarSalas();
-                    //fazerReserva();
+                    fazerReserva(usuarioTemp);
                 break;
                 case 2:
-                    //cancelarReserva();
+                    cancelarReserva();
                 break;
                 case 3:
                     listarReservas();
@@ -52,12 +49,12 @@ void exibirMenuPadrao() {
                     printf("Saindo ... \n");
                 break;
                 default:
-                    printf("Opção inválida !");
+                    printf("Opï¿½ï¿½o invï¿½lida !");
         }
 }
 
 void exibirMenuADM() {
-        printf("=== Sistema de Reserva de Sala de Reunião ===\n");
+        printf("=== Sistema de Reserva de Sala de Reuniï¿½o ===\n");
         printf("1. Reservar sala\n");
         printf("2. Cancelar reserva\n");
         printf("3. Listar reservas\n");
@@ -66,25 +63,25 @@ void exibirMenuADM() {
         printf("6. Sair\n");
         switch(obterOpcao()){
                 case 1:
-                    //fazerReserva();
+                    fazerReserva(usuarioTemp);
                 break;
                 case 2:
-                    //cancelarReserva();
+                    cancelarReserva();
                 break;
                 case 3:
                     listarReservas();
                 break;
                 case 4:
-                   // excluirUsuario();
+                   excluirUsuario();
                 break;
                 case 5:
-                   // alterarUsuario();
+                   alterarUsuario();
                 break;
                 case 6:
                     printf("Saindo ... \n");
                 break;
                 default:
-                    printf("Opção inválida !");
+                    printf("Opï¿½ï¿½o invï¿½lida !");
         }
 }
 
@@ -92,7 +89,7 @@ int obterOpcao() {
         int opcao;
         clearInputBuffer();
         char buffer[10];
-        printf("Escolha uma opção: ");
+        printf("Escolha uma opï¿½ï¿½o: ");
         do{
                 fgets(buffer,sizeof(buffer),stdin);
                 if (sscanf(buffer,"%d", &opcao) == 0) printf("Valor inserido incorreto, digite novamente!\n");

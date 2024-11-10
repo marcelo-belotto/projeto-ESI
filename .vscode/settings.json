@@ -61,6 +61,8 @@
     "*.md": "markdown",
     "stdio.h": "c",
     "bancodados.h": "c",
-    "reservas.h": "c"
+    "reservas.h": "c",
+    "time.h": "c",
+    "menu.h": "c"
   }
 }
