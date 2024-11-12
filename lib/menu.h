@@ -6,6 +6,8 @@
 #include "reservas.h"
 #include "salas.h"
 
+void iniciarSistema();
+
 void logarMenu();
 
 void exibirMenuPadrao();
@@ -13,5 +15,7 @@ void exibirMenuPadrao();
 void exibirMenuADM();
 
 int obterOpcao();
+
+void liberarMemoria();
 
 #endif // MENU_H

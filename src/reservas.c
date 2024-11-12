@@ -1,44 +1,104 @@
+#define _DEFAULT_SOURCE
+#define _BSD_SOURCE
+#define _XOPEN_SOURCE 500
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "../lib/reservas.h"
 
-int numReservas = 0;
-Reserva reservas[MAX_RESERVAS];
+time_t converterStringParaTime(const char* dataHoraStr) {
+    struct tm tm = {0};
+    if (strptime(dataHoraStr, "%Y-%m-%d %H:%M:%S", &tm) == NULL) {
+        return (time_t)-1;
+    }
+    return mktime(&tm);
+}
 
-void inicializarReservas()
-{
+// Define the global variables
+Reserva reservas[MAX_RESERVAS];
+int numReservas = 0;
+
+void inicializarReservas() {
     numReservas = 0;
+    memset(reservas, 0, sizeof(reservas));
 }
 
 int fazerReserva(pUsuario user) {
     int numeroSala;
-    time_t dataHoraInicio, dataHoraFim;
+    struct tm tm_inicio = {0}, tm_fim = {0};
+    char data_inicio[20], hora_inicio[10], data_fim[20], hora_fim[10];
 
-    if (numReservas >= MAX_RESERVAS)
-    {
-        printf("Limite máximo de reservas atingido \n");
+    if (numReservas >= MAX_RESERVAS) {
+        printf("Limite mÃ¡ximo de reservas atingido.\n");
         return 0;
     }
 
-    printf("Digite o número da sala que deseja reservar: \n");
-        scanf("%d", &numeroSala);
+    printf("Digite o nÃºmero da sala que deseja reservar: ");
+    if (scanf("%d", &numeroSala) != 1) {
+        printf("Entrada invÃ¡lida para o nÃºmero da sala.\n");
+        clearInputBuffer();
+        return 0;
+    }
     clearInputBuffer();
 
-    printf("Digite a data e o horário de início da reserva: \n");
-        scanf("%ld", &dataHoraInicio);
-    clearInputBuffer();
-
-    printf("Digite a data e o horário do fim da reserva: \n");
-        scanf("%ld", &dataHoraFim);
-    clearInputBuffer();
-
-    if (!verificarDisponibilidade(numeroSala, dataHoraInicio, dataHoraFim)) 
-    {
-        printf("Sala %d não está disponível no período especificado \n", numeroSala);
+    printf("Digite a data de inÃ­cio da reserva (DD/MM/AAAA): ");
+    if (scanf("%s", data_inicio) != 1) {
+        printf("Entrada invÃ¡lida para a data de inÃ­cio.\n");
+        clearInputBuffer();
+        return 0;
+    }
+    printf("Digite a hora de inÃ­cio da reserva (HH:MM): ");
+    if (scanf("%s", hora_inicio) != 1) {
+        printf("Entrada invÃ¡lida para a hora de inÃ­cio.\n");
+        clearInputBuffer();
         return 0;
     }
 
+    printf("Digite a data de fim da reserva (DD/MM/AAAA): ");
+    if (scanf("%s", data_fim) != 1) {
+        printf("Entrada invÃ¡lida para a data de fim.\n");
+        clearInputBuffer();
+        return 0;
+    }
+    printf("Digite a hora de fim da reserva (HH:MM): ");
+    if (scanf("%s", hora_fim) != 1) {
+        printf("Entrada invÃ¡lida para a hora de fim.\n");
+        clearInputBuffer();
+        return 0;
+    }
+
+    // Convert string inputs to time_t
+    if (sscanf(data_inicio, "%d/%d/%d", &tm_inicio.tm_mday, &tm_inicio.tm_mon, &tm_inicio.tm_year) != 3 ||
+        sscanf(hora_inicio, "%d:%d", &tm_inicio.tm_hour, &tm_inicio.tm_min) != 2 ||
+        sscanf(data_fim, "%d/%d/%d", &tm_fim.tm_mday, &tm_fim.tm_mon, &tm_fim.tm_year) != 3 ||
+        sscanf(hora_fim, "%d:%d", &tm_fim.tm_hour, &tm_fim.tm_min) != 2) {
+        printf("Erro ao processar as datas e horas. Use o formato correto.\n");
+        return 0;
+    }
+
+    tm_inicio.tm_mon -= 1;  // Adjust month (0-11)
+    tm_inicio.tm_year -= 1900;  // Adjust year (years since 1900)
+    tm_fim.tm_mon -= 1;
+    tm_fim.tm_year -= 1900;
+
+    time_t dataHoraInicio = mktime(&tm_inicio);
+    time_t dataHoraFim = mktime(&tm_fim);
+
+    if (dataHoraInicio == -1 || dataHoraFim == -1) {
+        printf("Erro ao converter as datas e horas.\n");
+        return 0;
+    }
+
+    if (dataHoraFim <= dataHoraInicio) {
+        printf("A data/hora de fim deve ser posterior Ã  data/hora de inÃ­cio.\n");
+        return 0;
+    }
+
+    if (!verificarDisponibilidade(numeroSala, dataHoraInicio, dataHoraFim)) {
+        printf("Sala %d nÃ£o estÃ¡ disponÃ­vel no perÃ­odo especificado.\n", numeroSala);
+        return 0;
+    }
     Reserva novaReserva;
     novaReserva.id = numReservas + 1;
     novaReserva.numeroSala = numeroSala;
@@ -46,18 +106,18 @@ int fazerReserva(pUsuario user) {
     strncpy(novaReserva.nomeUsuario, user->nome, sizeof(novaReserva.nomeUsuario) - 1);
     novaReserva.dataHoraInicio = dataHoraInicio;
     novaReserva.dataHoraFim = dataHoraFim;
-
     reservas[numReservas++] = novaReserva;
-    printf("Reserva %d realizada com sucesso \n", novaReserva.id);
+    printf("Reserva %d realizada com sucesso.\n", novaReserva.id);
+    salvarReservas();  // Save reservations after each new reservation
     return novaReserva.id;
-
 }
+
 
 void listarReservas() 
 {
     if(numReservas == 0)
     {
-        printf("Não há reservas cadastradas \n");
+        printf("Nao ha reservas cadastradas \n");
         return;
     }
 
@@ -71,7 +131,7 @@ int cancelarReserva() {
     
     int matriculaUsuario;
 
-    printf("Digite a matrícula do usuário: \n");
+    printf("Digite a matricula do usuario: \n");
         scanf("%d", &matriculaUsuario);
     
     listarReservasPorUsuario(matriculaUsuario);
@@ -91,30 +151,27 @@ int cancelarReserva() {
             return 1;
         }
     }
-    printf("Reserva %d não encontrada \n", idReserva);
+    printf("Reserva %d nao encontrada \n", idReserva);
     return 0; 
 }
 
-void salvarReservas()
-{
-    FILE *arquivo = fopen("reservas.csv", "w");
-    if (arquivo == NULL)
-    {
-        printf("Erro ao abrir o arquivo de reservas \n");
+void salvarReservas() {
+    FILE *arquivo = fopen("./databases/reservas.csv", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo de reservas\n");
         return;
     }
-    
-    fprintf(arquivo, "ID, numeroSala, nomeUsuario, dataHoraInicio, dataHoraFim\n");
 
-    for (int i = 0; i < numReservas; i++)
-    {
+    fprintf(arquivo, "ID,numeroSala,nomeUsuario,dataHoraInicio,dataHoraFim\n");
+
+    for (int i = 0; i < numReservas; i++) {
         char dataHoraInicioStr[20];
         char dataHoraFimStr[20];
         strftime(dataHoraInicioStr, sizeof(dataHoraInicioStr), "%Y-%m-%d %H:%M:%S", localtime(&reservas[i].dataHoraInicio));
         strftime(dataHoraFimStr, sizeof(dataHoraFimStr), "%Y-%m-%d %H:%M:%S", localtime(&reservas[i].dataHoraFim));
 
-        fprintf(arquivo, "%d, %d, %s, %s, %s\n",
-            reservas[i].id, 
+        fprintf(arquivo, "%d,%d,%s,%s,%s\n",
+            reservas[i].id,
             reservas[i].numeroSala,
             reservas[i].nomeUsuario,
             dataHoraInicioStr,
@@ -122,53 +179,39 @@ void salvarReservas()
     }
 
     fclose(arquivo);
-    printf("Reservas salvas com sucesso \n");
-}
-
-// Função auxiliar para converter string de data para time_t
-time_t converterStringParaTime(char* dataHoraStr) {
-    struct tm tm;
-    memset(&tm, 0, sizeof(struct tm));
-    strftime(dataHoraStr,50, "%Y-%m-%d %H:%M:%S", &tm); // Ajuste o formato conforme necessário
-    return mktime(&tm);
 }
 
 void carregarReservas() {
-    FILE *arquivo = fopen("reservas.csv", "r");
+    FILE *arquivo = fopen("./databases/reservas.csv", "r");
     if (arquivo == NULL) {
-        printf("Arquivo de reservas não encontrado \n");
+        printf("Arquivo de reservas nÃ£o encontrado. Iniciando com lista vazia.\n");
         return;
     }
 
-    char buffer[1024];
-    int linhaAtual = 0;
+    char linha[256];
+    fgets(linha, sizeof(linha), arquivo); // Pula a primeira linha (cabeÃ§alho)
 
-    while (fgets(buffer, sizeof(buffer), arquivo)) {
-        linhaAtual++;
-        if (linhaAtual == 1) continue;  // Pula o cabeçalho
-
+    while (fgets(linha, sizeof(linha), arquivo) != NULL && numReservas < MAX_RESERVAS) {
         Reserva novaReserva;
-        char dataHoraInicioStr[20];
-        char dataHoraFimStr[20];
+        char dataHoraInicioStr[20], dataHoraFimStr[20];
 
-        if (sscanf(buffer, "%d, %d, %49[^,], %19[^,], %19[^\n]",
-                   &novaReserva.id, 
-                   &novaReserva.numeroSala, 
-                   novaReserva.nomeUsuario, 
-                   dataHoraInicioStr, 
-                   dataHoraFimStr) == 5) 
-        {
-            novaReserva.dataHoraInicio = converterStringParaTime(dataHoraInicioStr);
-            novaReserva.dataHoraFim = converterStringParaTime(dataHoraFimStr);
+        sscanf(linha, "%d,%d,%[^,],%[^,],%s",
+               &novaReserva.id,
+               &novaReserva.numeroSala,
+               novaReserva.nomeUsuario,
+               dataHoraInicioStr,
+               dataHoraFimStr);
 
-            // Adiciona a nova reserva ao array de reservas
-            reservas[numReservas++] = novaReserva;
-        }
+        novaReserva.dataHoraInicio = converterStringParaTime(dataHoraInicioStr);
+        novaReserva.dataHoraFim = converterStringParaTime(dataHoraFimStr);
+
+        reservas[numReservas++] = novaReserva;
     }
 
     fclose(arquivo);
-    printf("Reservas carregadas com sucesso \n");
+    printf("Reservas carregadas com sucesso\n");
 }
+
 
 
 int verificarDisponibilidade(int numeroSala, time_t dataHoraInicio, time_t dataHoraFim) {
@@ -180,12 +223,12 @@ int verificarDisponibilidade(int numeroSala, time_t dataHoraInicio, time_t dataH
                 (dataHoraFim > reservas[i].dataHoraInicio && dataHoraFim <= reservas[i].dataHoraFim) ||
                 (dataHoraInicio <= reservas[i].dataHoraInicio && dataHoraFim >= reservas[i].dataHoraFim)) 
             {
-                return 0; // Conflito de horário
+                return 0; // Conflito de horario
             }
         }
     }
 
-    return 1; //Caso disponível
+    return 1; //Caso disponivel
 }
 
 void exibirReserva(const Reserva *reserva)
@@ -198,7 +241,7 @@ void exibirReserva(const Reserva *reserva)
     printf("ID: %d\n", reserva->id);
     printf("Sala: %d\n", reserva->numeroSala);
     printf("Cliente: %s\n", reserva->nomeUsuario);
-    printf("Início: %s\n", dataHoraInicioStr);
+    printf("Inicio: %s\n", dataHoraInicioStr);
     printf("Fim: %s\n", dataHoraFimStr);
     printf("---------------------------------\n");
 
@@ -218,7 +261,7 @@ void listarReservasPorUsuario(int matriculaUsuario) {
 
     if (!encontrouReserva)
     {
-        printf("Não há reservas cadastradas para o usuário com matrícula %d\n", matriculaUsuario);
+        printf("Nï¿½o hï¿½ reservas cadastradas para o usuï¿½rio com matrï¿½cula %d\n", matriculaUsuario);
     }
 }
 
@@ -226,7 +269,7 @@ int alterarReserva() {
     int matriculaUsuario, idReserva;
     time_t novaDataHoraInicio, novaDataHoraFim;
 
-    printf("Digite a matrícula do usuário: \n");
+    printf("Digite a matricula do usuï¿½rio: \n");
         scanf("%d", &matriculaUsuario);
     listarReservasPorUsuario(matriculaUsuario);
 
@@ -246,18 +289,18 @@ int alterarReserva() {
 
     if (reservaIndex == -1)
     {
-        printf("Reserva %d não encontrada para o usuário de matrícula %d\n", idReserva, matriculaUsuario);
+        printf("Reserva %d nï¿½o encontrada para o usuï¿½rio de matrï¿½cula %d\n", idReserva, matriculaUsuario);
         return 0;
     }
 
-    printf("Digite a nova data e horário de início da reserva: \n");
+    printf("Digite a nova data e horï¿½rio de inï¿½cio da reserva: \n");
         scanf("%ld", &novaDataHoraInicio);
-    printf("Digite a nova data e horário do fim da reserva: \n");
+    printf("Digite a nova data e horï¿½rio do fim da reserva: \n");
         scanf("%ld", &novaDataHoraFim);
 
-    // Verifica se o novo período está disponível
+    // Verifica se o novo perï¿½odo estï¿½ disponï¿½vel
     if (!verificarDisponibilidade(reservas[reservaIndex].numeroSala, novaDataHoraInicio, novaDataHoraFim)) {
-        printf("Sala %d não está disponível no período especificado\n", reservas[reservaIndex].numeroSala);
+        printf("Sala %d nï¿½o estï¿½ disponï¿½vel no perï¿½odo especificado\n", reservas[reservaIndex].numeroSala);
         return 0;
     }
 

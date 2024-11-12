@@ -7,7 +7,7 @@
 
 #define MAX_USUARIOS 100
 
-typedef struct Usuario{
+typedef struct Usuario {
     int matricula;
     char perfil[31];
     char senha[51];
@@ -19,13 +19,9 @@ typedef usuario *pUsuario;
 extern pUsuario vUsuarios[MAX_USUARIOS];
 
 void inicializarUsuario();
-
 void cadastroUsuario();
-
 void excluirUsuario();
-
 void alterarUsuario();
-
 pUsuario localizarUsuario(int matricula, char *senha);
 
 #endif //USUARIO_H

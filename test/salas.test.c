@@ -3,7 +3,7 @@
 #include <string.h>
 #include <CUnit/CUnit.h>
 #include <CUnit/Basic.h>
-#include "../src/salas.h"
+#include "../lib/salas.h"
 
 void salvarSalasReuniao(pSalas *sala) {
 }

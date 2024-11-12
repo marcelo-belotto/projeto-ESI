@@ -3,20 +3,26 @@
 #include <time.h>
 #include <math.h>
 #include <locale.h>
-#include "./lib/menu.h"
+#include "lib/menu.h"
+#include "lib/reservas.h"
+#include "lib/salas.h"
+#include "lib/usuario.h"
+#include "lib/bancoDados.h"
+#include "lib/utils.h"
 
-/**
-* @author Vinicius Silva
-* @author Marcelo Felipe
-* @author Lucas Vieira
-* @author Gabriel Danilo
-* @since 
-*/
-            
-int main(void){
-    setlocale(LC_ALL,"Portuguese_Brazil");
-    
-    logarMenu();
+int main(void) {
+    setlocale(LC_ALL, "Portuguese_Brazil");
+
+    inicializarReservas();
+    carregarReservas();  // Load reservations from file before displaying menu
+    inicializarSalas();  // Make sure this function exists in salas.c
+    inicializarUsuario();  // Make sure this function exists in usuario.c
+
+    iniciarSistema();
+
+    salvarReservas();  // Save reservations before exiting
+
+    atexit(liberarMemoria);
 
     return 0;
 }

@@ -8,8 +8,8 @@
 int carregarTodosUsuarios(pUser *usuarios){
     FILE *arquivo = fopen(PATH_USUARIO, "r");
 
-    if (arquivo == NULL) { //Arquivo não encontrado
-        printf("\nBanco de Dados não encontrado!\n");
+    if (arquivo == NULL) { //Arquivo nï¿½o encontrado
+        printf("\nBanco de Dados nï¿½o encontrado!\n");
         return 0;
     }
     char linha[256];
@@ -31,22 +31,17 @@ int carregarTodosUsuarios(pUser *usuarios){
     return posicaoLinha;
 }
 
-int salvarNovoUsuarioDb(pUsuario usuario){
-    FILE *arquivo = fopen(PATH_USUARIO, "a");
-    if (arquivo == NULL) {
-        printf("\nBanco de Dados não encontrado!\n");
+int salvarNovoUsuarioDb(pUser usuario) {
+    FILE *file = fopen(PATH_USUARIO, "a");
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo de usuÃ¡rios.\n");
         return 0;
     }
-    if (usuario->matricula != 0){
-        toUppercase(usuario->perfil);
-        fprintf(arquivo, "%d,%s,%s,%s\n", usuario->matricula, usuario->perfil,
-        usuario->senha, usuario->nome);
-        fclose(arquivo);
-        return 1;
-    } else {
-        fclose(arquivo);
-        return 0;
-    }
+
+    fprintf(file, "%d,%s,%s,%s\n", usuario->matricula, usuario->perfil, usuario->senha, usuario->nome);
+
+    fclose(file);
+    return 1;
 }
 
 int alterarUsuarioDb(pUsuario usuario){
@@ -56,7 +51,7 @@ int alterarUsuarioDb(pUsuario usuario){
     FILE *arquivoTemp = fopen(caminhoTemp, "w");
 
     if (arquivo == NULL){
-        printf("Banco de dados não encontrado!\n");
+        printf("Banco de dados nï¿½o encontrado!\n");
         fclose(arquivo);
         fclose(arquivoTemp);
         return 0;
@@ -99,7 +94,7 @@ int excluirUsuarioDb(pUsuario usuario){
     FILE *arquivoTemp = fopen(caminhoTemp, "w");
 
     if (arquivo == NULL){
-        printf("Banco de dados não encontrado!\n");
+        printf("Banco de dados nï¿½o encontrado!\n");
         fclose(arquivo);
         fclose(arquivoTemp);
         return 0;
@@ -135,8 +130,8 @@ int excluirUsuarioDb(pUsuario usuario){
 int carregarTodasSalasReuniao(pSalas *salas){
     FILE *arquivo = fopen(PATH_SALA, "r");
 
-    if (arquivo == NULL) { //Arquivo não encontrado
-        printf("\nBanco de Dados não encontrado!\n");
+    if (arquivo == NULL) { //Arquivo nï¿½o encontrado
+        printf("\nBanco de Dados nï¿½o encontrado!\n");
         return 0;
     }
     char linha[256];
@@ -159,7 +154,7 @@ int carregarTodasSalasReuniao(pSalas *salas){
 int salvarSalasReuniaoDb(pSalas sala){
     FILE *arquivo = fopen(PATH_SALA, "a");
     if (arquivo == NULL) {
-        printf("\nBanco de Dados não encontrado!\n");
+        printf("\nBanco de Dados nï¿½o encontrado!\n");
         return 0;
     }
     if (sala->numeroSala != 0){
@@ -180,7 +175,7 @@ int alterarSalasReuniaoDb(pSalas sala){
     FILE *arquivoTemp = fopen(caminhoTemp, "w");
 
     if (arquivo == NULL){
-        printf("Banco de dados não encontrado!\n");
+        printf("Banco de dados nï¿½o encontrado!\n");
         fclose(arquivo);
         fclose(arquivoTemp);
         return 0;
@@ -223,7 +218,7 @@ int excluirSalasReuniaoDb(pSalas sala){
     FILE *arquivoTemp = fopen(caminhoTemp, "w");
 
     if (arquivo == NULL){
-        printf("Banco de dados não encontrado!\n");
+        printf("Banco de dados nï¿½o encontrado!\n");
         fclose(arquivo);
         fclose(arquivoTemp);
         return 0;

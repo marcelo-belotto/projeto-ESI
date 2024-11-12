@@ -5,6 +5,7 @@
 #include "usuario.h"
 #include "bancoDados.h"
 
+
 #define MAX_SALAS 100
 
 typedef struct Salas {
@@ -17,14 +18,18 @@ typedef salas *pSalas;
 
 extern pSalas vSalas[MAX_SALAS];
 
+void gerenciarSalas();;
+
 void inicializarSalas();
 
-void cadastrarSala();
+void cadastrarSala(int i);
 
 void listarSalas();
 
 void excluirSala();
 
 void alterarSala();
+
+void gerenciarSalas();
 
 #endif

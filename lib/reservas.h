@@ -18,23 +18,20 @@ typedef struct
 } Reserva;
 
 // Array para armazenar as reservas
-extern Reserva reserva;
 extern Reserva reservas[MAX_RESERVAS];
 extern int numReservas;
 
-
-// Funções para gerenciar as reservas
+// Function declarations
 void inicializarReservas();
-//int fazerReserva(int numeroSala, const char *nomeUsuario, time_t dataHoraInicio, time_t dataHoraFim);
 int fazerReserva(pUsuario user);
 void listarReservas();
 int cancelarReserva();
 void salvarReservas();
 void carregarReservas();
-
-// Funções auxiliares
 void listarReservasPorUsuario(int matriculaUsuario);
 int verificarDisponibilidade(int numeroSala, time_t dataHoraInicio, time_t dataHoraFim);
 void exibirReserva(const Reserva *reserva);
+int alterarReserva();
 
+time_t converterStringParaTime(const char *dataHora);
 #endif // RESERVAS_H
