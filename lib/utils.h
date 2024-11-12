@@ -14,4 +14,6 @@ void toUppercase(char *str);
  */
 int clearInputBuffer();
 
+int validarCPF(char cpf);
+
 #endif
