@@ -14,7 +14,7 @@ void toUppercase(char *str);
  */
 int clearInputBuffer();
 
-int validarCPF(char cpf);
+int validarCPF(char* cpf);
 
 int obterOpcao();
 
@@ -22,5 +22,5 @@ int anoBissexto(int year);
 
 int validarData(const char *data);
 
-int validarHora(const char *hora);
+int validarHora(const char *hora, const char *data);
 #endif

@@ -12,25 +12,25 @@ typedef struct Reserva{
 } reserva;
 
 /**
-*Função para Reservar uma sala, com base em sua diponibilidade.
+*Funï¿½ï¿½o para Reservar uma sala, com base em sua diponibilidade.
 *
 */
 int reservarSala();
 
 /**
-*Função para Alterar uma reserva.
+*Funï¿½ï¿½o para Alterar uma reserva.
 * 
 */
 int alterarReserva();
 
 /**
-*Função para Cancelar uma reserva.
+*Funï¿½ï¿½o para Cancelar uma reserva.
 * 
 */
 int cancelarReserva();
 
 /**
-*Função para verficar a disponibilidade de salas.
+*Funï¿½ï¿½o para verficar a disponibilidade de salas.
 * 
 */
 int verificarDisponibilidadeDeSalas();
