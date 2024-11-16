@@ -12,6 +12,4 @@ void exibirMenuPadrao();
 
 void exibirMenuADM();
 
-int obterOpcao();
-
 #endif // MENU_H

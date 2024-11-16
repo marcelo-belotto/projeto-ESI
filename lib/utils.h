@@ -16,4 +16,11 @@ int clearInputBuffer();
 
 int validarCPF(char cpf);
 
+int obterOpcao();
+
+int anoBissexto(int year);
+
+int validarData(const char *data);
+
+int validarHora(const char *hora);
 #endif
