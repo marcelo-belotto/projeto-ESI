@@ -2,24 +2,32 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "../lib/utils.h"
 #include "../lib/reservas.h"
-#include "../lib/salas.h"
-#include "../lib/usuario.h"
-#include "../lib/reservaDB.h"
 
+reserva novaReserva;
+pReservas vReservas[MAX_RESERVAS];
 
+void inicializarReservas(usuario user){
+    for (int i = 0; i < MAX_RESERVAS;i++){
+        vReservas[i] = NULL;
+    }
+    if (strcmp(user.perfil,"ADM") == 0){
+        listarTodasAsReservas(vReservas);
+    }else{
+        listarReservasUsuario(user,vReservas);
+    }
+}
 
 int reservarSala(usuario user){
     char dataAux[10];
     char horaAux[5];
 
-    reserva novaReserva;
     novaReserva.id = carregarIndiceReservas();
-
-    listarSalas();
-    printf("\nDigite o numero da Sala");
-    scanf("%d",&novaReserva.numeroSala);
+    novaReserva.idUsuario = user.id;
+    novaReserva.status = 0;
+        
+    // printf("\nDigite o numero da Sala");
+    // scanf("%d",&novaReserva.numeroSala);
 
     do{
         printf("Digite a Data de Inicio da Reuni�o (dd/mm/yyyy):");
@@ -63,7 +71,8 @@ int alterarReserva(usuario user){
     char dataAux[10];
     char horaAux[5];
 
-    //listarReservasUsuario(/*id do usuario*/);
+    //listarReservasUsuario(user,vReservas);
+
     printf("\nDigite  o ID da reserva que deseja alterar:");
     scanf("%d",&idReserva);
 
@@ -106,7 +115,7 @@ int cancelarReserva(usuario user){
     printf("\nDigite  o ID da reserva que deseja cancelar:");
     scanf("%d",&idReserva);
 
-    if (excluirReservaUsuario(user.cpf)){
+    if (excluirReservaUsuario(user.id,idReserva)){
         printf("Reserva cancelada com sucesso!");
         return 1;
     }else{
@@ -117,10 +126,10 @@ int cancelarReserva(usuario user){
 
 int verificarDisponibilidadeDeSalas(usuario user){
     if (user.perfil == "ADM"){
-        listarTodasAsReservas();
+        listarTodasAsReservas(vReservas);
         return 1;
     }else{
-        listarReservasUsuario(user.cpf);
+        listarReservasUsuario(user,vReservas);
         return 1;
     }
     return 0;

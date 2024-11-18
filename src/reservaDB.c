@@ -10,7 +10,8 @@ int carregarIndiceReservas(){
     int posicaoLinha = 0;
 
     while (fgets(linha, sizeof(linha), arquivo)) {
-        sscanf(linha,"%d",posicaoLinha);
+        //sscanf(linha,"%d",posicaoLinha);
+        //Pegar o indice de todas as reservas
     }
     
     fclose(arquivo);
@@ -24,7 +25,7 @@ int salvarNovaReserva(reserva novaReserva){
         return 0;
     }
     if (novaReserva.id != 0){
-        fprintf(arquivo, "%d,%d,%d,%s,%s,%s,%s\n", novaReserva.id,novaReserva.idUsuario,novaReserva.numeroSala,
+        fprintf(arquivo, "%d,%d,%d,%s,%s,%s,%s,%d\n", novaReserva.id,novaReserva.idUsuario,novaReserva.numeroSala,
         novaReserva.dataInicio,novaReserva.horaInicio,novaReserva.dataFinal,novaReserva.horaFinal);
         fclose(arquivo);
         return 1;
@@ -35,21 +36,21 @@ int salvarNovaReserva(reserva novaReserva){
 }
 
 int listarTodasAsReservas(){
-    // FILE *arquivo = fopen(PATH_RESERVA, "a");
-    // if (arquivo == NULL) {
-    //     printf("\nBanco de Dados n�o encontrado!\n");
-    //     return 0;
-    // }
-    // char linha[256];
-    // int posicaoLinha = 0;
+    FILE *arquivo = fopen(PATH_RESERVA, "a");
+    if (arquivo == NULL) {
+        printf("\nBanco de Dados n�o encontrado!\n");
+        return 0;
+    }
+    char linha[256];
+    int posicaoLinha = 0;
 
-    // while (fgets(linha, sizeof(linha), arquivo)) {
-    //     printf("%s\n",linha);
-    //     posicaoLinha++;
-    // }
+    while (fgets(linha, sizeof(linha), arquivo)) {
+        printf("%s\n",linha);
+        posicaoLinha++;
+    }
     
-    // fclose(arquivo);
-    // return posicaoLinha;
+    fclose(arquivo);
+    return posicaoLinha;
 }
 
 int verificarDisponibilidade(int numeroSala){

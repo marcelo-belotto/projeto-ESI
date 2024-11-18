@@ -1,14 +1,14 @@
-Arquivo H:
 #ifndef USUARIO_H
 #define USUARIO_H
 
 #include "utils.h"
 #include "salas.h"
-#include "bancoDados.h"
+#include "usuarioDB.h"
 
 #define MAX_USUARIOS 100
 
 typedef struct Usuario{
+    unsigned int id;
     char perfil[31];
     char senha[31];
     char nome[41];
@@ -26,6 +26,6 @@ void cadastroUsuario();
 
 void alterarUsuario(); 
 
-void localizarUsuario();
+usuario* localizarUsuario(int indiceUsuario, char senha[30]);
 
 #endif //USUARIO_H
