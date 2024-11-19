@@ -10,15 +10,37 @@ int carregarIndiceReservas(){
     int posicaoLinha = 0;
 
     while (fgets(linha, sizeof(linha), arquivo)) {
-        //sscanf(linha,"%d",posicaoLinha);
-        //Pegar o indice de todas as reservas
+
+         if (posicaoLinha == 0){ 
+            posicaoLinha++;
+            continue;
+            }
+            reserva novaReserva;
+            char dataHoraInicioStr[20];
+            char dataHoraFimStr[20];
+
+        if (sscanf(linha, "%d, %d, %d, %49[^,],%19[^,],%[^,],%19[^,], %d",
+        &novaReserva.id,
+        &novaReserva.idUsuario,
+        &novaReserva.numeroSala,
+        novaReserva.dataInicio, 
+        novaReserva.horaInicio, 
+        novaReserva.dataFinal, 
+        novaReserva.horaFinal,
+        &novaReserva.status) == 8) {
+
+            printf("%d,%d,%d,%s %s - %s %s\n", novaReserva.id, novaReserva.idUsuario, novaReserva.numeroSala,
+            novaReserva.dataInicio, novaReserva.horaInicio, novaReserva.dataFinal, novaReserva.horaFinal);
     }
-    
-    fclose(arquivo);
-    return posicaoLinha;
+    posicaoLinha++;
 }
 
-int salvarNovaReserva(reserva novaReserva){
+    fclose(arquivo);
+    return   posicaoLinha;
+
+}
+
+int salvarNovaReserva(reserva  novaReserva){
     FILE *arquivo = fopen(PATH_RESERVA, "a");
     if (arquivo == NULL) {
         printf("\nBanco de Dados n�o encontrado!\n");
@@ -26,7 +48,7 @@ int salvarNovaReserva(reserva novaReserva){
     }
     if (novaReserva.id != 0){
         fprintf(arquivo, "%d,%d,%d,%s,%s,%s,%s,%d\n", novaReserva.id,novaReserva.idUsuario,novaReserva.numeroSala,
-        novaReserva.dataInicio,novaReserva.horaInicio,novaReserva.dataFinal,novaReserva.horaFinal);
+        novaReserva.dataInicio,novaReserva.horaInicio,novaReserva.dataFinal,novaReserva.horaFinal, novaReserva.status);
         fclose(arquivo);
         return 1;
     } else {
@@ -35,7 +57,7 @@ int salvarNovaReserva(reserva novaReserva){
     }
 }
 
-int listarTodasAsReservas(){
+int listarTodasAsReservas(pReservas novaReserva){
     FILE *arquivo = fopen(PATH_RESERVA, "a");
     if (arquivo == NULL) {
         printf("\nBanco de Dados n�o encontrado!\n");

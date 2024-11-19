@@ -29,19 +29,19 @@ void inicializarReservas();
 *Fun��o para Reservar uma sala, com base em sua diponibilidade.
 *
 */
-int reservarSala(usuario user);
+int reservarSala(usuario nome);
 
 /**
 *Fun��o para Alterar uma reserva.
 * 
 */
-int alterarReserva(usuario user);
+int alterarReserva(usuario nome);
 
 /**
 *Fun��o para Cancelar uma reserva.
 * 
 */
-int cancelarReserva(usuario user);
+int cancelarReserva(usuario nome);
 
 /**
 *Fun��o para verficar a disponibilidade de salas.
