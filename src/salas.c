@@ -10,49 +10,49 @@
 pSalas vSalas[MAX_SALAS];
 
 /**
- * @brief Inicializa o array de salas de reunião, definindo todas as posições como NULL.
+ * @brief Inicializa o array de salas de reuniï¿½o, definindo todas as posiï¿½ï¿½es como NULL.
  *
- * Esta função percorre o array de salas de reunião (vSalas) e define cada posição como NULL.
- * Isso é feito para garantir que o array esteja inicialmente vazio antes de qualquer outra operação.
+ * Esta funï¿½ï¿½o percorre o array de salas de reuniï¿½o (vSalas) e define cada posiï¿½ï¿½o como NULL.
+ * Isso ï¿½ feito para garantir que o array esteja inicialmente vazio antes de qualquer outra operaï¿½ï¿½o.
  */
 void inicializarSalas() {
-    // Preenche todas as posições do vetor com NULL 
+    // Preenche todas as posiï¿½ï¿½es do vetor com NULL 
     for (int i = 0; i < MAX_SALAS; i++) {
         vSalas[i] = NULL;
     }
 }
 
 /**
- * @brief Cadastra uma nova sala de reunião no sistema.
+ * @brief Cadastra uma nova sala de reuniï¿½o no sistema.
  *
- * Esta função verifica se a posição especificada no array de salas de reunião (vSalas) já está preenchida.
- * Se a posição estiver vazia, aloca memória para uma nova estrutura de sala e solicita ao usuário os dados da sala.
- * Os dados incluem o número da sala, o tipo da sala e o status atual da sala.
+ * Esta funï¿½ï¿½o verifica se a posiï¿½ï¿½o especificada no array de salas de reuniï¿½o (vSalas) jï¿½ estï¿½ preenchida.
+ * Se a posiï¿½ï¿½o estiver vazia, aloca memï¿½ria para uma nova estrutura de sala e solicita ao usuï¿½rio os dados da sala.
+ * Os dados incluem o nï¿½mero da sala, o tipo da sala e o status atual da sala.
  */
 void cadastrarSala(int i) {
     if (vSalas[i] != NULL) {
-        printf("\nPosição já preenchida!\n");
+        printf("\nPosiï¿½ï¿½o jï¿½ preenchida!\n");
         return;
     }
 
     vSalas[i] = (pSalas) malloc(sizeof(salas));
     if (vSalas[i] == NULL) {
-        printf("Erro ao alocar memória.\n");
+        printf("Erro ao alocar memï¿½ria.\n");
         return;
     }
 
     clearInputBuffer();
 
-    printf("\nNúmero da sala: ");
+    printf("\nNï¿½mero da sala: ");
         scanf("%d", &vSalas[i]->numeroSala);
     clearInputBuffer();
 
-    printf("\nDigite o tipo da sala\n
-            PA - Sala pequena (até 5 lugares), com recursos audiovisuais\n
-            MA - Sala média (até 15 lugares), com recursos audiovisuais\n
-            GA - Auditório (até 100 lugares), com recusros audiovisuais\n
-            PC - Sala pequena (até 5 lugares), sem recursos audiovisuais\n
-            MC - Sala média (até 15 lugares), sem recursos audiovisuais\n");
+    /*printf("\nDigite o tipo da sala\n
+            PA - Sala pequena (atï¿½ 5 lugares), com recursos audiovisuais\n
+            MA - Sala mï¿½dia (atï¿½ 15 lugares), com recursos audiovisuais\n
+            GA - Auditï¿½rio (atï¿½ 100 lugares), com recusros audiovisuais\n
+            PC - Sala pequena (atï¿½ 5 lugares), sem recursos audiovisuais\n
+            MC - Sala mï¿½dia (atï¿½ 15 lugares), sem recursos audiovisuais\n");*/
         fgets(vSalas[i]->tipo, 5, stdin);
     vSalas[i]->tipo[strcspn(vSalas[i]->tipo, "\n")] = '\0';
     clearInputBuffer();
@@ -64,20 +64,20 @@ void cadastrarSala(int i) {
 
     printf("\nSala cadastrada com sucesso!\n");
 
-    salvarSalasReuniaoDb(vSalas[i]);
+    //salvarSalasReuniaoDb(vSalas[i]);
 }
 
 /**
- * @brief Lista todas as salas de reunião cadastradas no sistema.
+ * @brief Lista todas as salas de reuniï¿½o cadastradas no sistema.
  *
- * Esta função carrega todas as salas de reunião do arquivo de dados e as exibe na tela.
- * Para cada sala, são mostrados o número da sala, o tipo da sala e o status atual.
+ * Esta funï¿½ï¿½o carrega todas as salas de reuniï¿½o do arquivo de dados e as exibe na tela.
+ * Para cada sala, sï¿½o mostrados o nï¿½mero da sala, o tipo da sala e o status atual.
  */
 void listarSalas() {
     carregarTodasSalasReuniao(vSalas);
     for (int i = 0; i < MAX_SALAS; i++) {
         if (vSalas[i] != NULL) {
-            printf("\nNúmero da sala: %d", vSalas[i]->numeroSala);
+            printf("\nNï¿½mero da sala: %d", vSalas[i]->numeroSala);
             printf("\nTipo da sala: %s", vSalas[i]->tipo);
             printf("\nStatus atual da sala: %s\n", vSalas[i]->status);
         }
@@ -85,16 +85,16 @@ void listarSalas() {
 }
 
 /**
- * @brief Altera as informações de uma sala de reunião existente.
+ * @brief Altera as informaï¿½ï¿½es de uma sala de reuniï¿½o existente.
  *
- * Esta função solicita ao usuário o número da sala que deseja alterar,
- * busca a sala correspondente no array de salas e permite a alteração
+ * Esta funï¿½ï¿½o solicita ao usuï¿½rio o nï¿½mero da sala que deseja alterar,
+ * busca a sala correspondente no array de salas e permite a alteraï¿½ï¿½o
  * do tipo e status da sala.
  */
 void alterarSala() {
     int numeroSala;
 
-    printf("Digite o número da sala que deseja alterar: ");
+    printf("Digite o nï¿½mero da sala que deseja alterar: ");
         scanf("%d", &numeroSala);
     clearInputBuffer();
 
@@ -115,5 +115,5 @@ void alterarSala() {
         }
     }
 
-    printf("Sala não encontrada!\n");
+    printf("Sala nï¿½o encontrada!\n");
 }

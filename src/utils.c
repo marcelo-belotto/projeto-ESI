@@ -67,7 +67,7 @@ int validarCPF(char* cpf) {
 int obterOpcao() {
         int opcao;
         char buffer[10];
-        printf("Escolha uma opção: ");
+        printf("Escolha uma opï¿½ï¿½o: ");
         do{
                 fgets(buffer, sizeof(buffer), stdin);
                 //clearInputBuffer();
@@ -77,16 +77,16 @@ int obterOpcao() {
 }
 
 
-// Função para verificar se o ano é bissexto
+// Funï¿½ï¿½o para verificar se o ano ï¿½ bissexto
 int anoBissexto(int year) {
     return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
 }
 
-// Função para validar a data no formato DD/MM/AAAA
+// Funï¿½ï¿½o para validar a data no formato DD/MM/AAAA
 int validarData(const char *data) {
     int dia, mes, ano;
 
-    // Obtém a data atual
+    // Obtï¿½m a data atual
     time_t t = time(NULL);
     struct tm *local = localtime(&t);
     int anoAtual = local->tm_year + 1900;
@@ -95,43 +95,43 @@ int validarData(const char *data) {
 
     // Verifica o formato da data: DD/MM/AAAA
     if (strlen(data) != 10 || data[2] != '/' || data[5] != '/') {
-        printf("Data inválida: formato errado. Use DD/MM/AAAA.\n");
+        printf("Data invï¿½lida: formato errado. Use DD/MM/AAAA.\n");
         return 0;
     }
 
     // Tenta converter a string para inteiros
     if (sscanf(data, "%d/%d/%d", &dia, &mes, &ano) != 3) {
-        printf("Data inválida: não pôde ser convertida para números.\n");
+        printf("Data invï¿½lida: nï¿½o pï¿½de ser convertida para nï¿½meros.\n");
         return 0;
     }
 
-    // Validação do ano
+    // Validaï¿½ï¿½o do ano
     if (ano < anoAtual) {
-        printf("Data inválida: ano menor que o ano corrente.\n");
+        printf("Data invï¿½lida: ano menor que o ano corrente.\n");
         return 0;
     }
 
-    // Validação do mês
+    // Validaï¿½ï¿½o do mï¿½s
     if (mes < 1 || mes > 12) {
-        printf("Data inválida: mês inválido.\n");
+        printf("Data invï¿½lida: mï¿½s invï¿½lido.\n");
         return 0;
     }
 
-    // Validação do dia conforme o mês
+    // Validaï¿½ï¿½o do dia conforme o mï¿½s
     int dias_no_mes[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     if (mes == 2 && anoBissexto(ano)) {
         dias_no_mes[1] = 29;  // Fevereiro tem 29 dias em anos bissextos
     }
 
     if (dia < 1 || dia > dias_no_mes[mes - 1]) {
-        printf("Data inválida: dia inválido para o mês.\n");
+        printf("Data invï¿½lida: dia invï¿½lido para o mï¿½s.\n");
         return 0;
     }
 
-    // Comparação com a data atual (ano, mês e dia)
+    // Comparaï¿½ï¿½o com a data atual (ano, mï¿½s e dia)
     if ((ano == anoAtual && mes < mesAtual) || 
         (ano == anoAtual && mes == mesAtual && dia < diaAtual)) {
-        printf("Data inválida: data está no passado.\n");
+        printf("Data invï¿½lida: data estï¿½ no passado.\n");
         return 0;
     }
 
@@ -139,45 +139,56 @@ int validarData(const char *data) {
     return 1;
 }
 
-// Função para validar hora no formato HH:MM
-int validarHora(const char *hora) {
+// Funï¿½ï¿½o para validar hora no formato HH:MM
+int validarHora(const char *hora, const char *data) {
     int hh, mm;
+    int dia, mes, ano, eHoje = 0;
 
     time_t t = time(NULL);
     struct tm *local = localtime(&t);
     int horaAtual = local->tm_hour;
     int minutoAtual = local->tm_min;
+    int anoAtual = local->tm_year + 1900;
+    int mesAtual = local->tm_mon + 1;
+    int diaAtual = local->tm_mday;
 
-    // Verifica o formato da hora: HH:MM (5 caracteres e ':' na posição 2)
+    // Verifica o formato da hora: HH:MM (5 caracteres e ':' na posiï¿½ï¿½o 2)
     if (strlen(hora) != 5 || hora[2] != ':') {
-        printf("Hora inválida: formato errado. Use HH:MM.\n");
+        printf("Hora invï¿½lida: formato errado. Use HH:MM.\n");
         return 0;
     }
 
     // Converte a string para inteiros
     if (sscanf(hora, "%d:%d", &hh, &mm) != 2) {
-        printf("Hora inválida: erro ao converter para números.\n");
+        printf("Hora invï¿½lida: erro ao converter para nï¿½meros.\n");
+        return 0;
+    }
+
+    // Tenta converter a string para inteiros
+    if (sscanf(data, "%d/%d/%d", &dia, &mes, &ano) != 3) {
+        printf("Data invï¿½lida: nï¿½o pï¿½de ser convertida para nï¿½meros.\n");
         return 0;
     }
 
     // Valida o intervalo das horas (0-23)
     if (hh < 0 || hh > 23) {
-        printf("Hora inválida: horas fora do intervalo (0-23).\n");
+        printf("Hora invï¿½lida: horas fora do intervalo (0-23).\n");
         return 0;
     }
 
     // Valida o intervalo dos minutos (0-59)
     if (mm < 0 || mm > 59) {
-        printf("Hora inválida: minutos fora do intervalo (0-59).\n");
+        printf("Hora invï¿½lida: minutos fora do intervalo (0-59).\n");
         return 0;
     }
-
+    // Verifica se a data passada por parÃ¢metro Ã© hoje
+    if (ano == anoAtual && mes == mesAtual && ano == anoAtual) eHoje = 1;
 
     // Compara a hora fornecida com a hora atual
-    if (hh < horaAtual || (hh == horaAtual && mm < minutoAtual)) {
-        printf("A hora fornecida (%02d:%02d) é menor que a hora atual (%02d:%02d).\n", hh, mm, horaAtual, minutoAtual);
-        return 0; // A hora fornecida é menor
+    if ((hh < horaAtual && eHoje) || ((hh == horaAtual && mm < minutoAtual) && eHoje)) {
+        printf("A hora fornecida (%02d:%02d) ï¿½ menor que a hora atual (%02d:%02d).\n", hh, mm, horaAtual, minutoAtual);
+        return 0; // A hora fornecida ï¿½ menor
     }
 
-    return 1; // Hora válida
+    return 1; // Hora vï¿½lida
 }

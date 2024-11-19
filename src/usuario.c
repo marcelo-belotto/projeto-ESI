@@ -10,17 +10,17 @@ pUsuario vUsuarios[MAX_USUARIOS];
 int indice_usuario;
 
 /**
- * @brief Inicializa o array de usuários e carrega os usuários existentes.
+ * @brief Inicializa o array de usuï¿½rios e carrega os usuï¿½rios existentes.
  *
- * Esta função inicializa o array de usuários, definindo todas as posições como NULL,
- * e em seguida carrega todos os usuários existentes do armazenamento para o array.
+ * Esta funï¿½ï¿½o inicializa o array de usuï¿½rios, definindo todas as posiï¿½ï¿½es como NULL,
+ * e em seguida carrega todos os usuï¿½rios existentes do armazenamento para o array.
  *
  * @return void
  *
- * @note Esta função modifica as variáveis globais vUsuarios e posicaoNovoUsuario.
+ * @note Esta funï¿½ï¿½o modifica as variï¿½veis globais vUsuarios e posicaoNovoUsuario.
  */
 void inicializarUsuario() {
-    // Varre o vetor e coloca NULL em todas as posições
+    // Varre o vetor e coloca NULL em todas as posiï¿½ï¿½es
     for (int i = 0; i < MAX_USUARIOS; i++) {
         vUsuarios[i] = NULL;
     }
@@ -28,33 +28,33 @@ void inicializarUsuario() {
 }
 
 /**
- * @brief Realiza o cadastro de um novo usuário no sistema.
+ * @brief Realiza o cadastro de um novo usuï¿½rio no sistema.
  *
- * Esta função verifica se a posição atual para cadastro está vazia. Caso esteja,
- * aloca memória para um novo usuário, solicita os dados de matrícula, perfil de acesso e senha,
- * e os armazena na posição correspondente no vetor de usuários.
+ * Esta funï¿½ï¿½o verifica se a posiï¿½ï¿½o atual para cadastro estï¿½ vazia. Caso esteja,
+ * aloca memï¿½ria para um novo usuï¿½rio, solicita os dados de matrï¿½cula, perfil de acesso e senha,
+ * e os armazena na posiï¿½ï¿½o correspondente no vetor de usuï¿½rios.
  *
  * @return void
  *
- * @note Esta função modifica as variáveis globais vUsuarios e posicaoNovoUsuario.
- * @note A função utiliza a função clearInputBuffer() para limpar o buffer de entrada.
- * @note A função utiliza a função carregarTodosUsuarios() para carregar os usuários existentes.
- * @note A função utiliza a função printf() para solicitar dados ao usuário e exibir mensagens de status.
- * @note A função utiliza a função malloc() para alocar memória para um novo usuário.
- * @note A função utiliza a função scanf() para ler dados do usuário.
- * @note A função utiliza a função strcmp() para comparar strings.
+ * @note Esta funï¿½ï¿½o modifica as variï¿½veis globais vUsuarios e posicaoNovoUsuario.
+ * @note A funï¿½ï¿½o utiliza a funï¿½ï¿½o clearInputBuffer() para limpar o buffer de entrada.
+ * @note A funï¿½ï¿½o utiliza a funï¿½ï¿½o carregarTodosUsuarios() para carregar os usuï¿½rios existentes.
+ * @note A funï¿½ï¿½o utiliza a funï¿½ï¿½o printf() para solicitar dados ao usuï¿½rio e exibir mensagens de status.
+ * @note A funï¿½ï¿½o utiliza a funï¿½ï¿½o malloc() para alocar memï¿½ria para um novo usuï¿½rio.
+ * @note A funï¿½ï¿½o utiliza a funï¿½ï¿½o scanf() para ler dados do usuï¿½rio.
+ * @note A funï¿½ï¿½o utiliza a funï¿½ï¿½o strcmp() para comparar strings.
  */
 void cadastroUsuario() {
     
     if (vUsuarios[posicaoNovoUsuario] != NULL) {
-        printf("Posição já preenchida.\n");
+        printf("Posiï¿½ï¿½o jï¿½ preenchida.\n");
         return;
     }
 
-    // Aloca memória para o novo usuário
+    // Aloca memï¿½ria para o novo usuï¿½rio
     vUsuarios[posicaoNovoUsuario] = (pUsuario) malloc(sizeof(usuario));
     if (vUsuarios[posicaoNovoUsuario] == NULL) {
-        printf("Erro de alocação de memória.\n");
+        printf("Erro de alocaï¿½ï¿½o de memï¿½ria.\n");
         return;
     }
 
@@ -63,7 +63,7 @@ void cadastroUsuario() {
     scanf("%30[^\n]", vUsuarios[posicaoNovoUsuario]->nome); 
 
     clearInputBuffer();
-    printf("Digite a matrícula do usuário: \n");
+    printf("Digite a matrï¿½cula do usuï¿½rio: \n");
     scanf("%d", &vUsuarios[posicaoNovoUsuario]->cpf); 
 
     clearInputBuffer();
@@ -84,17 +84,17 @@ void cadastroUsuario() {
 }
 
 /**
- * @brief Altera o perfil de um usuário, acessível apenas para administradores.
+ * @brief Altera o perfil de um usuï¿½rio, acessï¿½vel apenas para administradores.
  *
- * Esta função permite que um administrador altere o perfil de um usuário no sistema.
- * O administrador deve fornecer sua própria matrícula para autenticação
- * e, em seguida, a matrícula do usuário cujo perfil deseja alterar.
+ * Esta funï¿½ï¿½o permite que um administrador altere o perfil de um usuï¿½rio no sistema.
+ * O administrador deve fornecer sua prï¿½pria matrï¿½cula para autenticaï¿½ï¿½o
+ * e, em seguida, a matrï¿½cula do usuï¿½rio cujo perfil deseja alterar.
  *
- * @note Esta função modifica a variável global vUsuarios.
- * @note A função utiliza as funções printf() e scanf() para interação com o usuário.
- * @note A função utiliza a função strcmp() para comparar strings.
- * @note A função utiliza fgets() para ler o novo perfil do usuário.
- * @note A função utiliza strcspn() para remover o caractere de nova linha do input.
+ * @note Esta funï¿½ï¿½o modifica a variï¿½vel global vUsuarios.
+ * @note A funï¿½ï¿½o utiliza as funï¿½ï¿½es printf() e scanf() para interaï¿½ï¿½o com o usuï¿½rio.
+ * @note A funï¿½ï¿½o utiliza a funï¿½ï¿½o strcmp() para comparar strings.
+ * @note A funï¿½ï¿½o utiliza fgets() para ler o novo perfil do usuï¿½rio.
+ * @note A funï¿½ï¿½o utiliza strcspn() para remover o caractere de nova linha do input.
  *
  * @return void
  */
@@ -107,10 +107,10 @@ void alterarUsuario() { // Somente ADM pode entrar
 
     for (int i = 0; i < MAX_USUARIOS; i++) {
         if (vUsuarios[i] != NULL && indice_usuario == indice_adm && strcmp(vUsuarios[i]->perfil, "ADM") == 0) {
-            printf("Digite o ID do usuário que deseja alterar: \n");
+            printf("Digite o ID do usuï¿½rio que deseja alterar: \n");
             scanf("%d", &indice_usuario);
             
-            printf("Digite o que você deseja alterar:\n");
+            printf("Digite o que vocï¿½ deseja alterar:\n");
             printf("1. Nome\n");
             printf("2. Senha\n");
             printf("3. Perfil\n");
@@ -139,7 +139,7 @@ void alterarUsuario() { // Somente ADM pode entrar
                     // Alterar senha
                     for (int j = 0; j < MAX_USUARIOS; j++) {
                     if (vUsuarios[j] != NULL && vUsuarios[j]->senha == senha) {
-                    printf("Digite o novo nome do usuário: ");
+                    printf("Digite o novo nome do usuï¿½rio: ");
                     fgets(vUsuarios[j]->senha, 31, stdin);
                     vUsuarios[j]->senha[strcspn(vUsuarios[j]->senha, "\n")] = '\0';
                     fflush(stdin);
@@ -154,7 +154,7 @@ void alterarUsuario() { // Somente ADM pode entrar
                     // Alterar pefil
                     for (int j = 0; j < MAX_USUARIOS; j++) {
                     if (vUsuarios[j] != NULL && vUsuarios[j]->perfil == perfil) {
-                    printf("Digite o novo nome do usuário: ");
+                    printf("Digite o novo nome do usuï¿½rio: ");
                     fgets(vUsuarios[j]->perfil, 31, stdin);
                     vUsuarios[j]->perfil[strcspn(vUsuarios[j]->perfil, "\n")] = '\0';
                     fflush(stdin);
@@ -168,7 +168,7 @@ void alterarUsuario() { // Somente ADM pode entrar
                     // Alterar CPF
                     for (int j = 0; j < MAX_USUARIOS; j++) {
                     if (vUsuarios[j] != NULL && vUsuarios[j]->cpf == cpf) {
-                    printf("Digite o novo nome do usuário: ");
+                    printf("Digite o novo nome do usuï¿½rio: ");
                     fgets(vUsuarios[j]->cpf, 17, stdin);
                     vUsuarios[j]->cpf[strcspn(vUsuarios[j]->cpf, "\n")] = '\0';
                     fflush(stdin);
@@ -182,7 +182,7 @@ void alterarUsuario() { // Somente ADM pode entrar
                     // Alterar status
                     for (int j = 0; j < MAX_USUARIOS; j++) {
                     if (vUsuarios[j] != NULL && vUsuarios[j]->status == status) {
-                    printf("Digite o novo nome do usuário: ");
+                    printf("Digite o novo nome do usuï¿½rio: ");
                     fgets(vUsuarios[j]->status, 11, stdin);
                     vUsuarios[j]->status[strcspn(vUsuarios[j]->status, "\n")] = '\0';
                     fflush(stdin);
@@ -194,15 +194,15 @@ void alterarUsuario() { // Somente ADM pode entrar
                 break;
 
                 default:
-                printf("Opção inválida!\n");                
+                printf("Opï¿½ï¿½o invï¿½lida!\n");                
             }
-            printf("Usuário não encontrado.\n");
+            printf("Usuï¿½rio nï¿½o encontrado.\n");
             return;
         }
     }
-    printf("Permissão negada. Somente administradores podem alterar perfis.\n");
+    printf("Permissï¿½o negada. Somente administradores podem alterar perfis.\n");
 }
 
-void localizarUsuario() {
-    // aguardando função do banco de dados
+usuario* localizarUsuario(int indiceUsuario, char senha[30]) {
+    // aguardando funï¿½ï¿½o do banco de dados
 }

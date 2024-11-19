@@ -3,6 +3,8 @@
 #include <string.h>
 #include "../lib/menu.h"
 #include "../lib/utils.h"
+#include "../lib/usuario.h"
+#include "../lib/reservas.h"
 
 struct Usuario *usuarioTemp = NULL;
 
@@ -15,7 +17,7 @@ void logarMenu() {
         printf("=== ReuniON ===\n");
         printf("1. Fazer login\n");
         printf("2. Sair\n");
-        printf("Escolha uma opção: ");
+        printf("Escolha uma opï¿½ï¿½o: ");
         scanf(" %c", &opcao);
         clearInputBuffer();
 
@@ -43,9 +45,9 @@ void logarMenu() {
                 }
             }
 
-            printf("Dados inválidos! Verifique id e senha.\n");
+            printf("Dados invï¿½lidos! Verifique id e senha.\n");
         } else {
-            printf("Opção inválida! Tente novamente.\n");
+            printf("Opï¿½ï¿½o invï¿½lida! Tente novamente.\n");
         }
     } while (1);
 }
@@ -53,7 +55,7 @@ void logarMenu() {
 void exibirMenuPadrao() {
     int opcao;
 
-    printf("=== Sistema de Reserva de Sala de Reunião ===\n");
+    printf("=== Sistema de Reserva de Sala de Reuniï¿½o ===\n");
     printf("1. Reservar sala\n");
     printf("2. Cancelar reserva\n");
     printf("3. Listar salas\n");
@@ -81,7 +83,7 @@ void exibirMenuPadrao() {
                     printf("Saindo... \n");
                     break;
                 default:
-                    printf("Opção inválida!\n");
+                    printf("Opï¿½ï¿½o invï¿½lida!\n");
         }
     } while (opcao != 5);
 }
@@ -93,7 +95,7 @@ void exibirMenuADM() {
     printf("1. Reservar sala\n");
     printf("2. Cancelar reserva\n");
     printf("3. Listar reservas\n");
-    printf("4. Alterar usuário\n");
+    printf("4. Alterar usuï¿½rio\n");
     printf("5. Sair\n");
     obterOpcao();
 
@@ -116,7 +118,7 @@ void exibirMenuADM() {
                     printf("Saindo ... \n");
                     break;
                 default:
-                    printf("Opção inválida!\n");
+                    printf("Opï¿½ï¿½o invï¿½lida!\n");
         }
     } while (opcao != 5);
 }

@@ -1,6 +1,13 @@
 #ifndef RESERVAS_H
 #define RESERVAS_H
 
+#include "utils.h"
+#include "salas.h"
+#include "usuario.h"
+#include "reservaDB.h"
+
+#define MAX_RESERVAS 1000
+
 typedef struct Reserva{
     int id;
     int idUsuario;
@@ -9,28 +16,35 @@ typedef struct Reserva{
     char horaInicio[6];
     char dataFinal[11];
     char horaFinal[6];
+    int status;
 } reserva;
 
+typedef reserva *pReservas;
+
+extern pReservas vReservas[MAX_RESERVAS];
+
+void inicializarReservas();
+
 /**
-*Função para Reservar uma sala, com base em sua diponibilidade.
+*Funï¿½ï¿½o para Reservar uma sala, com base em sua diponibilidade.
 *
 */
-int reservarSala();
+int reservarSala(usuario nome);
 
 /**
-*Função para Alterar uma reserva.
+*Funï¿½ï¿½o para Alterar uma reserva.
 * 
 */
-int alterarReserva();
+int alterarReserva(usuario nome);
 
 /**
-*Função para Cancelar uma reserva.
+*Funï¿½ï¿½o para Cancelar uma reserva.
 * 
 */
-int cancelarReserva();
+int cancelarReserva(usuario nome);
 
 /**
-*Função para verficar a disponibilidade de salas.
+*Funï¿½ï¿½o para verficar a disponibilidade de salas.
 * 
 */
 int verificarDisponibilidadeDeSalas();
