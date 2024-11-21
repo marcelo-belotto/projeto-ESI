@@ -55,12 +55,14 @@ void logarMenu() {
 void exibirMenuPadrao() {
     int opcao;
 
-    printf("=== Sistema de Reserva de Sala de Reuniï¿½o ===\n");
-    printf("1. Reservar sala\n");
-    printf("2. Cancelar reserva\n");
-    printf("3. Listar salas\n");
-    printf("4. Alterar senha\n");
-    printf("5. Sair\n");
+    printf("=== Sistema de Reserva de Sala de Reunião ===\n");
+    printf("1. Listar salas\n");
+    printf("2. Reservar sala\n");
+    printf("3. Listar reservas\n");
+    printf("4. Alterar reserva\n");
+    printf("5. Cancelar reserva\n");
+    printf("6. Alterar senha\n");
+    printf("7. Sair\n");
     obterOpcao();
 
     do {
@@ -68,59 +70,89 @@ void exibirMenuPadrao() {
         
         switch(opcao){
                 case 1:
-                    fazerReserva(usuarioTemp);
+                    listarSalas();
                     break;
                 case 2:
-                    cancelarReserva();
+                    fazerReserva(usuarioTemp);
                     break;
                 case 3:
-                    listarReservas();
+                    listarReservasUsuario();
                     break;
                 case 4:
-                    alterarSenha(usuarioTemp);
+                    alterarReserva();
                     break;
                 case 5:
+                    cancelarReserva();
+                    break;
+                case 6:
+                    alterarSenha(usuarioTemp);
+                    break;
+                case 7:
                     printf("Saindo... \n");
                     break;
                 default:
                     printf("Opï¿½ï¿½o invï¿½lida!\n");
         }
-    } while (opcao != 5);
+    } while (opcao != 7);
 }
 
 void exibirMenuADM() {
     int opcao;
 
     printf("=== ReuniON ===\n");
-    printf("1. Reservar sala\n");
-    printf("2. Cancelar reserva\n");
-    printf("3. Listar reservas\n");
-    printf("4. Alterar usuï¿½rio\n");
-    printf("5. Sair\n");
+    printf("1. Cadastrar usuário\n");
+    printf("2. Alterar usuário\n");
+    printf("3. Cadastrar sala\n");
+    printf("4. Listar salas\n");
+    printf("5. Alterar sala\n");
+    printf("6. Reservar sala\n");
+    printf("7. Listar reservas\n");
+    printf("8. Alterar reserva\n");
+    printf("9. Cancelar reserva\n");
+    printf("10. Alterar senha\n");
+    printf("11. Sair\n");
     obterOpcao();
 
     do {
         opcao = obterOpcao();       
         switch(opcao){
                 case 1:
-                    fazerReserva(usuarioTemp);
+                    cadastroUsuario();
                     break;
                 case 2:
-                    cancelarReserva();
-                    break;
-                case 3:
-                    listarReservas();
-                    break;
-                case 4:
                     alterarUsuario();
                     break;
+                case 3:
+                    cadastrarSala();
+                    break;
+                case 4:
+                    listarSalas();
+                    break;
                 case 5:
+                    alterarSala();
+                    break;
+                case 6:
+                    reservarSala();
+                    break;
+                case 7:
+                    listarTodasAsReservas();
+                    break;
+                case 8:
+                    alterarReserva();
+                    break;
+                case 9:
+                    cancelarReserva();
+                    break;
+                case 10:
+                    alterarSenha(usuarioTemp);
+                    break;
+                case 11:
                     printf("Saindo ... \n");
                     break;
                 default:
                     printf("Opï¿½ï¿½o invï¿½lida!\n");
         }
-    } while (opcao != 5);
+    } while (opcao != 11);
 }
 
 

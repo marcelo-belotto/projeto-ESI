@@ -41,7 +41,7 @@ O ReuniON é uma ferramenta projetada para atender às necessidades de agendamen
 Execute os comandos abaixo no terminal:  
 ```bash
 git clone https://github.com/marcelo-belotto/projeto-ESI.git
-cd reunion
+cd projeto-ESI
 ```
 
 ### **3.2 Compilando o Sistema**  
@@ -62,74 +62,137 @@ Se ocorrerem erros, certifique-se de que o GCC está instalado e o diretório at
 
 ## **4. Navegando no Sistema**  
 
-### **4.1 Estrutura do Menu**  
-Ao iniciar, o sistema solicitará credenciais de login:  
+### **4.1 Estrutura de Menus**  
+Ao acessar o ReuniON, o sistema exibirá o **Menu Inicial**, com as seguintes opções:  
+1. **Fazer login:** Insira seu ID e senha para acessar o sistema.  
+2. **Sair:** Encerre o sistema.  
 
-**Menu Principal:**  
-  1. Reservar Sala.  
-  2. Alterar Reserva.  
-  3. Cancelar Reserva.  
-  4. Consultar Disponibilidade.  
-  5. Exibir Minhas Reservas.  
+Após o login, você será direcionado para um menu específico de acordo com o seu perfil:  
 
-**Opções Administrativas:** *(apenas para administradores)*  
-   1. Gerenciar Usuários.  
-   2. Gerenciar Salas.  
-   3. Visualizar Todas as Reservas.  
+#### **Menu Geral (Usuários Comuns):**  
+1. [Listar Salas](#listar-salas)  
+2. [Reservar Sala](#reservar-sala)  
+3. [Listar Reservas](#listar-reservas)  
+4. [Alterar Reserva](#alterar-reserva)  
+5. [Cancelar Reserva](#cancelar-reserva)  
+6. [Alterar Senha](#alterar-senha)  
+7. Sair  
 
-Digite o número da opção desejada e siga as instruções na tela.  
+#### **Menu Administrador:**  
+1. [Cadastrar Usuário](#cadastrar-usuario)  
+2. [Alterar Usuário](#alterar-usuario)  
+3. [Cadastrar Sala](#cadastrar-sala)  
+4. [Listar Salas](#listar-salas)  
+5. [Alterar Sala](#alterar-sala)  
+6. [Reservar Sala](#reservar-sala)  
+7. [Listar Reservas](#listar-reservas)  
+8. [Alterar Reserva](#alterar-reserva)  
+9. [Cancelar Reserva](#cancelar-reserva)  
+10. [Alterar Senha](#alterar-senha)  
+11. Sair  
+
+Para navegar, digite o número correspondente à opção desejada.  
 
 ---
 
 ## **5. Funcionalidades Detalhadas**  
 
-### **5.1 Para Usuários**  
-1. **Reservar Sala:**  
-   - Escolha o tipo de sala e o horário desejado.  
-   - O sistema exibirá as salas disponíveis.  
-   - Confirme a reserva para registrá-la.  
+### **5.1 Menu Geral (Usuários Comuns)**  
+<a id="listar-salas"></a>  
+1. **Listar Salas:**  
+   - Veja a relação de salas disponíveis, com detalhes sobre o tipo e a capacidade.  
+   [Topo](#4-navegando-no-sistema)  
 
+<a id="reservar-sala"></a>  
+2. **Reservar Sala:**  
+   - Escolha a sala e o horário desejados.  
+   - O sistema confirmará a disponibilidade e registrará a reserva.  
    **Exemplo de fluxo:**  
-   ```text
-   Menu -> Opção 1: Reservar Sala  
-   Selecione o tipo de sala: GA  
+   ```text  
+   Menu -> Opção 2: Reservar Sala  
+   Escolha o tipo de sala: GA  
    Informe a data: 20/11/2024  
    Horário de início: 14:00  
    Horário de término: 15:00  
-   Sala confirmada: GA-02  
-   ```
+   Reserva confirmada: GA-02  
+   ```  
+   [Topo](#4-navegando-no-sistema)  
 
-2. **Alterar Reserva:**  
-   - Liste suas reservas e escolha a que deseja modificar.  
-   - Insira os novos detalhes (sala, horário ou data).  
+<a id="listar-reservas"></a>  
+3. **Listar Reservas:**  
+   - Visualize suas reservas atuais, com detalhes de data, horário e sala.  
+   [Topo](#4-navegando-no-sistema)  
 
-3. **Cancelar Reserva:**  
-   - Liste suas reservas.  
-   - Escolha qual reserva cancelar e confirme a operação.  
+<a id="alterar-reserva"></a>  
+4. **Alterar Reserva:**  
+   - Escolha uma de suas reservas e modifique os dados (data, horário ou sala).  
+   [Topo](#4-navegando-no-sistema)  
 
-4. **Verificar Disponibilidade:**  
-   - Insira o tipo de sala e a data.  
-   - O sistema exibirá os horários indisponíveis.  
+<a id="cancelar-reserva"></a>  
+5. **Cancelar Reserva:**  
+   - Selecione uma reserva para excluir. Confirme a operação para concluí-la.  
+   [Topo](#4-navegando-no-sistema)  
 
-5. **Exibir Minhas Reservas:**  
-   - Visualize todas as reservas associadas ao seu ID.  
-
-### **5.2 Para Administradores**  
-1. **Cadastrar Usuários:**  
-   - Insira os dados do usuário (CPF, nome, perfil, senha e status).  
-   - O sistema valida as informações antes de registrar.  
-
-2. **Cadastrar Salas:**  
-   - Defina o número, tipo (PA, MA, GA, etc.) e status (ativo/inativo).  
-   - O sistema verifica se o número da sala é único.  
-
-3. **Listar Usuários e Reservas:**  
-   - Liste usuários ou reservas filtrando por período ou tipo de sala.  
-
-4. **Alterar Usuários ou Salas:**  
-   - Modifique dados de usuários ou salas existentes, como status ou permissões.  
+<a id="alterar-senha"></a>  
+6. **Alterar Senha:**  
+   - Atualize sua senha de acesso ao sistema.  
+   [Topo](#4-navegando-no-sistema)  
 
 ---
+
+### **5.2 Menu Administrador**  
+<a id="cadastrar-usuario"></a>  
+1. **Cadastrar Usuário:**  
+   - Insira os dados do novo usuário (nome, CPF, perfil, senha, status).  
+   [Topo](#4-navegando-no-sistema)  
+
+<a id="alterar-usuario"></a>  
+2. **Alterar Usuário:**  
+   - Modifique os dados de um usuário existente (ex.: perfil ou status).  
+   [Topo](#4-navegando-no-sistema)  
+
+<a id="cadastrar-sala"></a>  
+3. **Cadastrar Sala:**  
+   - Registre uma nova sala informando número, tipo e capacidade.  
+   [Topo](#4-navegando-no-sistema)  
+
+<a id="listar-salas"></a>  
+4. **Listar Salas:**  
+   - Veja todas as salas registradas no sistema, ativas ou inativas.  
+   [Topo](#4-navegando-no-sistema)  
+
+<a id="alterar-sala"></a>  
+5. **Alterar Sala:**  
+   - Atualize informações de uma sala (ex.: status ou capacidade).  
+   [Topo](#4-navegando-no-sistema)  
+
+<a id="reservar-sala"></a>  
+6. **Reservar Sala:**  
+   - Realize uma reserva em nome de qualquer usuário.  
+   [Topo](#4-navegando-no-sistema)  
+
+<a id="listar-reservas"></a>  
+7. **Listar Reservas:**  
+   - Veja todas as reservas, com filtros por usuário, data ou sala.  
+   [Topo](#4-navegando-no-sistema)  
+
+<a id="alterar-reserva"></a>  
+8. **Alterar Reserva:**  
+   - Modifique os detalhes de qualquer reserva registrada no sistema.  
+   [Topo](#4-navegando-no-sistema)  
+
+<a id="cancelar-reserva"></a>  
+9. **Cancelar Reserva:**  
+   - Exclua reservas feitas por qualquer usuário.  
+   [Topo](#4-navegando-no-sistema)  
+
+<a id="alterar-senha"></a>  
+10. **Alterar Senha:**  
+    - Atualize a senha de qualquer usuário do sistema.  
+    [Topo](#4-navegando-no-sistema)  
+
+11. **Sair:**  
+    - Retorne ao menu inicial.  
 
 ## **6. Cenários e Mensagens do Sistema**  
 
