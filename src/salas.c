@@ -9,111 +9,118 @@
 
 pSalas vSalas[MAX_SALAS];
 
-/**
- * @brief Inicializa o array de salas de reuniï¿½o, definindo todas as posiï¿½ï¿½es como NULL.
- *
- * Esta funï¿½ï¿½o percorre o array de salas de reuniï¿½o (vSalas) e define cada posiï¿½ï¿½o como NULL.
- * Isso ï¿½ feito para garantir que o array esteja inicialmente vazio antes de qualquer outra operaï¿½ï¿½o.
- */
 void inicializarSalas() {
-    // Preenche todas as posiï¿½ï¿½es do vetor com NULL 
     for (int i = 0; i < MAX_SALAS; i++) {
         vSalas[i] = NULL;
     }
 }
 
-/**
- * @brief Cadastra uma nova sala de reuniï¿½o no sistema.
- *
- * Esta funï¿½ï¿½o verifica se a posiï¿½ï¿½o especificada no array de salas de reuniï¿½o (vSalas) jï¿½ estï¿½ preenchida.
- * Se a posiï¿½ï¿½o estiver vazia, aloca memï¿½ria para uma nova estrutura de sala e solicita ao usuï¿½rio os dados da sala.
- * Os dados incluem o nï¿½mero da sala, o tipo da sala e o status atual da sala.
- */
 void cadastrarSala(int i) {
     if (vSalas[i] != NULL) {
-        printf("\nPosiï¿½ï¿½o jï¿½ preenchida!\n");
+        printf("\nPosição já preenchida!\n");
         return;
     }
 
-    vSalas[i] = (pSalas) malloc(sizeof(salas));
+    vSalas[i] = (pSalas)malloc(sizeof(salas));
     if (vSalas[i] == NULL) {
-        printf("Erro ao alocar memï¿½ria.\n");
+        printf("Erro ao alocar memória.\n");
         return;
     }
 
     clearInputBuffer();
 
-    printf("\nNï¿½mero da sala: ");
-        scanf("%d", &vSalas[i]->numeroSala);
+    printf("\nNúmero da sala: ");
+    scanf("%d", &vSalas[i]->numeroSala);
     clearInputBuffer();
 
-    /*printf("\nDigite o tipo da sala\n
-            PA - Sala pequena (atï¿½ 5 lugares), com recursos audiovisuais\n
-            MA - Sala mï¿½dia (atï¿½ 15 lugares), com recursos audiovisuais\n
-            GA - Auditï¿½rio (atï¿½ 100 lugares), com recusros audiovisuais\n
-            PC - Sala pequena (atï¿½ 5 lugares), sem recursos audiovisuais\n
-            MC - Sala mï¿½dia (atï¿½ 15 lugares), sem recursos audiovisuais\n");*/
-        fgets(vSalas[i]->tipo, 5, stdin);
+    for (int j = 0; j < MAX_SALAS; j++) {
+        if (vSalas[j] != NULL && vSalas[j]->numeroSala == vSalas[i]->numeroSala) {
+            printf("Número da sala já cadastrado!\n");
+            free(vSalas[i]);
+            vSalas[i] = NULL;
+            return;
+        }
+    }
+
+    printf("\nDigite o tipo da sala:\n"
+            "PA - Sala pequena (até 5 lugares), com recursos audiovisuais\n"
+            "MA - Sala média (até 15 lugares), com recursos audiovisuais\n"
+            "GA - Auditório (até 100 lugares), com recursos audiovisuais\n"
+            "PC - Sala pequena (até 5 lugares), sem recursos audiovisuais\n"
+            "MC - Sala média (até 15 lugares), sem recursos audiovisuais\n");
+    fgets(vSalas[i]->tipo, 5, stdin);
     vSalas[i]->tipo[strcspn(vSalas[i]->tipo, "\n")] = '\0';
-    clearInputBuffer();
+
+    if (strcmp(vSalas[i]->tipo, "PA") != 0 && strcmp(vSalas[i]->tipo, "MA") != 0 &&
+        strcmp(vSalas[i]->tipo, "GA") != 0 && strcmp(vSalas[i]->tipo, "PC") != 0 &&
+        strcmp(vSalas[i]->tipo, "MC") != 0) {
+        printf("Tipo de sala inválido!\n");
+        free(vSalas[i]);
+        vSalas[i] = NULL;
+        return;
+    }
 
     printf("\nDigite o status atual da sala: ");
-        fgets(vSalas[i]->status, 40, stdin);
+    fgets(vSalas[i]->status, 40, stdin);
     vSalas[i]->status[strcspn(vSalas[i]->status, "\n")] = '\0';
-    clearInputBuffer();
+
+    if (strcmp(vSalas[i]->status, "Ativa") != 0 &&
+        strcmp(vSalas[i]->status, "Em manutenção") != 0 &&
+        strcmp(vSalas[i]->status, "Inativa") != 0) {
+        printf("Status inválido!\n");
+        free(vSalas[i]);
+        vSalas[i] = NULL;
+        return;
+    }
 
     printf("\nSala cadastrada com sucesso!\n");
-
-    //salvarSalasReuniaoDb(vSalas[i]);
 }
 
-/**
- * @brief Lista todas as salas de reuniï¿½o cadastradas no sistema.
- *
- * Esta funï¿½ï¿½o carrega todas as salas de reuniï¿½o do arquivo de dados e as exibe na tela.
- * Para cada sala, sï¿½o mostrados o nï¿½mero da sala, o tipo da sala e o status atual.
- */
 void listarSalas() {
-    carregarTodasSalasReuniao(vSalas);
     for (int i = 0; i < MAX_SALAS; i++) {
         if (vSalas[i] != NULL) {
-            printf("\nNï¿½mero da sala: %d", vSalas[i]->numeroSala);
+            printf("\nNúmero da sala: %d", vSalas[i]->numeroSala);
             printf("\nTipo da sala: %s", vSalas[i]->tipo);
             printf("\nStatus atual da sala: %s\n", vSalas[i]->status);
         }
     }
 }
 
-/**
- * @brief Altera as informaï¿½ï¿½es de uma sala de reuniï¿½o existente.
- *
- * Esta funï¿½ï¿½o solicita ao usuï¿½rio o nï¿½mero da sala que deseja alterar,
- * busca a sala correspondente no array de salas e permite a alteraï¿½ï¿½o
- * do tipo e status da sala.
- */
 void alterarSala() {
     int numeroSala;
 
-    printf("Digite o nï¿½mero da sala que deseja alterar: ");
-        scanf("%d", &numeroSala);
+    printf("Digite o número da sala que deseja alterar: ");
+    scanf("%d", &numeroSala);
     clearInputBuffer();
 
     for (int i = 0; i < MAX_SALAS; i++) {
         if (vSalas[i] != NULL && vSalas[i]->numeroSala == numeroSala) {
             printf("Digite o novo tipo da sala: ");
-                fgets(vSalas[i]->tipo, 5, stdin);
+            fgets(vSalas[i]->tipo, 5, stdin);
             vSalas[i]->tipo[strcspn(vSalas[i]->tipo, "\n")] = '\0';
-            clearInputBuffer();
+
+            if (strcmp(vSalas[i]->tipo, "PA") != 0 && strcmp(vSalas[i]->tipo, "MA") != 0 &&
+                strcmp(vSalas[i]->tipo, "GA") != 0 && strcmp(vSalas[i]->tipo, "PC") != 0 &&
+                strcmp(vSalas[i]->tipo, "MC") != 0) {
+                printf("Tipo de sala inválido!\n");
+                return;
+            }
 
             printf("Digite o novo status da sala: ");
-                fgets(vSalas[i]->status, 40, stdin);
+            fgets(vSalas[i]->status, 40, stdin);
             vSalas[i]->status[strcspn(vSalas[i]->status, "\n")] = '\0';
-            clearInputBuffer();
-            
+
+            if (strcmp(vSalas[i]->status, "Ativa") != 0 &&
+                strcmp(vSalas[i]->status, "Em manutenção") != 0 &&
+                strcmp(vSalas[i]->status, "Inativa") != 0) {
+                printf("Status inválido!\n");
+                return;
+            }
+
             printf("Sala alterada com sucesso!\n");
             return;
         }
     }
 
-    printf("Sala nï¿½o encontrada!\n");
+    printf("Sala não encontrada!\n");
 }
