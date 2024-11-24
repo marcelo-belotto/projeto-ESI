@@ -1,243 +1,362 @@
-# **Guia do Usuário - ReuniON**  
-Bem-vindo ao ReuniON, um sistema de gerenciamento de reservas de salas de reunião. Este guia fornece instruções detalhadas sobre a instalação, navegação e uso do sistema para otimizar o uso de espaços corporativos.  
+~~~c
+Desenvolvido por Gabriel Silva, Lucas Vieira, Marcelo Belotto e Vinicius Silva.
+~~~
+
+# Guia do Usuário - ReuniON
+Bem-vindo ao ReuniON, um sistema de gerenciamento de reservas de salas de reunião. Este guia fornece instruções detalhadas sobre a instalação, navegação e uso do sistema para otimizar o uso de espaços corporativos.
+
+Para acessar este guia no formato interativo, clique [aqui](https://reuniondocs.gitbook.io/guia-do-usuario).
+
+Se preferir, faça download da versão PDF, clicando [aqui](https://1drv.ms/b/s!AncniuGrXQf6i4AE3eJr6_5fRdRX3g?e=FG6UUd).
+
+## Conteúdo
+
+1. [ReuniON](#reunion)
+2. [Requisitos do Sistema](#requisitos-do-sistema)
+3. [Instalação e Execução do Sistema](#instalação-e-execução-do-sistema)
+4. [Navegando no Sistema](#navegando-no-sistema)
+5. [Funcionalidades Detalhadas](#funcionalidades-detalhadas)
+6. [Telas e Mensagens de Sistema](#telas-e-mensagens-de-sistema)
+7. [Backup e Manutenção](#backup-e-manutenção)
+8. [Recursos Planejados](#recursos-planejados)
+
+<br>
 
 ---
 
-## **1. Introdução ao ReuniON**  
-O ReuniON é uma ferramenta projetada para atender às necessidades de agendamento e gerenciamento de salas de reunião em organizações. Sua interface de linha de comando (CLI) é simples e eficiente, permitindo que usuários e administradores realizem operações como reservas, consultas e gerenciamento de salas e usuários.  
+<br>
 
-### **Principais Recursos:**  
-- **Usuários Gerais:**  
-  - Reservar salas.  
-  - Alterar ou cancelar reservas.  
-  - Verificar disponibilidade.  
+# ReuniON
+O ReuniON é uma ferramenta projetada para atender às necessidades de agendamento e gerenciamento de salas de reunião em organizações. Sua interface de linha de comando (CLI) é simples e eficiente, permitindo que usuários e administradores realizem operações como reservas, consultas e gerenciamento de salas e usuários.
 
-- **Administradores:**  
-  - Cadastrar e gerenciar usuários e salas.  
-  - Visualizar todas as reservas.  
-  - Alterar configurações de usuários e salas.  
+### **Principais Recursos:**
 
----
+*   **Usuários Gerais:**
 
-## **2. Requisitos do Sistema**  
+    * Reservar salas.
+    * Alterar ou cancelar reservas.
+    * Verificar disponibilidade.
 
-### **Hardware:**  
-- Processador: x64 ou superior.  
-- Memória RAM: 2 GB (mínimo).  
-- Espaço em disco: 100 MB.  
 
-### **Software:**  
-- **Sistema Operacional:** Compatível com Windows, Linux ou MacOS.  
-- **Compilador:** GCC (GNU Compiler Collection).  
-- **Ferramentas Necessárias:**  
-  - Visual Studio Code (opcional, como IDE).  
-  - Git (para controle de versão e clonagem do repositório).  
+* **Administradores:**
+  * Cadastrar e gerenciar usuários e salas.
+  * Visualizar todas as reservas.
+  * Alterar configurações de usuários e salas.
 
----
+[Topo](#conteúdo)
 
-## **3. Instalação do Sistema**  
+<br>
 
-### **3.1 Clonando o Repositório**  
-Execute os comandos abaixo no terminal:  
+***
+
+<br>
+
+# Requisitos do Sistema
+
+#### **Hardware:**
+
+* Processador: x64 ou superior.
+* Memória RAM: 2 GB (mínimo).
+* Espaço em disco: 100 MB.
+
+#### **Software:**
+
+* **Sistema Operacional:** Compatível com Windows, Linux ou MacOS.
+* **Compilador:** GCC (GNU Compiler Collection).
+* **Ferramentas Necessárias:**
+  * Visual Studio Code (opcional, como IDE).
+  * Git (para controle de versão e clonagem do repositório).
+
+[Topo](#conteúdo)
+
+<br>
+
+***
+
+<br>
+
+# Instalação e Execução do Sistema
+
+## &#x20;**Clonando o Repositório**
+
+#### Execute os comandos abaixo no terminal:
+
 ```bash
 git clone https://github.com/marcelo-belotto/projeto-ESI.git
 cd projeto-ESI
 ```
+## **Compilando o Sistema**
 
-### **3.2 Compilando o Sistema**  
-Use o GCC para compilar:  
+Use o GCC para compilar:
+
 ```bash
 gcc -o ReuniON.exe ./src/*.c main.c
 ```
 
-### **3.3 Executando o Sistema**  
-Após compilar, execute o sistema com:  
+####
+
+## **Executando o Sistema**
+
+Após compilar, execute o sistema com:
+
 ```bash
 ./ReuniON
 ```
 
-Se ocorrerem erros, certifique-se de que o GCC está instalado e o diretório atual contém os arquivos do projeto.  
+Se ocorrerem erros, certifique-se de que o GCC está instalado e o diretório atual contém os arquivos do projeto.
 
----
+[Topo](#conteúdo)
 
-## **4. Navegando no Sistema**  
+<br>
 
-### **4.1 Estrutura de Menus**  
-Ao acessar o ReuniON, o sistema exibirá o **Menu Inicial**, com as seguintes opções:  
-1. **Fazer login:** Insira seu ID e senha para acessar o sistema.  
-2. **Sair:** Encerre o sistema.  
+***
 
-Após o login, você será direcionado para um menu específico de acordo com o seu perfil:  
+<br>
 
-#### **Menu Geral (Usuários Comuns):**  
-1. [Listar Salas](#listar-salas)  
-2. [Reservar Sala](#reservar-sala)  
-3. [Listar Reservas](#listar-reservas)  
-4. [Alterar Reserva](#alterar-reserva)  
-5. [Cancelar Reserva](#cancelar-reserva)  
-6. [Alterar Senha](#alterar-senha)  
-7. Sair  
+# Navegando no Sistema
 
-#### **Menu Administrador:**  
-1. [Cadastrar Usuário](#cadastrar-usuario)  
-2. [Alterar Usuário](#alterar-usuario)  
-3. [Cadastrar Sala](#cadastrar-sala)  
-4. [Listar Salas](#listar-salas)  
-5. [Alterar Sala](#alterar-sala)  
-6. [Reservar Sala](#reservar-sala)  
-7. [Listar Reservas](#listar-reservas)  
-8. [Alterar Reserva](#alterar-reserva)  
-9. [Cancelar Reserva](#cancelar-reserva)  
-10. [Alterar Senha](#alterar-senha)  
-11. Sair  
+## **Estrutura de Menus**
 
-Para navegar, digite o número correspondente à opção desejada.  
+Ao acessar o ReuniON, o sistema exibirá o **Menu Inicial**, com as seguintes opções:
 
----
+1. **Fazer login:** Insira seu ID e senha para acessar o sistema.
+2. **Sair:** Encerre o sistema.
 
-## **5. Funcionalidades Detalhadas**  
+Após o login, você será direcionado para um menu específico de acordo com o seu perfil:
 
-### **5.1 Menu Geral (Usuários Comuns)**  
-<a id="listar-salas"></a>  
-1. **Listar Salas:**  
-   - Veja a relação de salas disponíveis, com detalhes sobre o tipo e a capacidade.  
-   [Topo](#4-navegando-no-sistema)  
 
-<a id="reservar-sala"></a>  
-2. **Reservar Sala:**  
-   - Escolha a sala e o horário desejados.  
-   - O sistema confirmará a disponibilidade e registrará a reserva.  
-   **Exemplo de fluxo:**  
-   ```text  
-   Menu -> Opção 2: Reservar Sala  
-   Escolha o tipo de sala: GA  
-   Informe a data: 20/11/2024  
-   Horário de início: 14:00  
-   Horário de término: 15:00  
-   Reserva confirmada: GA-02  
-   ```  
-   [Topo](#4-navegando-no-sistema)  
 
-<a id="listar-reservas"></a>  
-3. **Listar Reservas:**  
-   - Visualize suas reservas atuais, com detalhes de data, horário e sala.  
-   [Topo](#4-navegando-no-sistema)  
+## Menu Geral (Usuários Comuns):
 
-<a id="alterar-reserva"></a>  
-4. **Alterar Reserva:**  
-   - Escolha uma de suas reservas e modifique os dados (data, horário ou sala).  
-   [Topo](#4-navegando-no-sistema)  
+1. [Listar Salas](#listar-salas)
+2. [Reservar Sala](#reservar-sala)
+3. [Listar Reservas](#listar-reservas)
+4. [Alterar Reserva](#alterar-reserva)
+5. [Cancelar Reserva](#cancelar-reserva)
+6. [Alterar Senha](#alterar-senha)
+7. Sair
 
-<a id="cancelar-reserva"></a>  
-5. **Cancelar Reserva:**  
-   - Selecione uma reserva para excluir. Confirme a operação para concluí-la.  
-   [Topo](#4-navegando-no-sistema)  
+## Menu Administrador:
+#### Funcionalidades exclusivas, além daquelas já contidas no menu geral
 
-<a id="alterar-senha"></a>  
-6. **Alterar Senha:**  
-   - Atualize sua senha de acesso ao sistema.  
-   [Topo](#4-navegando-no-sistema)  
+1. [Cadastrar Usuário](#cadastrar-usuário)
+2. [Alterar Usuário](#alterar-usuário)
+3. [Cadastrar Sala](#cadastrar-sala)
+5. [Alterar Sala](#alterar-sala)
+6. [Listar Reservas](#listar-reservas---administrador)
 
----
+Para navegar, digite o número correspondente à opção desejada.
 
-### **5.2 Menu Administrador**  
-<a id="cadastrar-usuario"></a>  
-1. **Cadastrar Usuário:**  
-   - Insira os dados do novo usuário (nome, CPF, perfil, senha, status).  
-   [Topo](#4-navegando-no-sistema)  
+[Topo](#conteúdo)
 
-<a id="alterar-usuario"></a>  
-2. **Alterar Usuário:**  
-   - Modifique os dados de um usuário existente (ex.: perfil ou status).  
-   [Topo](#4-navegando-no-sistema)  
+<br>
 
-<a id="cadastrar-sala"></a>  
-3. **Cadastrar Sala:**  
-   - Registre uma nova sala informando número, tipo e capacidade.  
-   [Topo](#4-navegando-no-sistema)  
+***
 
-<a id="listar-salas"></a>  
-4. **Listar Salas:**  
-   - Veja todas as salas registradas no sistema, ativas ou inativas.  
-   [Topo](#4-navegando-no-sistema)  
+<br>
 
-<a id="alterar-sala"></a>  
-5. **Alterar Sala:**  
-   - Atualize informações de uma sala (ex.: status ou capacidade).  
-   [Topo](#4-navegando-no-sistema)  
+# Funcionalidades Detalhadas
 
-<a id="reservar-sala"></a>  
-6. **Reservar Sala:**  
-   - Realize uma reserva em nome de qualquer usuário.  
-   [Topo](#4-navegando-no-sistema)  
+### Listar Salas:
+   * Veja a relação de salas disponíveis, com detalhes sobre o tipo e a capacidade.
+  
+[Menu](#menu-geral-usuários-comuns)
 
-<a id="listar-reservas"></a>  
-7. **Listar Reservas:**  
-   - Veja todas as reservas, com filtros por usuário, data ou sala.  
-   [Topo](#4-navegando-no-sistema)  
+### Reservar Sala:
 
-<a id="alterar-reserva"></a>  
-8. **Alterar Reserva:**  
-   - Modifique os detalhes de qualquer reserva registrada no sistema.  
-   [Topo](#4-navegando-no-sistema)  
+* Escolha o tipo de sala;
+* O sistema exibirá todas as salas cadastradas;
+* Escolha o número da sala e digite as datas de início e fim da reserva, assim como horas de início e fim.
+* O sistema confirmará a disponibilidade e registrará a reserva.
 
-<a id="cancelar-reserva"></a>  
-9. **Cancelar Reserva:**  
-   - Exclua reservas feitas por qualquer usuário.  
-   [Topo](#4-navegando-no-sistema)  
+[Menu](#menu-geral-usuários-comuns)
 
-<a id="alterar-senha"></a>  
-10. **Alterar Senha:**  
-    - Atualize a senha de qualquer usuário do sistema.  
-    [Topo](#4-navegando-no-sistema)  
+### Listar Reservas - Usuário Geral:
 
-11. **Sair:**  
-    - Retorne ao menu inicial.  
+* Visualize suas reservas atuais, com detalhes de data, horário e sala.
 
-## **6. Cenários e Mensagens do Sistema**  
+[Menu](#menu-geral-usuários-comuns)
 
-### **6.1 Fluxo Normal**  
-- **Reserva confirmada:**  
-  - "Sua reserva foi registrada com sucesso!"  
-- **Usuário cadastrado:**  
-  - "Novo usuário adicionado: [ID]."  
 
-### **6.2 Mensagens de Erro**  
-- **Login inválido:**  
-  - "Credenciais incorretas. Tente novamente."  
-- **Sala indisponível:**  
-  - "Erro: Sala já reservada neste horário."  
-- **Dados inválidos:**  
-  - "Os campos obrigatórios devem ser preenchidos corretamente."  
+## Alterar Reserva:
 
-### **6.3 Fluxos de Exceção**  
-- **Erro na autenticação:**  
-  O sistema bloqueia o acesso após 3 tentativas falhas.  
-- **Conflito de agendamento:**  
-  O sistema solicita ajustes na data ou sala para evitar conflitos.  
+* Escolha uma de suas reservas e modifique os dados (data, horário ou sala).
 
----
+[Menu](#menu-geral-usuários-comuns)
 
-## **7. Backup e Manutenção**  
 
-### **7.1 Backup Manual**  
-- Acesse o diretório `databases/`.  
-- Faça cópias dos arquivos `salas.csv` e `usuarios.csv` para um local seguro.  
+## Cancelar Reserva
 
-### **7.2 Atualizações e Suporte**  
-- Atualize o sistema com:  
-  ```bash
-  git pull origin main
-  ```
-- Relate problemas no repositório GitHub do projeto na aba *Issues*.  
+* Selecione uma reserva para cancelar. Confirme a operação para concluí-la.
 
----
+[Menu](#menu-geral-usuários-comuns)
 
-## **8. Recursos Planejados**  
-- **Interface Gráfica:** Para melhorar a acessibilidade do sistema.  
-- **Integração com Google Calendar:** Sincronize suas reservas.  
-- **Notificações por E-mail:** Alertas de reservas futuras e cancelamentos.  
+## Alterar Senha:
 
----
+* Atualize sua senha de acesso ao sistema.
+
+[Menu](#menu-geral-usuários-comuns)
+
+
+## Cadastrar Usuário:
+   * Insira os dados do novo usuário (nome, CPF, perfil, senha, status).
+
+[Menu](#menu-administrador)
+
+## Alterar Usuário:
+
+* Modifique os dados de um usuário existente (ex.: perfil ou status).
+
+[Menu](#menu-administrador)
+
+## Cadastrar Sala:
+
+* Registre uma nova sala informando número e tipo.
+
+[Menu](#menu-administrador)
+
+## Listar Salas:
+
+* Veja todas as salas registradas no sistema, ativas ou inativas.
+
+[Menu](#menu-administrador)
+
+## Alterar Sala:
+
+* Atualize informações de uma sala (ex.: status ou tipo).
+
+
+[Menu](#menu-administrador)
+
+## Listar Reservas - Administrador:
+
+* Veja todas as reservas realizadas, independente do usuário.
+
+[Menu](#menu-administrador)
+
+[Topo](#conteúdo)
+
+<br>
+
+***
+
+<br>
+
+# Telas e Mensagens de Sistema
+
+## Tela - Reservar Sala
+
+~~~c
+=== ReuniON ===
+1. Listar salas
+2. Reservar sala
+3. Listar reservas
+4. Alterar reserva
+5. Cancelar reserva
+6. Alterar senha
+7. Sair
+
+Escolha uma opção: 2
+
+Escolha o tipo de sala: GA
+
+Salas cadastradas:
+Número da sala: 02
+Tipo da sala: GA
+Status atual da sala: Ativa
+
+Número da sala: 06
+Tipo da sala: GA
+Status atual da sala: Ativa
+
+Escolha o número da sala: 02
+
+Digite a data de inicio da reserva (dd/mm/yyyy): 30/11/2024
+Digite a hora de inicio da reserva (HH:MM): 14:00
+Digite a data de fim da reserva (dd/mm/yyyy): 30/11/2024
+Digite a hora de fim da reserva (HH:MM): 15:00
+
+Sala GA - 02 reservada com sucesso.
+~~~
+
+***
+
+
+## Fluxos
+
+### Fluxo Normal
+
+* **Reserva confirmada:**
+  * "Sua reserva foi registrada com sucesso!"
+* **Usuário cadastrado:**
+  * "Novo usuário adicionado: \[ID]."
+
+### Mensagens de Erro
+
+* **Login inválido:**
+  * "Credenciais incorretas. Tente novamente."
+* **Sala indisponível:**
+  * "Erro: Sala já reservada neste horário."
+* **Dados inválidos:**
+  * "Os campos obrigatórios devem ser preenchidos corretamente."
+
+### Fluxos de Exceção
+
+* **Erro na autenticação:**\
+  O sistema bloqueia o acesso após 3 tentativas falhas.
+* **Conflito de agendamento:**\
+  O sistema solicita ajustes na data ou sala para evitar conflitos.
+
+[Topo](#conteúdo)
+
+<br>
+
+***
+
+<br>
+
+# Backup e Manutenção
+
+## Backup Manual
+
+* Acesse o diretório `databases/`.
+* Faça cópias dos arquivos `salas.csv` e `usuarios.csv` para um local seguro.
+
+
+## Atualizações e Suporte
+
+*   Atualize o sistema com:
+
+    ```bash
+    git pull origin main
+    ```
+
+* Relate problemas no repositório GitHub do projeto na aba _Issues_.
+
+[Topo](#conteúdo)
+
+<br>
+
+***
+
+<br>
+
+# Recursos Planejados
+
+### Recursos Planejados
+
+* **Interface Gráfica:** Para melhorar a acessibilidade do sistema.
+* **Banco de dados:** Construir a persistência dos dados com banco de dados estruturado (SQL).
+* **Notificações por E-mail:** Alertas de reservas futuras e cancelamentos.
+
+[Topo](#conteúdo)
+
+<br>
+
+***
+
+<br>
 
 **Observação:** Para mais informações, contribua ou acesse os arquivos no repositório oficial do projeto. Este guia está em constante evolução.
+
+[Topo](#conteúdo)

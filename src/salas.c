@@ -77,6 +77,7 @@ void cadastrarSala(int i) {
 }
 
 void listarSalas() {
+    printf("\nSalas cadastradas:\n");
     for (int i = 0; i < MAX_SALAS; i++) {
         if (vSalas[i] != NULL) {
             printf("\nNúmero da sala: %d", vSalas[i]->numeroSala);

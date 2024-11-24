@@ -55,7 +55,7 @@ void logarMenu() {
 void exibirMenuPadrao() {
     int opcao;
 
-    printf("=== Sistema de Reserva de Sala de Reunião ===\n");
+    printf("=== ReuniON ===\n");
     printf("1. Listar salas\n");
     printf("2. Reservar sala\n");
     printf("3. Listar reservas\n");
