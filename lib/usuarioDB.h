@@ -5,13 +5,13 @@
 
 #include "usuario.h"
 #include "utils.h"
-#include "reservas.h"
 
 typedef struct Usuario *pUser;
 
 /**
 * Carrega os dados de todos os Usuarios (Primeira carga) e retorna a posição do ultimo índice
 * @param usuarios Vetor de ponteiros com os ponteiros para as structs de usuario
+* @return retorna o Valor do indice final
 */
 int carregarTodosUsuarios(pUser usuarios[]);
 
@@ -30,11 +30,12 @@ int salvarNovoUsuarioDb(pUser usuario);
 int alterarUsuarioDb(pUser usuario);
 
 /**
-* Excluir as informações do Usuario
-* @param usuario Ponteiro para o usuário a ser deletado, OBS.: TRATAR O PONTEIRO ANTES DE ENVIAR (NULL OU VAZIO)
-* @return Retorna 0 se usuario não for excluído e 1 se for excluído
+* Localiza as informações do Usuario
+* @param id Numero de Identificação do usuário a ser pesquisado
+* @param senha Senha do usuário para autenticação
+* @return Retorna um ponteiro para usuario se encontrado e NULL se não encontrado
 */
-int excluirUsuarioDb(pUser usuario);
+pUser localizarUsuarioDb(int id, char* senha);
 
 
 #endif
