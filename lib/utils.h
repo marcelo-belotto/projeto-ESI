@@ -23,4 +23,7 @@ int anoBissexto(int year);
 int validarData(const char *data);
 
 int validarHora(const char *hora, const char *data);
+
+int verificarSobreposicao(const char *dataInicial, const char *horaInicial, const char *dataFinal, const char *horaFinal);
+
 #endif

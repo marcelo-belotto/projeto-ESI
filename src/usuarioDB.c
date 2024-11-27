@@ -4,7 +4,7 @@
 #include "../lib/usuarioDB.h"
 
 
-int carregarTodosUsuarios(pUser *usuarios){
+int carregarTodosUsuarios(pUsuario *usuarios){
     FILE *arquivo = fopen(PATH_USUARIO, "r");
 
     if (arquivo == NULL) { //Arquivo não encontrado
@@ -15,7 +15,7 @@ int carregarTodosUsuarios(pUser *usuarios){
     int posicaoLinha = 0;
 
     while (fgets(linha, sizeof(linha), arquivo)) {
-        usuarios[posicaoLinha] = (pUser)malloc(sizeof(usuario));
+        usuarios[posicaoLinha] = (pUsuario)malloc(sizeof(usuario));
         
         sscanf(linha,
         "%d,%30[^,],%30[^,],%40[^,],%16[^,],%10[^\n]",
@@ -33,7 +33,7 @@ int carregarTodosUsuarios(pUser *usuarios){
     return posicaoLinha;
 }
 
-int salvarNovoUsuarioDb(pUser usuario){
+int salvarNovoUsuarioDb(pUsuario usuario){
     FILE *arquivo = fopen(PATH_USUARIO, "a");
     if (arquivo == NULL) {
         printf("\nBanco de Dados n�o encontrado!\n");
@@ -51,7 +51,7 @@ int salvarNovoUsuarioDb(pUser usuario){
     }
 }
 
-int alterarUsuarioDb(pUser usuario){
+int alterarUsuarioDb(pUsuario usuario){
     char *caminhoTemp = "temp.csv";
     int encontrado = 0;
     FILE *arquivo = fopen(PATH_USUARIO, "r");
@@ -96,9 +96,9 @@ int alterarUsuarioDb(pUser usuario){
     return encontrado;
 }
 
-pUser localizarUsuarioDB(int id,char* senha){
+pUsuario localizarUsuarioDb(int id,char* senha){
     FILE *arquivo = fopen(PATH_USUARIO, "r");
-    pUser usuarioTemp = NULL;
+    pUsuario usuarioTemp = NULL;
 
     if (arquivo == NULL) { //Arquivo não encontrado
         printf("\nBanco de Dados não encontrado!\n");
@@ -113,9 +113,9 @@ pUser localizarUsuarioDB(int id,char* senha){
         strcpy(linhaAux, linha);
         linha[strcspn(linha, "\n")] = 0;
         char *registro = strtok(linha, ",");
-
+        printf("%d - %s\n",id,registro);
         if (atoi(registro) == id){
-            usuarioTemp = (pUser)malloc(sizeof(usuario));
+            usuarioTemp = (pUsuario)malloc(sizeof(usuario));
             sscanf(linhaAux,
                 "%d,%30[^,],%30[^,],%40[^,],%16[^,],%10[^\n]",
                 &usuarioTemp->id,
@@ -125,6 +125,7 @@ pUser localizarUsuarioDB(int id,char* senha){
                 usuarioTemp->cpf,
                 usuarioTemp->status
             );
+            break;
         }
     }
     fclose(arquivo);

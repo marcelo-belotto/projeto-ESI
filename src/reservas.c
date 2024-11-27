@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include "../lib/reservas.h"
+#include "../lib/reservaDB.h"
 
 reserva novaReserva;
 pReservas vReservas[MAX_RESERVAS];
@@ -12,18 +13,18 @@ void inicializarReservas(usuario user){
         vReservas[i] = NULL;
     }
     if (strcmp(user.perfil,"ADM") == 0){
-        listarTodasAsReservas(vReservas);
+        carregarTodasAsReservas(vReservas);
     }else{
-        listarReservasUsuario(user,vReservas);
+        listarReservasUsuario(user.id,vReservas);
     }
 }
 
-int reservarSala(usuario user){
+int reservarSala(pUserReserva user){
     char dataAux[10];
     char horaAux[5];
 
-    novaReserva.id = carregarIndiceReservas();
-    novaReserva.idUsuario = user.id;
+    novaReserva.id = carregarTodasAsReservas(vReservas);
+    novaReserva.idUsuario = user->id;
     novaReserva.status = 0;
         
     // printf("\nDigite o numero da Sala");
@@ -57,7 +58,7 @@ int reservarSala(usuario user){
     clearInputBuffer();
     strcpy(novaReserva.horaFinal,horaAux);
 
-    if (salvarNovaReserva(novaReserva)){
+    if (salvarNovaReserva(&novaReserva)){
         printf("Reserva efetuada com sucesso!\n");
         return 1;
     }
@@ -65,13 +66,13 @@ int reservarSala(usuario user){
     return 0;
 }
 
-int alterarReserva(usuario user){
+int alterarReserva(pUserReserva user){
     int idReserva;
     reserva reservaAlterada;
     char dataAux[10];
     char horaAux[5];
 
-    //listarReservasUsuario(user,vReservas);
+    listarReservasUsuario(user->id,vReservas);
 
     printf("\nDigite  o ID da reserva que deseja alterar:");
     scanf("%d",&idReserva);
@@ -108,14 +109,17 @@ int alterarReserva(usuario user){
     clearInputBuffer();
     strcpy(reservaAlterada.horaFinal,horaAux);
 
+    return 1;
 }
 
-int cancelarReserva(usuario user){
+int cancelarReserva(pUserReserva user){
+    listarReservasUsuario(user->id,vReservas);
     int idReserva;
     printf("\nDigite  o ID da reserva que deseja cancelar:");
     scanf("%d",&idReserva);
-
-    if (excluirReservaUsuario(user.id,idReserva)){
+    
+    //Arrumar esse trem
+    if (alterarReservaUsuario(vReservas[0])){
         printf("Reserva cancelada com sucesso!");
         return 1;
     }else{
@@ -124,12 +128,12 @@ int cancelarReserva(usuario user){
     return 0;
 }
 
-int verificarDisponibilidadeDeSalas(usuario user){
-    if (user.perfil == "ADM"){
-        listarTodasAsReservas(vReservas);
+int verificarDisponibilidadeDeSalas(pUserReserva user){
+    if (strcmp(user->perfil,"ADM") == 0){
+        carregarTodasAsReservas(vReservas);
         return 1;
     }else{
-        listarReservasUsuario(user,vReservas);
+        listarReservasUsuario(user->id,vReservas);
         return 1;
     }
     return 0;

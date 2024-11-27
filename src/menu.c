@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../lib/menu.h"
-#include "../lib/utils.h"
-#include "../lib/usuario.h"
-#include "../lib/reservas.h"
 
-struct Usuario *usuarioTemp = NULL;
+#include "../lib/menu.h"
+
+
+pUsuario usuarioTemp = NULL;
 
 void logarMenu() {
     int idUsuario = 0;
@@ -28,7 +27,6 @@ void logarMenu() {
             printf("Digite seu id: ");
             scanf("%d", &idUsuario);
             clearInputBuffer();
-
             printf("\nDigite sua senha: ");
             scanf("%31[^\n]", senha_Temporaria);
             clearInputBuffer();
@@ -55,7 +53,7 @@ void logarMenu() {
 void exibirMenuPadrao() {
     int opcao;
 
-    printf("=== Sistema de Reserva de Sala de Reunião ===\n");
+    printf("=== Sistema de Reserva de Sala de Reuniï¿½o ===\n");
     printf("1. Listar salas\n");
     printf("2. Reservar sala\n");
     printf("3. Listar reservas\n");
@@ -73,19 +71,19 @@ void exibirMenuPadrao() {
                     listarSalas();
                     break;
                 case 2:
-                    fazerReserva(usuarioTemp);
+                    reservarSala(usuarioTemp);
                     break;
                 case 3:
-                    listarReservasUsuario();
+                    //listarReservasUsuario();
                     break;
                 case 4:
-                    alterarReserva();
+                    alterarReserva(usuarioTemp);
                     break;
                 case 5:
-                    cancelarReserva();
+                    cancelarReserva(usuarioTemp);
                     break;
                 case 6:
-                    alterarSenha(usuarioTemp);
+                    //alterarSenha(usuarioTemp);
                     break;
                 case 7:
                     printf("Saindo... \n");
@@ -100,8 +98,8 @@ void exibirMenuADM() {
     int opcao;
 
     printf("=== ReuniON ===\n");
-    printf("1. Cadastrar usuário\n");
-    printf("2. Alterar usuário\n");
+    printf("1. Cadastrar usuï¿½rio\n");
+    printf("2. Alterar usuï¿½rio\n");
     printf("3. Cadastrar sala\n");
     printf("4. Listar salas\n");
     printf("5. Alterar sala\n");
@@ -126,25 +124,25 @@ void exibirMenuADM() {
                     cadastrarSala();
                     break;
                 case 4:
-                    listarSalas();
+                    //listarSalas();
                     break;
                 case 5:
-                    alterarSala();
+                    //alterarSala();
                     break;
                 case 6:
-                    reservarSala();
+                    reservarSala(usuarioTemp);
                     break;
                 case 7:
-                    listarTodasAsReservas();
+                    //listarTodasAsReservas();
                     break;
                 case 8:
-                    alterarReserva();
+                    alterarReserva(usuarioTemp);
                     break;
                 case 9:
-                    cancelarReserva();
+                    cancelarReserva(usuarioTemp);
                     break;
                 case 10:
-                    alterarSenha(usuarioTemp);
+                    //alterarSenha(usuarioTemp);
                     break;
                 case 11:
                     printf("Saindo ... \n");

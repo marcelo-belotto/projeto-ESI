@@ -5,6 +5,7 @@
 #include "../lib/usuario.h"
 
 int posicaoNovoUsuario = 0;
+
 pUsuario vUsuarios[MAX_USUARIOS];
 
 int indice_usuario;
@@ -63,8 +64,8 @@ void cadastroUsuario() {
     scanf("%30[^\n]", vUsuarios[posicaoNovoUsuario]->nome); 
 
     clearInputBuffer();
-    printf("Digite a matr�cula do usu�rio: \n");
-    scanf("%d", &vUsuarios[posicaoNovoUsuario]->cpf); 
+    printf("Digite o cpf do usu�rio: \n");
+    scanf("%s", vUsuarios[posicaoNovoUsuario]->cpf); 
 
     clearInputBuffer();
     printf("Escolha o perfil de acesso: \n");
@@ -75,12 +76,11 @@ void cadastroUsuario() {
     scanf("%30[^\n]", vUsuarios[posicaoNovoUsuario]->senha); 
 
     clearInputBuffer();
-    printf("Digite a senha: \n");
+    printf("Digite o status: \n");
     scanf("%30[^\n]", vUsuarios[posicaoNovoUsuario]->status); 
 
     printf("Cadastrado com sucesso!\n");
     posicaoNovoUsuario++;
-    indice_usuario;
 }
 
 /**
@@ -123,7 +123,7 @@ void alterarUsuario() { // Somente ADM pode entrar
                 case 1:   
                     // Alterar nome        
                     for (int j = 0; j < MAX_USUARIOS; j++) {
-                    if (vUsuarios[j] != NULL && vUsuarios[j]->nome == nome) {
+                    if (vUsuarios[j] != NULL/* && vUsuarios[j]->nome == nome*/) {
                     printf("Digite o novo tipo de perfil: ");
                     fgets(vUsuarios[j]->nome, 41, stdin);
                     vUsuarios[j]->nome[strcspn(vUsuarios[j]->nome, "\n")] = '\0';
@@ -138,7 +138,7 @@ void alterarUsuario() { // Somente ADM pode entrar
                 case 2:
                     // Alterar senha
                     for (int j = 0; j < MAX_USUARIOS; j++) {
-                    if (vUsuarios[j] != NULL && vUsuarios[j]->senha == senha) {
+                    if (vUsuarios[j] != NULL /*&& vUsuarios[j]->senha == senha*/) {
                     printf("Digite o novo nome do usu�rio: ");
                     fgets(vUsuarios[j]->senha, 31, stdin);
                     vUsuarios[j]->senha[strcspn(vUsuarios[j]->senha, "\n")] = '\0';
@@ -153,7 +153,7 @@ void alterarUsuario() { // Somente ADM pode entrar
                 case 3:
                     // Alterar pefil
                     for (int j = 0; j < MAX_USUARIOS; j++) {
-                    if (vUsuarios[j] != NULL && vUsuarios[j]->perfil == perfil) {
+                    if (vUsuarios[j] != NULL /*&& vUsuarios[j]->perfil == perfil*/) {
                     printf("Digite o novo nome do usu�rio: ");
                     fgets(vUsuarios[j]->perfil, 31, stdin);
                     vUsuarios[j]->perfil[strcspn(vUsuarios[j]->perfil, "\n")] = '\0';
@@ -163,11 +163,11 @@ void alterarUsuario() { // Somente ADM pode entrar
                     return;
                     }
                 }
-
+                    break;
                 case 4:
                     // Alterar CPF
                     for (int j = 0; j < MAX_USUARIOS; j++) {
-                    if (vUsuarios[j] != NULL && vUsuarios[j]->cpf == cpf) {
+                    if (vUsuarios[j] != NULL /*&& vUsuarios[j]->cpf == cpf*/) {
                     printf("Digite o novo nome do usu�rio: ");
                     fgets(vUsuarios[j]->cpf, 17, stdin);
                     vUsuarios[j]->cpf[strcspn(vUsuarios[j]->cpf, "\n")] = '\0';
@@ -177,11 +177,12 @@ void alterarUsuario() { // Somente ADM pode entrar
                     return;
                     }
                 }
+                break;
 
                 case 5:
                     // Alterar status
                     for (int j = 0; j < MAX_USUARIOS; j++) {
-                    if (vUsuarios[j] != NULL && vUsuarios[j]->status == status) {
+                    if (vUsuarios[j] != NULL /*&& vUsuarios[j]->status == status*/) {
                     printf("Digite o novo nome do usu�rio: ");
                     fgets(vUsuarios[j]->status, 11, stdin);
                     vUsuarios[j]->status[strcspn(vUsuarios[j]->status, "\n")] = '\0';
@@ -194,7 +195,8 @@ void alterarUsuario() { // Somente ADM pode entrar
                 break;
 
                 default:
-                printf("Op��o inv�lida!\n");                
+                printf("Op��o inv�lida!\n");
+                break;                
             }
             printf("Usu�rio n�o encontrado.\n");
             return;
@@ -203,6 +205,8 @@ void alterarUsuario() { // Somente ADM pode entrar
     printf("Permiss�o negada. Somente administradores podem alterar perfis.\n");
 }
 
-usuario* localizarUsuario(int indiceUsuario, char senha[30]) {
-    // aguardando fun��o do banco de dados
+pUsuario localizarUsuario(int indiceUsuario, char senha[30]) {
+    pUsuario userTemp = (pUsuario)malloc(sizeof(usuario));
+    userTemp = localizarUsuarioDb(indiceUsuario,senha);
+    return userTemp;
 }
