@@ -73,14 +73,14 @@ int alterarUsuarioDb(pUsuario usuario){
         char *registro = strtok(linha, ",");
         if (atoi(registro) == usuario->id){
             toUppercase(usuario->perfil);
-           fprintf(arquivoTemp,
-                "%d,%s,%s,%s,%s,%s\n",
-                usuario->id,
-                usuario->perfil,
-                usuario->senha,
-                usuario->nome,
-                usuario->cpf,
-                usuario->status);
+            fprintf(arquivoTemp,
+                    "%d,%s,%s,%s,%s,%s\n",
+                    usuario->id,
+                    usuario->perfil,
+                    usuario->senha,
+                    usuario->nome,
+                    usuario->cpf,
+                    usuario->status);
             encontrado = 1;
         } else {
             fputs(linhaAux, arquivoTemp);
@@ -113,7 +113,7 @@ pUsuario localizarUsuarioDb(int id,char* senha){
         strcpy(linhaAux, linha);
         linha[strcspn(linha, "\n")] = 0;
         char *registro = strtok(linha, ",");
-        printf("%d - %s\n",id,registro);
+        
         if (atoi(registro) == id){
             usuarioTemp = (pUsuario)malloc(sizeof(usuario));
             sscanf(linhaAux,
@@ -130,7 +130,6 @@ pUsuario localizarUsuarioDb(int id,char* senha){
     }
     fclose(arquivo);
 
-    //MELHORAR A LOGICA!!!!!
     if (usuarioTemp == NULL){
         printf("Usuário não encontrado!\n");
     }else if (strcmp(senha,usuarioTemp->senha) != 0){

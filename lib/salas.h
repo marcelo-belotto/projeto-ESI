@@ -3,6 +3,8 @@
 
 #define MAX_SALAS 100
 
+#include "salaDB.h"
+
 typedef struct Salas {
     int numeroSala;
     char tipo[5];

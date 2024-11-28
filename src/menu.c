@@ -27,7 +27,8 @@ void logarMenu() {
             printf("Digite seu id: ");
             scanf("%d", &idUsuario);
             clearInputBuffer();
-            printf("\nDigite sua senha: ");
+
+            printf("Digite sua senha: ");
             scanf("%31[^\n]", senha_Temporaria);
             clearInputBuffer();
 
@@ -53,21 +54,16 @@ void logarMenu() {
 void exibirMenuPadrao() {
     int opcao;
 
-<<<<<<< HEAD
-    printf("=== ReuniON ===\n");
-=======
-    printf("=== Sistema de Reserva de Sala de Reuni�o ===\n");
->>>>>>> dc6a80e4ff848e6abb9e8e114d5a966851816246
-    printf("1. Listar salas\n");
-    printf("2. Reservar sala\n");
-    printf("3. Listar reservas\n");
-    printf("4. Alterar reserva\n");
-    printf("5. Cancelar reserva\n");
-    printf("6. Alterar senha\n");
-    printf("7. Sair\n");
-    obterOpcao();
-
     do {
+        printf("=== ReuniON ===\n");
+        printf("1. Listar salas\n");
+        printf("2. Reservar sala\n");
+        printf("3. Listar reservas\n");
+        printf("4. Alterar reserva\n");
+        printf("5. Cancelar reserva\n");
+        printf("6. Alterar senha\n");
+        printf("7. Sair\n");
+
         opcao = obterOpcao();
         
         switch(opcao){
@@ -91,31 +87,32 @@ void exibirMenuPadrao() {
                     break;
                 case 7:
                     printf("Saindo... \n");
+                    exit(0);
                     break;
                 default:
                     printf("Op��o inv�lida!\n");
         }
+        clearInputBuffer();
     } while (opcao != 7);
 }
 
 void exibirMenuADM() {
     int opcao;
-
-    printf("=== ReuniON ===\n");
-    printf("1. Cadastrar usu�rio\n");
-    printf("2. Alterar usu�rio\n");
-    printf("3. Cadastrar sala\n");
-    printf("4. Listar salas\n");
-    printf("5. Alterar sala\n");
-    printf("6. Reservar sala\n");
-    printf("7. Listar reservas\n");
-    printf("8. Alterar reserva\n");
-    printf("9. Cancelar reserva\n");
-    printf("10. Alterar senha\n");
-    printf("11. Sair\n");
-    obterOpcao();
-
+    inicializarUsuario();
     do {
+        printf("=== ReuniON ===\n");
+        printf("1. Cadastrar usu�rio\n");
+        printf("2. Alterar usu�rio\n");
+        printf("3. Cadastrar sala\n");
+        printf("4. Listar salas\n");
+        printf("5. Alterar sala\n");
+        printf("6. Reservar sala\n");
+        printf("7. Listar reservas\n");
+        printf("8. Alterar reserva\n");
+        printf("9. Cancelar reserva\n");
+        printf("10. Alterar senha\n");
+        printf("11. Sair\n");
+
         opcao = obterOpcao();       
         switch(opcao){
                 case 1:
@@ -150,10 +147,12 @@ void exibirMenuADM() {
                     break;
                 case 11:
                     printf("Saindo ... \n");
+                    exit(0);
                     break;
                 default:
                     printf("Op��o inv�lida!\n");
         }
+        clearInputBuffer();
     } while (opcao != 11);
 }
 

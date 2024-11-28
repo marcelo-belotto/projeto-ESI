@@ -113,6 +113,7 @@ int alterarReserva(pUserReserva user){
 }
 
 int cancelarReserva(pUserReserva user){
+
     listarReservasUsuario(user->id, vReservas  );
     int idReserva;
     printf("\nDigite o ID da reserva que deseja cancelar:");
@@ -182,14 +183,14 @@ int verificarDisponibilidadeDeSalas(pUserReserva user){
     scanf("%5s", horaFim);
     clearInputBuffer();
 
-    if (verificarDisponibilidade(numeroSala, dataInicio, horaInicio, dataFim, horaFim))
+    /*if (verificarDisponibilidade(numeroSala, dataInicio, horaInicio, dataFim, horaFim))
     {
         printf("A sala %d está disponível no período especificado.\n", numeroSala);
     }
     else
     {
         printf("A sala %d não está disponível no período especificado.\n", numeroSala);
-    }
+    }*/
 
     return 1;
 

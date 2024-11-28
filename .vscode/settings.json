@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "salas.h": "c",
-        "reservadb.h": "c",
-        "utils.h": "c",
-        "reservas.h": "c",
-        "usuario.h": "c"
-    }
-}
