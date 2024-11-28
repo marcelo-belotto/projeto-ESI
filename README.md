@@ -343,8 +343,6 @@ Sala GA - 02 reservada com sucesso.
 
 # Recursos Planejados
 
-### Recursos Planejados
-
 * **Interface Gráfica:** Para melhorar a acessibilidade do sistema.
 * **Banco de dados:** Construir a persistência dos dados com banco de dados estruturado (SQL).
 * **Notificações por E-mail:** Alertas de reservas futuras e cancelamentos.

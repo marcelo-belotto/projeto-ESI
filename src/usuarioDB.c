@@ -4,11 +4,11 @@
 #include "../lib/usuarioDB.h"
 
 
-int carregarTodosUsuarios(pUser *usuarios){
+int carregarTodosUsuarios(pUsuario *usuarios){
     FILE *arquivo = fopen(PATH_USUARIO, "r");
 
-    if (arquivo == NULL) { //Arquivo n�o encontrado
-        printf("\nBanco de Dados n�o encontrado!\n");
+    if (arquivo == NULL) { //Arquivo não encontrado
+        printf("\nBanco de Dados não encontrado!\n");
         return 0;
     }
     char linha[256];
@@ -16,16 +16,19 @@ int carregarTodosUsuarios(pUser *usuarios){
 
     while (fgets(linha, sizeof(linha), arquivo)) {
         usuarios[posicaoLinha] = (pUsuario)malloc(sizeof(usuario));
+        
         sscanf(linha,
-        "%d,%30[^,],%50[^,],%30[^\n]",
-        &usuarios[posicaoLinha]->cpf,
+        "%d,%30[^,],%30[^,],%40[^,],%16[^,],%10[^\n]",
+        &usuarios[posicaoLinha]->id,
         usuarios[posicaoLinha]->perfil,
         usuarios[posicaoLinha]->senha,
-        usuarios[posicaoLinha]->nome
+        usuarios[posicaoLinha]->nome,
+        usuarios[posicaoLinha]->cpf,
+        usuarios[posicaoLinha]->status
         );
+        
         posicaoLinha++;
     }
-    
     fclose(arquivo);
     return posicaoLinha;
 }
@@ -36,10 +39,10 @@ int salvarNovoUsuarioDb(pUsuario usuario){
         printf("\nBanco de Dados n�o encontrado!\n");
         return 0;
     }
-    if (usuario->cpf != 0){
+    if (usuario->id != 0){
         toUppercase(usuario->perfil);
-        fprintf(arquivo, "%d,%s,%s,%s\n", usuario->cpf, usuario->perfil,
-        usuario->senha, usuario->nome);
+        fprintf(arquivo, "%d,%s,%s,%s,%s,%s\n",usuario->id, usuario->perfil,usuario->senha,
+        usuario->nome , usuario->cpf, usuario->status);
         fclose(arquivo);
         return 1;
     } else {
@@ -49,7 +52,7 @@ int salvarNovoUsuarioDb(pUsuario usuario){
 }
 
 int alterarUsuarioDb(pUsuario usuario){
-    char *caminhoTemp = "./databases/temp.csv";
+    char *caminhoTemp = "temp.csv";
     int encontrado = 0;
     FILE *arquivo = fopen(PATH_USUARIO, "r");
     FILE *arquivoTemp = fopen(caminhoTemp, "w");
@@ -63,23 +66,25 @@ int alterarUsuarioDb(pUsuario usuario){
 
     char linha[256];
     char linhaAux[256];
-    int posicaoLinha = 0;
 
     while (fgets(linha, sizeof(linha), arquivo)) {
         strcpy(linhaAux, linha);
         linha[strcspn(linha, "\n")] = 0;
         char *registro = strtok(linha, ",");
-
-        if (atoi(registro) == usuario->cpf){
+        if (atoi(registro) == usuario->id){
             toUppercase(usuario->perfil);
-            fprintf(arquivoTemp, "%d,%s,%s,%s\n", usuario->cpf, usuario->perfil,
-            usuario->senha, usuario->nome);
+           fprintf(arquivoTemp,
+                "%d,%s,%s,%s,%s,%s\n",
+                usuario->id,
+                usuario->perfil,
+                usuario->senha,
+                usuario->nome,
+                usuario->cpf,
+                usuario->status);
             encontrado = 1;
         } else {
             fputs(linhaAux, arquivoTemp);
         }
-
-        posicaoLinha++;
     }
     
     fclose(arquivo);
@@ -91,40 +96,46 @@ int alterarUsuarioDb(pUsuario usuario){
     return encontrado;
 }
 
-int excluirUsuarioDb(pUsuario usuario){
-    char *caminhoTemp = "./databases/temp.csv";
+pUsuario localizarUsuarioDb(int id,char* senha){
+    FILE *arquivo = fopen(PATH_USUARIO, "r");
+    pUsuario usuarioTemp = NULL;
 
-    FILE *arquivo = fopen(PATH_USUARIO, "r+");
-    FILE *arquivoTemp = fopen(caminhoTemp, "w");
-
-    if (arquivo == NULL){
-        printf("Banco de dados n�o encontrado!\n");
+    if (arquivo == NULL) { //Arquivo não encontrado
+        printf("\nBanco de Dados não encontrado!\n");
         fclose(arquivo);
-        fclose(arquivoTemp);
-        return 0;
+        return NULL;
     }
 
     char linha[256];
     char linhaAux[256];
-    int posicaoLinha = 0;
 
     while (fgets(linha, sizeof(linha), arquivo)) {
         strcpy(linhaAux, linha);
         linha[strcspn(linha, "\n")] = 0;
         char *registro = strtok(linha, ",");
-
-        if (atoi(registro) != usuario->cpf){
-            fputs(linhaAux, arquivoTemp);
+        printf("%d - %s\n",id,registro);
+        if (atoi(registro) == id){
+            usuarioTemp = (pUsuario)malloc(sizeof(usuario));
+            sscanf(linhaAux,
+                "%d,%30[^,],%30[^,],%40[^,],%16[^,],%10[^\n]",
+                &usuarioTemp->id,
+                usuarioTemp->perfil,
+                usuarioTemp->senha,
+                usuarioTemp->nome,
+                usuarioTemp->cpf,
+                usuarioTemp->status
+            );
+            break;
         }
-
-        posicaoLinha++;
     }
-    
     fclose(arquivo);
-    fclose(arquivoTemp);
 
-    remove(PATH_USUARIO);
-    rename(caminhoTemp, PATH_USUARIO);
-
-    return 1;
+    //MELHORAR A LOGICA!!!!!
+    if (usuarioTemp == NULL){
+        printf("Usuário não encontrado!\n");
+    }else if (strcmp(senha,usuarioTemp->senha) != 0){
+        printf("Senha incorreta!\n");
+        return NULL;
+    }
+    return usuarioTemp;
 }

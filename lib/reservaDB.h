@@ -1,27 +1,25 @@
 #ifndef RESERVADB_H
 #define RESERVADB_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "usuario.h"
-#include "salas.h"
+
 #include "reservas.h"
+
+typedef reserva *pReservas;
 
 #define PATH_RESERVA "./databases/reservas.csv"
 
+int carregarTodasAsReservas(pReservas *vetorReservas);
 
-int carregarIndiceReservas();
+int salvarNovaReserva(pReservas novaReserva);
 
-int salvarNovaReserva(reserva novaReserva);
+int listarTodasAsReservas(pReservas novaReserva);
 
-int listarTodasAsReservas(pReservas reservas); //como ADM
+//int verificarDisponibilidade(int numeroSala, char *dataInicial, char *horaInicial, char *dataFinal, char *horaFinal);
 
-int verificarDisponibilidade(int numeroSala);
+int listarReservasUsuario(int idUsuario, pReservas *vetorReservas);
 
-int listarReservasUsuario(usuario user,pReservas reservas);
+int alterarReservaUsuario(pReservas reserva);
 
-int alterarReservaUsuario(int idUsuario);
-
-int excluirReservaUsuario(int idUsuario,int idReserva);
+int exibirReservasPorSala(int numeroSala);
 
 #endif

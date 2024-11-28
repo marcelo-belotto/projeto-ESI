@@ -152,7 +152,7 @@ int validarHora(const char *hora, const char *data) {
     int mesAtual = local->tm_mon + 1;
     int diaAtual = local->tm_mday;
 
-    // Verifica o formato da hora: HH:MM (5 caracteres e ':' na posi��o 2)
+    // Verifica o formato da hora: HH:MM (5 caracteres e ':' na posição 2)
     if (strlen(hora) != 5 || hora[2] != ':') {
         printf("Hora inv�lida: formato errado. Use HH:MM.\n");
         return 0;
@@ -182,7 +182,7 @@ int validarHora(const char *hora, const char *data) {
         return 0;
     }
     // Verifica se a data passada por parâmetro é hoje
-    if (ano == anoAtual && mes == mesAtual && ano == anoAtual) eHoje = 1;
+    if (dia == diaAtual && mes == mesAtual && ano == anoAtual) eHoje = 1;
 
     // Compara a hora fornecida com a hora atual
     if ((hh < horaAtual && eHoje) || ((hh == horaAtual && mm < minutoAtual) && eHoje)) {
@@ -191,4 +191,46 @@ int validarHora(const char *hora, const char *data) {
     }
 
     return 1; // Hora v�lida
+}
+
+int verificarSobreposicao(const char *dataInicial, const char *horaInicial, const char *dataFinal, const char *horaFinal) {
+    struct tm inicio = {0}, fim = {0};
+
+    // Montar a estrutura de tempo para a data e hora inicial
+    if (sscanf(dataInicial, "%d/%d/%d", &inicio.tm_mday, &inicio.tm_mon, &inicio.tm_year) != 3 ||
+        sscanf(horaInicial, "%d:%d", &inicio.tm_hour, &inicio.tm_min) != 2) {
+        printf("Erro ao processar a data ou hora inicial.\n");
+        return -1;
+    }
+
+    // Montar a estrutura de tempo para a data e hora final
+    if (sscanf(dataFinal, "%d/%d/%d", &fim.tm_mday, &fim.tm_mon, &fim.tm_year) != 3 ||
+        sscanf(horaFinal, "%d:%d", &fim.tm_hour, &fim.tm_min) != 2) {
+        printf("Erro ao processar a data ou hora final.\n");
+        return -1;
+    }
+
+    // Ajustar valores para a estrutura tm (mês começa em 0, ano começa em 1900)
+    inicio.tm_mon -= 1;
+    inicio.tm_year -= 1900;
+    fim.tm_mon -= 1;
+    fim.tm_year -= 1900;
+
+    // Converter para tempo em segundos desde o Epoch
+    time_t tempoInicial = mktime(&inicio);
+    time_t tempoFinal = mktime(&fim);
+
+    if (tempoInicial == -1 || tempoFinal == -1) {
+        printf("Erro ao converter para tempo.\n");
+        return -1;
+    }
+
+    // Comparar os tempos
+    if (tempoInicial < tempoFinal) {
+        printf("Datas e horários não sobrepõem.\n");
+        return 0; // Não há sobreposição
+    } else {
+        printf("Datas e horários sobrepõem.\n");
+        return 1; // Há sobreposição
+    }
 }

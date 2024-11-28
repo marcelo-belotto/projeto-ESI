@@ -26,6 +26,6 @@ void cadastroUsuario();
 
 void alterarUsuario(); 
 
-usuario* localizarUsuario(int indiceUsuario, char senha[30]);
+pUsuario localizarUsuario(int indiceUsuario, char senha[30]);
 
 #endif //USUARIO_H

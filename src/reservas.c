@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include "../lib/reservas.h"
+#include "../lib/reservaDB.h"
 
 reserva novaReserva;
 pReservas vReservas[MAX_RESERVAS];
@@ -12,18 +13,18 @@ void inicializarReservas(usuario user){
         vReservas[i] = NULL;
     }
     if (strcmp(user.perfil,"ADM") == 0){
-        listarTodasAsReservas(vReservas);
+        carregarTodasAsReservas(vReservas);
     }else{
-        listarReservasUsuario(user,vReservas);
+        listarReservasUsuario(user.id,vReservas);
     }
 }
 
-int reservarSala(usuario user){
+int reservarSala(pUserReserva user){
     char dataAux[10];
     char horaAux[5];
 
-    novaReserva.id = carregarIndiceReservas();
-    novaReserva.idUsuario = user.id;
+    novaReserva.id = carregarTodasAsReservas(vReservas);
+    novaReserva.idUsuario = user->id;
     novaReserva.status = 0;
         
     // printf("\nDigite o numero da Sala");
@@ -57,7 +58,7 @@ int reservarSala(usuario user){
     clearInputBuffer();
     strcpy(novaReserva.horaFinal,horaAux);
 
-    if (salvarNovaReserva(novaReserva)){
+    if (salvarNovaReserva(&novaReserva)){
         printf("Reserva efetuada com sucesso!\n");
         return 1;
     }
@@ -65,13 +66,13 @@ int reservarSala(usuario user){
     return 0;
 }
 
-int alterarReserva(usuario user){
+int alterarReserva(pUserReserva user){
     int idReserva;
     reserva reservaAlterada;
     char dataAux[10];
     char horaAux[5];
 
-    //listarReservasUsuario(user,vReservas);
+    listarReservasUsuario(user->id,vReservas);
 
     printf("\nDigite  o ID da reserva que deseja alterar:");
     scanf("%d",&idReserva);
@@ -108,29 +109,88 @@ int alterarReserva(usuario user){
     clearInputBuffer();
     strcpy(reservaAlterada.horaFinal,horaAux);
 
+    return 1;
 }
 
-int cancelarReserva(usuario user){
+int cancelarReserva(pUserReserva user){
+    listarReservasUsuario(user->id, vReservas  );
     int idReserva;
-    printf("\nDigite  o ID da reserva que deseja cancelar:");
-    scanf("%d",&idReserva);
+    printf("\nDigite o ID da reserva que deseja cancelar:");
+    scanf("%d", &idReserva);
+    clearInputBuffer;
 
-    if (excluirReservaUsuario(user.id,idReserva)){
-        printf("Reserva cancelada com sucesso!");
-        return 1;
-    }else{
-        printf("Falha ao cancelar a reserva!");
+    pReservas reservaParaCancelar = NULL;
+
+    for( int i  = 0; i < MAX_RESERVAS; i++){
+        if (vReservas[i]->id == idReserva && vReservas[i]->idUsuario == user->id){
+            reservaParaCancelar = vReservas[i];
+            break;
+        }
     }
-    return 0;
+
+    if(reservaParaCancelar == NULL){
+        printf("Reserva n�o encontrada!\n");
+        return 0;
+    }
+
+    reservaParaCancelar->status = 2;
+
+    if(alterarReservaUsuario(reservaParaCancelar)){
+        printf("Reserva cancelada com sucesso!\n");
+        return 1; 
+    } else {
+        printf("Erro ao cancelar a reserva!\n");
+        return 0;
+    }
+
 }
 
-int verificarDisponibilidadeDeSalas(usuario user){
-    if (user.perfil == "ADM"){
-        listarTodasAsReservas(vReservas);
-        return 1;
-    }else{
-        listarReservasUsuario(user,vReservas);
-        return 1;
+int verificarDisponibilidadeDeSalas(pUserReserva user){
+
+    if (strcmp(user->perfil,"ADM") != 0){
+        printf("Acesso negado. Apenas Administradores podem verificar disponibilidade de salas!\n");
+        return 0;
     }
-    return 0;
+
+    if (carregarTodasAsReservas(vReservas) == 0){
+        printf("Erro ao carregar as reservas!\n");
+        return 0;
+    }
+
+    listarSalas();
+
+    int numeroSala;
+    char dataInicio[11], horaInicio[6], dataFim[11], horaFim[6];
+
+    printf("\nDigite o número da sala que deseja verificar: ");
+    scanf("%d", &numeroSala);
+    clearInputBuffer();
+
+    printf("Digite a data de início (dd/mm/yyyy): ");
+    scanf("%10s", dataInicio);
+    clearInputBuffer();
+
+    printf("Digite a hora de início (HH:MM): ");
+    scanf("%5s", horaInicio);
+    clearInputBuffer();
+
+    printf("Digite a data de fim (dd/mm/yyyy): ");
+    scanf("%10s", dataFim);
+    clearInputBuffer();
+
+    printf("Digite a hora de fim (HH:MM): ");
+    scanf("%5s", horaFim);
+    clearInputBuffer();
+
+    if (verificarDisponibilidade(numeroSala, dataInicio, horaInicio, dataFim, horaFim))
+    {
+        printf("A sala %d está disponível no período especificado.\n", numeroSala);
+    }
+    else
+    {
+        printf("A sala %d não está disponível no período especificado.\n", numeroSala);
+    }
+
+    return 1;
+
 }
