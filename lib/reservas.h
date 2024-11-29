@@ -22,7 +22,7 @@ typedef reserva *pReservas;
 
 typedef struct Usuario usuario;
 
-typedef usuario *pUserReserva;
+typedef usuario *pUsuario;
 
 extern pReservas vReservas[MAX_RESERVAS];
 
@@ -32,24 +32,27 @@ void inicializarReservas();
 *Fun��o para Reservar uma sala, com base em sua diponibilidade.
 *
 */
-int reservarSala(pUserReserva nome);
+int reservarSala(pUsuario nome);
 
 /**
 *Fun��o para Alterar uma reserva.
 * 
 */
-int alterarReserva(pUserReserva nome);
+int alterarReserva(pUsuario nome);
 
 /**
 *Fun��o para Cancelar uma reserva.
 * 
 */
-int cancelarReserva(pUserReserva nome);
+int cancelarReserva(pUsuario nome);
+
+int listarReservas(pUsuario usuarioAtual);
+
 
 /**
 *Fun��o para verficar a disponibilidade de salas.
 * 
 */
-int verificarDisponibilidadeDeSalas(pUserReserva user);
+int verificarDisponibilidadeDeSalas(pUsuario user);
 
 #endif

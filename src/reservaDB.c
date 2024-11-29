@@ -13,6 +13,11 @@ int carregarTodasAsReservas(pReservas *vetorReservas){
     char linha[256];
     int posicaoLinha = 0;
 
+    int ch = fgetc(arquivo); // Tenta ler o primeiro caractere
+    if (ch == EOF) {
+        return 0;
+    } 
+
     while (fgets(linha, sizeof(linha), arquivo)) {
         vetorReservas[posicaoLinha] = (pReservas)malloc(sizeof(reserva));
         if (sscanf(linha, "%d, %d, %d, %10[^,],%5[^,],%10[^,],%05[^,], %d",
@@ -26,14 +31,14 @@ int carregarTodasAsReservas(pReservas *vetorReservas){
         &vetorReservas[posicaoLinha]->status) == 8) {
         
         //Teste de Leitura dos dados - Remover na versão Final
-        printf("ID: %d, Número da Sala:%d, Usuário: %d, Data de Inicio: %s %s - Data Final: %s %s\n",
-        vetorReservas[posicaoLinha]->id,
-        vetorReservas[posicaoLinha]->idUsuario,
-        vetorReservas[posicaoLinha]->numeroSala,
-        vetorReservas[posicaoLinha]->dataInicio,
-        vetorReservas[posicaoLinha]->horaInicio,
-        vetorReservas[posicaoLinha]->dataFinal,
-        vetorReservas[posicaoLinha]->horaFinal);
+        // printf("ID: %d, Número da Sala:%d, Usuário: %d, Data de Inicio: %s %s - Data Final: %s %s\n",
+        // vetorReservas[posicaoLinha]->id,
+        // vetorReservas[posicaoLinha]->idUsuario,
+        // vetorReservas[posicaoLinha]->numeroSala,
+        // vetorReservas[posicaoLinha]->dataInicio,
+        // vetorReservas[posicaoLinha]->horaInicio,
+        // vetorReservas[posicaoLinha]->dataFinal,
+        // vetorReservas[posicaoLinha]->horaFinal);
     }
     posicaoLinha++;
 }
@@ -125,6 +130,11 @@ int listarReservasUsuario(int idUsuario,pReservas *vetorReservas){
     char linhaAux[256];
     int posicaoLinha = 0,indice = 0;
 
+    int ch = fgetc(arquivo); // Tenta ler o primeiro caractere
+    if (ch == EOF) {
+        return 0;
+    } 
+
     while (fgets(linha, sizeof(linha), arquivo)) {
         strcpy(linhaAux, linha); //Copia a linha para uma reserva
         linha[strcspn(linhaAux, "\n")] = 0;
@@ -144,14 +154,14 @@ int listarReservasUsuario(int idUsuario,pReservas *vetorReservas){
             &vetorReservas[posicaoLinha]->status) == 8) {
             
             //Teste de Leitura dos dados - Remover na versão Final
-            printf("ID: %d, Número da Sala:%d, Usuário: %d, Data de Inicio: %s %s - Data Final: %s %s\n",
-            vetorReservas[posicaoLinha]->id,
-            vetorReservas[posicaoLinha]->idUsuario,
-            vetorReservas[posicaoLinha]->numeroSala,
-            vetorReservas[posicaoLinha]->dataInicio,
-            vetorReservas[posicaoLinha]->horaInicio,
-            vetorReservas[posicaoLinha]->dataFinal,
-            vetorReservas[posicaoLinha]->horaFinal);
+            // printf("ID: %d, Número da Sala:%d, Usuário: %d, Data de Inicio: %s %s - Data Final: %s %s\n",
+            // vetorReservas[posicaoLinha]->id,
+            // vetorReservas[posicaoLinha]->idUsuario,
+            // vetorReservas[posicaoLinha]->numeroSala,
+            // vetorReservas[posicaoLinha]->dataInicio,
+            // vetorReservas[posicaoLinha]->horaInicio,
+            // vetorReservas[posicaoLinha]->dataFinal,
+            // vetorReservas[posicaoLinha]->horaFinal);
         }
         posicaoLinha++;
     }

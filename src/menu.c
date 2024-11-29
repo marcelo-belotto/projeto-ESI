@@ -87,7 +87,7 @@ void exibirMenuPadrao() {
                     reservarSala(usuarioTemp);
                     break;
                 case 3:
-                    //listarReservasUsuario();
+                    listarReservas(usuarioTemp);
                     break;
                 case 4:
                     alterarReserva(usuarioTemp);
@@ -150,7 +150,7 @@ void exibirMenuADM() {
                     reservarSala(usuarioTemp);
                     break;
                 case 7:
-                    //listarTodasAsReservas();
+                    listarReservas(usuarioTemp);
                     break;
                 case 8:
                     alterarReserva(usuarioTemp);
