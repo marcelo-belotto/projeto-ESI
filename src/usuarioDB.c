@@ -14,6 +14,12 @@ int carregarTodosUsuarios(pUsuario *usuarios){
     char linha[256];
     int posicaoLinha = 0;
 
+    int ch = fgetc(arquivo); // Tenta ler o primeiro caractere
+    if (ch == EOF) {
+        return 0;
+    } 
+    fseek(arquivo, 0, SEEK_SET);
+
     while (fgets(linha, sizeof(linha), arquivo)) {
         usuarios[posicaoLinha] = (pUsuario)malloc(sizeof(usuario));
         
@@ -108,6 +114,12 @@ pUsuario localizarUsuarioDb(int id,char* senha){
 
     char linha[256];
     char linhaAux[256];
+
+    int ch = fgetc(arquivo); // Tenta ler o primeiro caractere
+    if (ch == EOF) {
+        return NULL;
+    } 
+    fseek(arquivo, 0, SEEK_SET);
 
     while (fgets(linha, sizeof(linha), arquivo)) {
         strcpy(linhaAux, linha);

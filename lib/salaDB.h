@@ -29,4 +29,5 @@ int salvarNovaSalaDb(pSalas sala);
  */
 int alterarSalaDb(pSalas sala);
 
+int verificarExistenciaDeSala(int numeroSala);
 #endif

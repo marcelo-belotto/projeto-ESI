@@ -65,8 +65,10 @@ void cadastroUsuario() {
     scanf("%30[^\n]", vUsuarios[posicaoNovoUsuario]->nome); 
 
     clearInputBuffer();
-    printf("Digite o cpf do usuário: \n");
-    scanf("%s", vUsuarios[posicaoNovoUsuario]->cpf); 
+    do{
+        printf("Digite o cpf do usuário: \n");
+        scanf("%s", vUsuarios[posicaoNovoUsuario]->cpf); 
+    }while(validarCPF(vUsuarios[posicaoNovoUsuario]->cpf));
 
     clearInputBuffer();
     printf("Escolha o perfil de acesso: \n");
@@ -76,9 +78,6 @@ void cadastroUsuario() {
     printf("Digite a senha: \n");
     scanf("%30[^\n]", vUsuarios[posicaoNovoUsuario]->senha); 
 
-    /*clearInputBuffer();
-    printf("Digite o status: \n");
-    scanf("%30[^\n]", vUsuarios[posicaoNovoUsuario]->status);*/
     strcpy(vUsuarios[posicaoNovoUsuario]->status,"ATIVO");
 
     if (salvarNovoUsuarioDb(vUsuarios[posicaoNovoUsuario])==1){
@@ -231,9 +230,7 @@ void alterarUsuario() {
         default:
         printf("Op��o inv�lida!\n");
         break;                
-    }
-
-        
+    }        
 }
 
 void alterarSenha(pUsuario usuarioAtual){

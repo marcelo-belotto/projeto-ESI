@@ -9,7 +9,7 @@ pUsuario usuarioTemp = NULL;
 
 void logarMenu() {
     int idUsuario = 0;
-    char senhaTEmporaria[31];
+    char senhaTemporaria[31];
     char opcao;
 
     do {
@@ -29,10 +29,10 @@ void logarMenu() {
             clearInputBuffer();
 
             printf("Digite sua senha: ");
-            scanf("%31[^\n]", senhaTEmporaria);
+            scanf("%31[^\n]", senhaTemporaria);
             clearInputBuffer();
 
-            if (idUsuario == 0 && strcmp(senhaTEmporaria,"ADMIN") == 0){
+            if (idUsuario == 0 && strcmp(senhaTemporaria,"ADMIN") == 0){
                     usuarioTemp = (pUsuario)malloc(sizeof(usuario));
                     usuarioTemp->id = 0;
                     strcpy(usuarioTemp->cpf,"00000000000");
@@ -44,7 +44,7 @@ void logarMenu() {
                     break;
             } 
 
-            usuarioTemp = localizarUsuario(idUsuario, senhaTEmporaria);
+            usuarioTemp = localizarUsuario(idUsuario, senhaTemporaria);
 
             if (usuarioTemp != NULL) {
                 if (strcmp(usuarioTemp->perfil, "COMUM") == 0) {

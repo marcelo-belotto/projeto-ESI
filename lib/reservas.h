@@ -53,6 +53,6 @@ int listarReservas(pUsuario usuarioAtual);
 *Fun��o para verficar a disponibilidade de salas.
 * 
 */
-int verificarDisponibilidadeDeSalas(pUsuario user);
+int verificarDisponibilidadeDeSalas(int numeroSala, char* dataInicial);
 
 #endif

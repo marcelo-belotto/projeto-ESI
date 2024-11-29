@@ -13,6 +13,12 @@ int carregarTodasAsSalas(pSalas *vSalas){
     char linha[256];
     int posicaoLinha = 0;
 
+    int ch = fgetc(arquivo); // Tenta ler o primeiro caractere
+    if (ch == EOF) {
+        return 0;
+    } 
+    fseek(arquivo, 0, SEEK_SET);
+
     while (fgets(linha, sizeof(linha), arquivo)) {
         vSalas[posicaoLinha] = (pSalas)malloc(sizeof(salas));
         
@@ -87,4 +93,31 @@ int alterarSalaDb(pSalas sala){
     rename(caminhoTemp, PATH_SALA);
 
     return encontrado;
+}
+
+int verificarExistenciaDeSala(int numeroSala){
+    FILE *arquivo = fopen(PATH_SALA, "r");
+
+    if (arquivo == NULL) { //Arquivo não encontrado
+        printf("\nBanco de Dados não encontrado!\n");
+        return 0;
+    }
+    char linha[256];
+
+    int ch = fgetc(arquivo); // Tenta ler o primeiro caractere
+    if (ch == EOF) {
+        return 0;
+    } 
+    fseek(arquivo, 0, SEEK_SET);
+
+    while (fgets(linha, sizeof(linha), arquivo)) {
+        linha[strcspn(linha, "\n")] = 0;
+        char *registro = strtok(linha, ",");
+
+        if (atoi(registro) == numeroSala){
+            return 1;
+        }
+    }
+    fclose(arquivo);
+    return 0;
 }

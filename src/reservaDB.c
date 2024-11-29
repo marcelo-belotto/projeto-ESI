@@ -17,7 +17,7 @@ int carregarTodasAsReservas(pReservas *vetorReservas){
     if (ch == EOF) {
         return 0;
     } 
-
+    fseek(arquivo, 0, SEEK_SET);
     while (fgets(linha, sizeof(linha), arquivo)) {
         vetorReservas[posicaoLinha] = (pReservas)malloc(sizeof(reserva));
         if (sscanf(linha, "%d, %d, %d, %10[^,],%5[^,],%10[^,],%05[^,], %d",
@@ -29,16 +29,6 @@ int carregarTodasAsReservas(pReservas *vetorReservas){
         vetorReservas[posicaoLinha]->dataFinal, 
         vetorReservas[posicaoLinha]->horaFinal,
         &vetorReservas[posicaoLinha]->status) == 8) {
-        
-        //Teste de Leitura dos dados - Remover na versão Final
-        // printf("ID: %d, Número da Sala:%d, Usuário: %d, Data de Inicio: %s %s - Data Final: %s %s\n",
-        // vetorReservas[posicaoLinha]->id,
-        // vetorReservas[posicaoLinha]->idUsuario,
-        // vetorReservas[posicaoLinha]->numeroSala,
-        // vetorReservas[posicaoLinha]->dataInicio,
-        // vetorReservas[posicaoLinha]->horaInicio,
-        // vetorReservas[posicaoLinha]->dataFinal,
-        // vetorReservas[posicaoLinha]->horaFinal);
     }
     posicaoLinha++;
 }
@@ -85,7 +75,6 @@ int alterarReservaUsuario(pReservas reserva){
         fclose(arquivoTemp);
         return 0;
     }
-
     char linha[256];
     char linhaAux[256];
 
@@ -120,7 +109,7 @@ int alterarReservaUsuario(pReservas reserva){
     return encontrado;
 }
 
-int listarReservasUsuario(int idUsuario,pReservas *vetorReservas){
+int listarReservasUsuario(pUsuario user,pReservas *vetorReservas){
     FILE *arquivo = fopen(PATH_RESERVA, "r");
     if (arquivo == NULL) {
         printf("\nBanco de Dados n�o encontrado!\n");
@@ -134,14 +123,14 @@ int listarReservasUsuario(int idUsuario,pReservas *vetorReservas){
     if (ch == EOF) {
         return 0;
     } 
-
+    fseek(arquivo, 0, SEEK_SET);
     while (fgets(linha, sizeof(linha), arquivo)) {
         strcpy(linhaAux, linha); //Copia a linha para uma reserva
         linha[strcspn(linhaAux, "\n")] = 0;
         char *registro = strtok(linhaAux, ",");//Pega a primeira coluna
         registro = strtok(NULL,",");// Pega a segunda coluna, Id do Usuário
 
-        if (atoi(registro) == idUsuario){
+        if (atoi(registro) == user->id || strcmp(user->perfil,"ADM") == 0){
             vetorReservas[posicaoLinha] = (pReservas)malloc(sizeof(reserva));
             if (sscanf(linha, "%d, %d, %d, %10[^,],%5[^,],%10[^,],%05[^,], %d",
             &vetorReservas[posicaoLinha]->id,

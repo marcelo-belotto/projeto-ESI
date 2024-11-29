@@ -95,13 +95,14 @@ void cadastrarSala() {
 
 void listarSalas() {
     inicializarSalas(vSalas);
-
+    mostrarTiposDeSala();
     printf("\nSalas cadastradas:\n");
     for (int i = 0; i < posicaoSala; i++) {
         if (vSalas[i] != NULL) {
-            printf("\nN�mero da sala: %d", vSalas[i]->numeroSala);
-            printf("\nTipo da sala: %s", vSalas[i]->tipo);
-            printf("\nStatus atual da sala: %s\n", vSalas[i]->status);
+            printf("N�mero da sala: %d\n", vSalas[i]->numeroSala);
+            printf("Tipo da sala: %s\n", vSalas[i]->tipo);
+            printf("Status atual da sala: %s\n", vSalas[i]->status);
+            printf("----------------------------------------------\n");
         }
     }
 }
