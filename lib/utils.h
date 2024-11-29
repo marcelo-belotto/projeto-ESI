@@ -20,10 +20,12 @@ int obterOpcao();
 
 int anoBissexto(int year);
 
-int validarData(const char *data);
+int validarData(char *data);
 
-int validarHora(const char *hora, const char *data);
+int validarHora(char *hora, char *data);
 
-int verificarSobreposicao(const char *dataInicial, const char *horaInicial, const char *dataFinal, const char *horaFinal);
+int comparaHoras(char *horaInicial, char *horaFinal);
+
+int verificarSobreposicao(char *dataInicial, char *horaInicial, char *dataFinal, char *horaFinal);
 
 #endif
