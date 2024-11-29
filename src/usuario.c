@@ -236,6 +236,18 @@ void alterarUsuario() {
         
 }
 
+void alterarSenha(pUsuario usuarioAtual){
+
+    printf("Digite a nova senha: ");
+    scanf("%s",usuarioAtual->senha);
+
+    if (alterarUsuarioDb(usuarioAtual)){
+    printf("Senha alterada com sucesso!\n");
+    }else{
+    printf("Falha ao alterar a Senha de Usuário, Tente novamente mais tarde!\n");
+    } 
+}
+
 pUsuario localizarUsuario(int indiceUsuario, char senha[30]) {
     pUsuario userTemp = (pUsuario)malloc(sizeof(usuario));
     userTemp = localizarUsuarioDb(indiceUsuario,senha);

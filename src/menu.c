@@ -9,7 +9,7 @@ pUsuario usuarioTemp = NULL;
 
 void logarMenu() {
     int idUsuario = 0;
-    char senha_Temporaria[31];
+    char senhaTEmporaria[31];
     char opcao;
 
     do {
@@ -29,10 +29,22 @@ void logarMenu() {
             clearInputBuffer();
 
             printf("Digite sua senha: ");
-            scanf("%31[^\n]", senha_Temporaria);
+            scanf("%31[^\n]", senhaTEmporaria);
             clearInputBuffer();
 
-            usuarioTemp = localizarUsuario(idUsuario, senha_Temporaria);
+            if (idUsuario == 0 && strcmp(senhaTEmporaria,"ADMIN") == 0){
+                    usuarioTemp = (pUsuario)malloc(sizeof(usuario));
+                    usuarioTemp->id = 0;
+                    strcpy(usuarioTemp->cpf,"00000000000");
+                    strcpy(usuarioTemp->nome,"ADMIN");
+                    strcpy(usuarioTemp->perfil,"ADM");
+                    strcpy(usuarioTemp->status,"ATIVO");
+                    strcpy(usuarioTemp->senha,"ADMIN");
+                    exibirMenuADM();
+                    break;
+            } 
+
+            usuarioTemp = localizarUsuario(idUsuario, senhaTEmporaria);
 
             if (usuarioTemp != NULL) {
                 if (strcmp(usuarioTemp->perfil, "COMUM") == 0) {
@@ -41,18 +53,19 @@ void logarMenu() {
                 } else if (strcmp(usuarioTemp->perfil, "ADM") == 0) {
                     exibirMenuADM();
                     break;
-                }
+                }  
+                printf("Dados inv�lidos! Verifique id e senha.\n");
+            } else {
+                printf("Op��o inv�lida! Tente novamente.\n");
             }
-
-            printf("Dados inv�lidos! Verifique id e senha.\n");
-        } else {
-            printf("Op��o inv�lida! Tente novamente.\n");
         }
     } while (1);
 }
 
 void exibirMenuPadrao() {
     int opcao;
+    inicializarUsuario();
+    inicializarSalas();
 
     do {
         printf("=== ReuniON ===\n");
@@ -83,7 +96,7 @@ void exibirMenuPadrao() {
                     cancelarReserva(usuarioTemp);
                     break;
                 case 6:
-                    //alterarSenha(usuarioTemp);
+                    alterarSenha(usuarioTemp);
                     break;
                 case 7:
                     printf("Saindo... \n");
@@ -92,6 +105,7 @@ void exibirMenuPadrao() {
                 default:
                     printf("Op��o inv�lida!\n");
         }
+        printf("\nPressione ENTER para continuar\n");
         clearInputBuffer();
     } while (opcao != 7);
 }
@@ -99,6 +113,8 @@ void exibirMenuPadrao() {
 void exibirMenuADM() {
     int opcao;
     inicializarUsuario();
+    inicializarSalas();
+
     do {
         printf("=== ReuniON ===\n");
         printf("1. Cadastrar usu�rio\n");
@@ -125,10 +141,10 @@ void exibirMenuADM() {
                     cadastrarSala();
                     break;
                 case 4:
-                    //listarSalas();
+                    listarSalas();
                     break;
                 case 5:
-                    //alterarSala();
+                    alterarSala();
                     break;
                 case 6:
                     reservarSala(usuarioTemp);
@@ -143,7 +159,7 @@ void exibirMenuADM() {
                     cancelarReserva(usuarioTemp);
                     break;
                 case 10:
-                    //alterarSenha(usuarioTemp);
+                    alterarSenha(usuarioTemp);
                     break;
                 case 11:
                     printf("Saindo ... \n");
@@ -152,6 +168,7 @@ void exibirMenuADM() {
                 default:
                     printf("Op��o inv�lida!\n");
         }
+        printf("\nPressione ENTER para continuar\n");
         clearInputBuffer();
     } while (opcao != 11);
 }

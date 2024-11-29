@@ -23,4 +23,6 @@ void listarSalas();
 
 void alterarSala();
 
+void mostrarTiposDeSala();
+
 #endif
