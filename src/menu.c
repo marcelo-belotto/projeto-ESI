@@ -9,7 +9,7 @@ pUsuario usuarioTemp = NULL;
 
 void logarMenu() {
     int idUsuario = 0;
-    char senha_Temporaria[31];
+    char senhaTemporaria[31];
     char opcao;
 
     do {
@@ -27,11 +27,24 @@ void logarMenu() {
             printf("Digite seu id: ");
             scanf("%d", &idUsuario);
             clearInputBuffer();
-            printf("\nDigite sua senha: ");
-            scanf("%31[^\n]", senha_Temporaria);
+
+            printf("Digite sua senha: ");
+            scanf("%31[^\n]", senhaTemporaria);
             clearInputBuffer();
 
-            usuarioTemp = localizarUsuario(idUsuario, senha_Temporaria);
+            if (idUsuario == 0 && strcmp(senhaTemporaria,"ADMIN") == 0){
+                    usuarioTemp = (pUsuario)malloc(sizeof(usuario));
+                    usuarioTemp->id = 0;
+                    strcpy(usuarioTemp->cpf,"00000000000");
+                    strcpy(usuarioTemp->nome,"ADMIN");
+                    strcpy(usuarioTemp->perfil,"ADM");
+                    strcpy(usuarioTemp->status,"ATIVO");
+                    strcpy(usuarioTemp->senha,"ADMIN");
+                    exibirMenuADM();
+                    break;
+            } 
+
+            usuarioTemp = localizarUsuario(idUsuario, senhaTemporaria);
 
             if (usuarioTemp != NULL) {
                 if (strcmp(usuarioTemp->perfil, "COMUM") == 0) {
@@ -40,34 +53,30 @@ void logarMenu() {
                 } else if (strcmp(usuarioTemp->perfil, "ADM") == 0) {
                     exibirMenuADM();
                     break;
-                }
+                }  
+                printf("Dados inv�lidos! Verifique id e senha.\n");
+            } else {
+                printf("Op��o inv�lida! Tente novamente.\n");
             }
-
-            printf("Dados inv�lidos! Verifique id e senha.\n");
-        } else {
-            printf("Op��o inv�lida! Tente novamente.\n");
         }
     } while (1);
 }
 
 void exibirMenuPadrao() {
     int opcao;
-
-<<<<<<< HEAD
-    printf("=== ReuniON ===\n");
-=======
-    printf("=== Sistema de Reserva de Sala de Reuni�o ===\n");
->>>>>>> dc6a80e4ff848e6abb9e8e114d5a966851816246
-    printf("1. Listar salas\n");
-    printf("2. Reservar sala\n");
-    printf("3. Listar reservas\n");
-    printf("4. Alterar reserva\n");
-    printf("5. Cancelar reserva\n");
-    printf("6. Alterar senha\n");
-    printf("7. Sair\n");
-    obterOpcao();
+    inicializarUsuario();
+    inicializarSalas();
 
     do {
+        printf("=== ReuniON ===\n");
+        printf("1. Listar salas\n");
+        printf("2. Reservar sala\n");
+        printf("3. Listar reservas\n");
+        printf("4. Alterar reserva\n");
+        printf("5. Cancelar reserva\n");
+        printf("6. Alterar senha\n");
+        printf("7. Sair\n");
+
         opcao = obterOpcao();
         
         switch(opcao){
@@ -78,7 +87,7 @@ void exibirMenuPadrao() {
                     reservarSala(usuarioTemp);
                     break;
                 case 3:
-                    //listarReservasUsuario();
+                    listarReservas(usuarioTemp);
                     break;
                 case 4:
                     alterarReserva(usuarioTemp);
@@ -87,35 +96,39 @@ void exibirMenuPadrao() {
                     cancelarReserva(usuarioTemp);
                     break;
                 case 6:
-                    //alterarSenha(usuarioTemp);
+                    alterarSenha(usuarioTemp);
                     break;
                 case 7:
                     printf("Saindo... \n");
+                    exit(0);
                     break;
                 default:
                     printf("Op��o inv�lida!\n");
         }
+        printf("\nPressione ENTER para continuar\n");
+        clearInputBuffer();
     } while (opcao != 7);
 }
 
 void exibirMenuADM() {
     int opcao;
-
-    printf("=== ReuniON ===\n");
-    printf("1. Cadastrar usu�rio\n");
-    printf("2. Alterar usu�rio\n");
-    printf("3. Cadastrar sala\n");
-    printf("4. Listar salas\n");
-    printf("5. Alterar sala\n");
-    printf("6. Reservar sala\n");
-    printf("7. Listar reservas\n");
-    printf("8. Alterar reserva\n");
-    printf("9. Cancelar reserva\n");
-    printf("10. Alterar senha\n");
-    printf("11. Sair\n");
-    obterOpcao();
+    inicializarUsuario();
+    inicializarSalas();
 
     do {
+        printf("=== ReuniON ===\n");
+        printf("1. Cadastrar usu�rio\n");
+        printf("2. Alterar usu�rio\n");
+        printf("3. Cadastrar sala\n");
+        printf("4. Listar salas\n");
+        printf("5. Alterar sala\n");
+        printf("6. Reservar sala\n");
+        printf("7. Listar reservas\n");
+        printf("8. Alterar reserva\n");
+        printf("9. Cancelar reserva\n");
+        printf("10. Alterar senha\n");
+        printf("11. Sair\n");
+
         opcao = obterOpcao();       
         switch(opcao){
                 case 1:
@@ -128,16 +141,16 @@ void exibirMenuADM() {
                     cadastrarSala();
                     break;
                 case 4:
-                    //listarSalas();
+                    listarSalas();
                     break;
                 case 5:
-                    //alterarSala();
+                    alterarSala();
                     break;
                 case 6:
                     reservarSala(usuarioTemp);
                     break;
                 case 7:
-                    //listarTodasAsReservas();
+                    listarReservas(usuarioTemp);
                     break;
                 case 8:
                     alterarReserva(usuarioTemp);
@@ -146,14 +159,17 @@ void exibirMenuADM() {
                     cancelarReserva(usuarioTemp);
                     break;
                 case 10:
-                    //alterarSenha(usuarioTemp);
+                    alterarSenha(usuarioTemp);
                     break;
                 case 11:
                     printf("Saindo ... \n");
+                    exit(0);
                     break;
                 default:
                     printf("Op��o inv�lida!\n");
         }
+        printf("\nPressione ENTER para continuar\n");
+        clearInputBuffer();
     } while (opcao != 11);
 }
 

@@ -14,9 +14,9 @@ int salvarNovaReserva(pReservas novaReserva);
 
 int listarTodasAsReservas(pReservas novaReserva);
 
-//int verificarDisponibilidade(int numeroSala, char *dataInicial, char *horaInicial, char *dataFinal, char *horaFinal);
+int verificarDisponibilidade(int numeroSala, char *dataInicial, char *horaInicial, char *dataFinal, char *horaFinal);
 
-int listarReservasUsuario(int idUsuario, pReservas *vetorReservas);
+int listarReservasUsuario(pUsuario user, pReservas *vetorReservas);
 
 int alterarReservaUsuario(pReservas reserva);
 

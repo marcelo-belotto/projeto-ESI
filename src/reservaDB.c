@@ -13,6 +13,11 @@ int carregarTodasAsReservas(pReservas *vetorReservas){
     char linha[256];
     int posicaoLinha = 0;
 
+    int ch = fgetc(arquivo); // Tenta ler o primeiro caractere
+    if (ch == EOF) {
+        return 0;
+    } 
+    fseek(arquivo, 0, SEEK_SET);
     while (fgets(linha, sizeof(linha), arquivo)) {
         vetorReservas[posicaoLinha] = (pReservas)malloc(sizeof(reserva));
         if (sscanf(linha, "%d, %d, %d, %10[^,],%5[^,],%10[^,],%05[^,], %d",
@@ -24,16 +29,6 @@ int carregarTodasAsReservas(pReservas *vetorReservas){
         vetorReservas[posicaoLinha]->dataFinal, 
         vetorReservas[posicaoLinha]->horaFinal,
         &vetorReservas[posicaoLinha]->status) == 8) {
-        
-        //Teste de Leitura dos dados - Remover na versão Final
-        printf("ID: %d, Número da Sala:%d, Usuário: %d, Data de Inicio: %s %s - Data Final: %s %s\n",
-        vetorReservas[posicaoLinha]->id,
-        vetorReservas[posicaoLinha]->idUsuario,
-        vetorReservas[posicaoLinha]->numeroSala,
-        vetorReservas[posicaoLinha]->dataInicio,
-        vetorReservas[posicaoLinha]->horaInicio,
-        vetorReservas[posicaoLinha]->dataFinal,
-        vetorReservas[posicaoLinha]->horaFinal);
     }
     posicaoLinha++;
 }
@@ -80,7 +75,6 @@ int alterarReservaUsuario(pReservas reserva){
         fclose(arquivoTemp);
         return 0;
     }
-
     char linha[256];
     char linhaAux[256];
 
@@ -115,7 +109,7 @@ int alterarReservaUsuario(pReservas reserva){
     return encontrado;
 }
 
-int listarReservasUsuario(int idUsuario,pReservas *vetorReservas){
+int listarReservasUsuario(pUsuario user,pReservas *vetorReservas){
     FILE *arquivo = fopen(PATH_RESERVA, "r");
     if (arquivo == NULL) {
         printf("\nBanco de Dados n�o encontrado!\n");
@@ -123,15 +117,20 @@ int listarReservasUsuario(int idUsuario,pReservas *vetorReservas){
     }
     char linha[256];
     char linhaAux[256];
-    int posicaoLinha = 0,indice = 0;
+    int posicaoLinha = 0;
 
+    int ch = fgetc(arquivo); // Tenta ler o primeiro caractere
+    if (ch == EOF) {
+        return 0;
+    } 
+    fseek(arquivo, 0, SEEK_SET);
     while (fgets(linha, sizeof(linha), arquivo)) {
         strcpy(linhaAux, linha); //Copia a linha para uma reserva
         linha[strcspn(linhaAux, "\n")] = 0;
         char *registro = strtok(linhaAux, ",");//Pega a primeira coluna
         registro = strtok(NULL,",");// Pega a segunda coluna, Id do Usuário
 
-        if (atoi(registro) == idUsuario){
+        if (atoi(registro) == user->id || strcmp(user->perfil,"ADM") == 0){
             vetorReservas[posicaoLinha] = (pReservas)malloc(sizeof(reserva));
             if (sscanf(linha, "%d, %d, %d, %10[^,],%5[^,],%10[^,],%05[^,], %d",
             &vetorReservas[posicaoLinha]->id,
@@ -142,55 +141,71 @@ int listarReservasUsuario(int idUsuario,pReservas *vetorReservas){
             vetorReservas[posicaoLinha]->dataFinal, 
             vetorReservas[posicaoLinha]->horaFinal,
             &vetorReservas[posicaoLinha]->status) == 8) {
-            
-            //Teste de Leitura dos dados - Remover na versão Final
-            printf("ID: %d, Número da Sala:%d, Usuário: %d, Data de Inicio: %s %s - Data Final: %s %s\n",
-            vetorReservas[posicaoLinha]->id,
-            vetorReservas[posicaoLinha]->idUsuario,
-            vetorReservas[posicaoLinha]->numeroSala,
-            vetorReservas[posicaoLinha]->dataInicio,
-            vetorReservas[posicaoLinha]->horaInicio,
-            vetorReservas[posicaoLinha]->dataFinal,
-            vetorReservas[posicaoLinha]->horaFinal);
         }
         posicaoLinha++;
     }
-    indice++;
 }
     fclose(arquivo);
-    return  indice;
+    return  posicaoLinha;
 
 }
 
-/*Em Andamento
 int verificarDisponibilidade(int numeroSala, char *dataInicial, char *horaInicial, char *dataFinal, char *horaFinal){
     FILE *arquivo = fopen(PATH_RESERVA, "r");
     if (arquivo == NULL) {
         printf("\nBanco de Dados n�o encontrado!\n");
         return 0;
     }
+    
+    //Teste para verificar se o arquivo está vazio
+    int ch = fgetc(arquivo); // Tenta ler o primeiro caractere
+    if (ch == EOF) {
+        return 0;
+    } 
     char linha[256];
-    char linhaAux[256];
-    int posicaoLinha = 0;
+
+    int hrInicial,minInicial,horaIniLida,minIniLido;
+    int hrFinal,minFinal,horaFimLida,minFimLido;
+    sscanf(horaInicial,"%d:%d",&hrInicial,&minInicial);
+    sscanf(horaFinal,"%d:%d",&hrFinal,&minFinal);
 
     while (fgets(linha, sizeof(linha), arquivo)) {
-        strcpy(linhaAux, linha); //Copia a linha para uma reserva
-        linha[strcspn(linhaAux, "\n")] = 0; //Mete um \0 no lugar de \n indicando fim de linha
-        char *registro = strtok(linhaAux, ",");//Pega a primeira coluna o ID da reserva
+        linha[strcspn(linha, "\n")] = 0;
+        char *registro = strtok(linha, ",");//Pega a primeira coluna o ID da reserva
         registro = strtok(NULL,",");// Pega a segunda coluna, Id do Usuário
         registro = strtok(NULL,",");// Pega a terceira Coluna, Numero da sala
+
         if (atoi(registro)==numeroSala){
-            
+            registro = strtok(NULL,","); // pega Quarta coluna, a data inicial
+
+            if (strcmp(dataInicial,registro) == 0){
+                registro = strtok(NULL,","); // pega a quinta coluna, a hora inicial
+
+                sscanf(registro,"%d:%d",&horaIniLida,&minIniLido);
+                registro = strtok(NULL,",");// pega sexta coluna, a data final
+
+                if(strcmp(dataFinal,registro) == 0){
+                    registro = strtok(NULL,","); // pega a setima coluna, a hora final
+                    sscanf(registro,"%d:%d",&horaFimLida,&minFimLido);                    
+
+                    if( (hrInicial > horaIniLida || (hrInicial == horaIniLida && minInicial >= minIniLido)) && 
+                        (hrFinal < horaFimLida || (hrFinal == horaFimLida && minFinal <= minFimLido)) || 
+                        (hrInicial < horaIniLida || (hrInicial == horaIniLida && minInicial < minIniLido)) && 
+                        (hrFinal >= horaIniLida || (hrFinal == horaIniLida && minFinal >= minIniLido)) &&
+                        (hrFinal < horaFimLida || (hrFinal == horaFimLida && minFinal <= minFimLido))
+                        ){
+                            if (hrFinal+minFinal == horaIniLida+minIniLido) return 0;
+                        printf("Já Existe reserva para essa sala nesse horário!\n");
+                        clearInputBuffer();
+                        return 1; // Sobreposição de horarios para essa sala
+                    }
+                }
+            }
         }
-        
-            
-        
-        posicaoLinha++;
-    
-}
+    }
     fclose(arquivo);
-    return  posicaoLinha;
-}*/
+    return 0;
+}
 
 int exibirReservasPorSala(int numeroSala){
      FILE *arquivo = fopen(PATH_RESERVA, "r");

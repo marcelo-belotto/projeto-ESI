@@ -7,121 +7,173 @@
 
 #define MAX_SALAS 100
 
+int posicaoSala = 0;
 pSalas vSalas[MAX_SALAS];
+int indiceSalas;
 
 void inicializarSalas() {
     for (int i = 0; i < MAX_SALAS; i++) {
         vSalas[i] = NULL;
     }
+    posicaoSala = carregarTodasAsSalas(vSalas);
 }
 
-void cadastrarSala(int i) {
-    if (vSalas[i] != NULL) {
-        printf("\nPosição já preenchida!\n");
+void cadastrarSala() {
+    inicializarSalas(vSalas);
+    if (vSalas[posicaoSala] != NULL) {
+        printf("\nPosiï¿½ï¿½o jï¿½ preenchida!\n");
         return;
     }
 
-    vSalas[i] = (pSalas)malloc(sizeof(salas));
-    if (vSalas[i] == NULL) {
-        printf("Erro ao alocar memória.\n");
+    vSalas[posicaoSala] = (pSalas)malloc(sizeof(salas));
+
+    if (vSalas[posicaoSala] == NULL) {
+        printf("Erro ao alocar memï¿½ria.\n");
         return;
     }
 
-    clearInputBuffer();
-
-    printf("\nNúmero da sala: ");
-    scanf("%d", &vSalas[i]->numeroSala);
-    clearInputBuffer();
-
-    for (int j = 0; j < MAX_SALAS; j++) {
-        if (vSalas[j] != NULL && vSalas[j]->numeroSala == vSalas[i]->numeroSala) {
-            printf("Número da sala já cadastrado!\n");
-            free(vSalas[i]);
-            vSalas[i] = NULL;
-            return;
+    int encontrado = 0;
+    do{
+        encontrado = 0;
+        printf("\nNï¿½mero da sala: ");
+        scanf("%d", &vSalas[posicaoSala]->numeroSala);
+        clearInputBuffer();
+        for (int i = 0; i < posicaoSala; i++) {
+            if (vSalas[i]->numeroSala == vSalas[posicaoSala]->numeroSala) {
+                printf("Nï¿½mero da sala jÃ¡ cadastrado!\n");
+                encontrado = 1;
+                break;
+            }
         }
+    }while(encontrado != 0);
+    
+
+    printf("\nDigite o tipo da sala:\n");
+    mostrarTiposDeSala();
+    do{
+        fgets(vSalas[posicaoSala]->tipo, 5, stdin);
+        vSalas[posicaoSala]->tipo[strcspn(vSalas[posicaoSala]->tipo, "\n")] = '\0';
+
+    if (strcmp(vSalas[posicaoSala]->tipo, "PA") != 0 && strcmp(vSalas[posicaoSala]->tipo, "MA") != 0 &&
+        strcmp(vSalas[posicaoSala]->tipo, "GA") != 0 && strcmp(vSalas[posicaoSala]->tipo, "PC") != 0 &&
+        strcmp(vSalas[posicaoSala]->tipo, "MC") != 0) {
+        printf("Tipo de sala invï¿½lido!\n");
+
     }
+    }while(strcmp(vSalas[posicaoSala]->tipo, "PA") != 0 && strcmp(vSalas[posicaoSala]->tipo, "MA") != 0 &&
+        strcmp(vSalas[posicaoSala]->tipo, "GA") != 0 && strcmp(vSalas[posicaoSala]->tipo, "PC") != 0 &&
+        strcmp(vSalas[posicaoSala]->tipo, "MC") != 0);
+    
+    int opcaoTipoSala = 0;
 
-    printf("\nDigite o tipo da sala:\n"
-            "PA - Sala pequena (até 5 lugares), com recursos audiovisuais\n"
-            "MA - Sala média (até 15 lugares), com recursos audiovisuais\n"
-            "GA - Auditório (até 100 lugares), com recursos audiovisuais\n"
-            "PC - Sala pequena (até 5 lugares), sem recursos audiovisuais\n"
-            "MC - Sala média (até 15 lugares), sem recursos audiovisuais\n");
-    fgets(vSalas[i]->tipo, 5, stdin);
-    vSalas[i]->tipo[strcspn(vSalas[i]->tipo, "\n")] = '\0';
+    do{
+        printf("\nDigite o status atual da sala: ");
+        printf("\n1. Ativa\n2. Em ManutenÃ§Ã£o\n3. Inativa\n");
+        scanf("%d",&opcaoTipoSala);
+        printf("\n%d\n",opcaoTipoSala);
+        if(opcaoTipoSala < 1 || opcaoTipoSala > 3) printf("OpÃ§Ã£o InvÃ¡lida!\n");
 
-    if (strcmp(vSalas[i]->tipo, "PA") != 0 && strcmp(vSalas[i]->tipo, "MA") != 0 &&
-        strcmp(vSalas[i]->tipo, "GA") != 0 && strcmp(vSalas[i]->tipo, "PC") != 0 &&
-        strcmp(vSalas[i]->tipo, "MC") != 0) {
-        printf("Tipo de sala inválido!\n");
-        free(vSalas[i]);
-        vSalas[i] = NULL;
-        return;
+    }while(opcaoTipoSala < 1 || opcaoTipoSala > 3);
+
+    switch(opcaoTipoSala){
+        case 1:
+            strcpy(vSalas[posicaoSala]->status,"ATIVA");
+        break;
+        case 2:
+            strcpy(vSalas[posicaoSala]->status,"EM MANUTENÃ‡ÃƒO");
+        break;
+        case 3:
+            strcpy(vSalas[posicaoSala]->status,"INATIVA");
+        break;
     }
-
-    printf("\nDigite o status atual da sala: ");
-    fgets(vSalas[i]->status, 40, stdin);
-    vSalas[i]->status[strcspn(vSalas[i]->status, "\n")] = '\0';
-
-    if (strcmp(vSalas[i]->status, "Ativa") != 0 &&
-        strcmp(vSalas[i]->status, "Em manutenção") != 0 &&
-        strcmp(vSalas[i]->status, "Inativa") != 0) {
-        printf("Status inválido!\n");
-        free(vSalas[i]);
-        vSalas[i] = NULL;
-        return;
+    if (salvarNovaSalaDb(vSalas[posicaoSala]) == 1){
+        printf("\nSala cadastrada com sucesso!\n");
+    }else{
+        printf("Falha ao cadastrar a sala, Tente novamente!\n");
     }
-
-    printf("\nSala cadastrada com sucesso!\n");
 }
 
 void listarSalas() {
+    inicializarSalas(vSalas);
+    mostrarTiposDeSala();
     printf("\nSalas cadastradas:\n");
-    for (int i = 0; i < MAX_SALAS; i++) {
+    for (int i = 0; i < posicaoSala; i++) {
         if (vSalas[i] != NULL) {
-            printf("\nNúmero da sala: %d", vSalas[i]->numeroSala);
-            printf("\nTipo da sala: %s", vSalas[i]->tipo);
-            printf("\nStatus atual da sala: %s\n", vSalas[i]->status);
+            printf("Nï¿½mero da sala: %d\n", vSalas[i]->numeroSala);
+            printf("Tipo da sala: %s\n", vSalas[i]->tipo);
+            printf("Status atual da sala: %s\n", vSalas[i]->status);
+            printf("----------------------------------------------\n");
         }
     }
 }
 
 void alterarSala() {
-    int numeroSala;
+    inicializarSalas(vSalas);
 
-    printf("Digite o número da sala que deseja alterar: ");
-    scanf("%d", &numeroSala);
-    clearInputBuffer();
-
-    for (int i = 0; i < MAX_SALAS; i++) {
-        if (vSalas[i] != NULL && vSalas[i]->numeroSala == numeroSala) {
-            printf("Digite o novo tipo da sala: ");
-            fgets(vSalas[i]->tipo, 5, stdin);
-            vSalas[i]->tipo[strcspn(vSalas[i]->tipo, "\n")] = '\0';
-
-            if (strcmp(vSalas[i]->tipo, "PA") != 0 && strcmp(vSalas[i]->tipo, "MA") != 0 &&
-                strcmp(vSalas[i]->tipo, "GA") != 0 && strcmp(vSalas[i]->tipo, "PC") != 0 &&
-                strcmp(vSalas[i]->tipo, "MC") != 0) {
-                printf("Tipo de sala inválido!\n");
-                return;
+    int numeroSala, naoEncontrado,indiceSalaEncontrada;
+    do{
+        naoEncontrado = 1;
+        printf("\nNï¿½mero da sala: ");
+        scanf("%d", &numeroSala);
+        clearInputBuffer();
+        for (int i = 0; i < posicaoSala; i++) {
+            if (vSalas[i]->numeroSala == numeroSala) {
+                naoEncontrado = 0;
+                indiceSalaEncontrada = i;
+                break;
             }
-
-            printf("Digite o novo status da sala: ");
-            fgets(vSalas[i]->status, 40, stdin);
-            vSalas[i]->status[strcspn(vSalas[i]->status, "\n")] = '\0';
-
-            if (strcmp(vSalas[i]->status, "Ativa") != 0 &&
-                strcmp(vSalas[i]->status, "Em manutenção") != 0 &&
-                strcmp(vSalas[i]->status, "Inativa") != 0) {
-                printf("Status inválido!\n");
-                return;
-            }
-
-            printf("Sala alterada com sucesso!\n");
-            return;
         }
+        if (naoEncontrado) printf("Sala nÃ£o encontrada!\n");
+    }while(naoEncontrado != 0);
+    
+    do{
+        printf("Digite o novo tipo da sala: \n");
+        mostrarTiposDeSala();
+        scanf("%s",vSalas[indiceSalaEncontrada]->tipo);
+
+        if (strcmp(vSalas[indiceSalaEncontrada]->tipo, "PA") != 0 && strcmp(vSalas[indiceSalaEncontrada]->tipo, "MA") != 0 &&
+            strcmp(vSalas[indiceSalaEncontrada]->tipo, "GA") != 0 && strcmp(vSalas[indiceSalaEncontrada]->tipo, "PC") != 0 &&
+            strcmp(vSalas[indiceSalaEncontrada]->tipo, "MC") != 0) {
+            printf("Tipo de sala invï¿½lido!\n");
+        }
+    }while((strcmp(vSalas[indiceSalaEncontrada]->tipo, "PA") != 0 && strcmp(vSalas[indiceSalaEncontrada]->tipo, "MA") != 0 &&
+        strcmp(vSalas[indiceSalaEncontrada]->tipo, "GA") != 0 && strcmp(vSalas[indiceSalaEncontrada]->tipo, "PC") != 0 &&
+        strcmp(vSalas[indiceSalaEncontrada]->tipo, "MC") != 0));
+    
+    int opcaoTipoSala = 0;
+
+    do{
+        printf("\nDigite o novo status da sala: ");
+        printf("\n1. Ativa\n2. Em ManutenÃ§Ã£o\n3. Inativa\n");
+        scanf("%d",&opcaoTipoSala);
+        printf("\n%d\n",opcaoTipoSala);
+        if(opcaoTipoSala < 1 || opcaoTipoSala > 3) printf("OpÃ§Ã£o InvÃ¡lida!\n");
+
+    }while(opcaoTipoSala < 1 || opcaoTipoSala > 3);
+
+    switch(opcaoTipoSala){
+        case 1:
+            strcpy(vSalas[indiceSalaEncontrada]->status,"ATIVA");
+        break;
+        case 2:
+            strcpy(vSalas[indiceSalaEncontrada]->status,"EM MANUTENÃ‡ÃƒO");
+        break;
+        case 3:
+            strcpy(vSalas[indiceSalaEncontrada]->status,"INATIVA");
+        break;
+    }
+    if(alterarSalaDb(vSalas[indiceSalaEncontrada])){
+        printf("Sala alterada com sucesso!\n");
+    }else{
+        printf("Falha ao salvar as alteraÃ§Ãµes, Tente novamente mais tarde!");
     }
 
-    printf("Sala não encontrada!\n");
+}
+
+void mostrarTiposDeSala(){
+    printf( "PA - Sala pequena (atï¿½ 5 lugares), com recursos audiovisuais\n"
+            "MA - Sala mï¿½dia (atï¿½ 15 lugares), com recursos audiovisuais\n"
+            "GA - Auditï¿½rio (atï¿½ 100 lugares), com recursos audiovisuais\n"
+            "PC - Sala pequena (atï¿½ 5 lugares), sem recursos audiovisuais\n"
+            "MC - Sala mï¿½dia (atï¿½ 15 lugares), sem recursos audiovisuais\n");
 }

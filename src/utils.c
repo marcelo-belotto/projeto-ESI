@@ -83,7 +83,7 @@ int anoBissexto(int year) {
 }
 
 // Fun��o para validar a data no formato DD/MM/AAAA
-int validarData(const char *data) {
+int validarData(char *data) {
     int dia, mes, ano;
 
     // Obt�m a data atual
@@ -140,7 +140,7 @@ int validarData(const char *data) {
 }
 
 // Fun��o para validar hora no formato HH:MM
-int validarHora(const char *hora, const char *data) {
+int validarHora(char *hora, char *data) {
     int hh, mm;
     int dia, mes, ano, eHoje = 0;
 
@@ -193,7 +193,21 @@ int validarHora(const char *hora, const char *data) {
     return 1; // Hora v�lida
 }
 
-int verificarSobreposicao(const char *dataInicial, const char *horaInicial, const char *dataFinal, const char *horaFinal) {
+int comparaHoras(char *horaInicial, char *horaFinal) {
+    // Extrai as horas e minutos das strings
+    int h1, m1, h2, m2;
+    sscanf(horaInicial, "%d:%d", &h1, &m1); // Converte hora inicial
+    sscanf(horaFinal, "%d:%d", &h2, &m2);  // Converte hora final
+
+    // Compara as horas e minutos
+    if (h1 < h2 || (h1 == h2 && m1 < m2)) {
+        return 0; // Hora inicial é menor
+    } else {
+        return 1; // Hora final é menor ou igual
+    }
+}
+
+int verificarSobreposicao(char *dataInicial, char *horaInicial, char *dataFinal, char *horaFinal) {
     struct tm inicio = {0}, fim = {0};
 
     // Montar a estrutura de tempo para a data e hora inicial
