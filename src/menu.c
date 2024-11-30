@@ -1,12 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 
 #include "../lib/menu.h"
 
 
 pUsuario usuarioTemp = NULL;
 
+/**
+ * @brief Exibe o menu de login e gerencia a autenticação do usuário.
+ *
+ * Esta função apresenta uma interface de login ao usuário, permitindo que ele insira suas
+ * credenciais. Ela autentica o usuário e o direciona para o menu apropriado
+ * com base em seu nível de acesso. A função também inclui um caso especial para login de administrador.
+ *
+ * @note Esta função não recebe parâmetros e não retorna valor.
+ *       Ela usa variáveis globais e outras funções para gerenciar o processo de login.
+ */
 void logarMenu() {
     int idUsuario = 0;
     char senhaTemporaria[31];
@@ -16,7 +27,7 @@ void logarMenu() {
         printf("=== ReuniON ===\n");
         printf("1. Fazer login\n");
         printf("2. Sair\n");
-        printf("Escolha uma opï¿½ï¿½o: ");
+        printf("Escolha uma opção: ");
         scanf(" %c", &opcao);
         clearInputBuffer();
 
@@ -54,14 +65,27 @@ void logarMenu() {
                     exibirMenuADM();
                     break;
                 }  
-                printf("Dados invï¿½lidos! Verifique id e senha.\n");
+                printf("Dados inválidos! Verifique id e senha.\n");
             } else {
-                printf("Opï¿½ï¿½o invï¿½lida! Tente novamente.\n");
+                printf("Opção inválida! Tente novamente.\n");
             }
         }
     } while (1);
 }
 
+
+
+/**
+ * @brief Exibe e gerencia o menu padrão do usuário.
+ *
+ * Esta função apresenta uma interface de menu para usuários padrão, permitindo que eles
+ * realizem várias ações como listar salas, fazer reservas e gerenciar suas contas.
+ * Ela inicializa os dados de usuários e salas, e então entra em um loop para
+ * continuamente exibir opções e processar a entrada do usuário até que ele escolha sair.
+ *
+ * A função não recebe parâmetros e não retorna valor. Ela depende de variáveis globais
+ * e outras funções para gerenciar as interações do usuário e as operações do sistema.
+ */
 void exibirMenuPadrao() {
     int opcao;
     inicializarUsuario();
@@ -78,7 +102,7 @@ void exibirMenuPadrao() {
         printf("7. Sair\n");
 
         opcao = obterOpcao();
-        
+
         switch(opcao){
                 case 1:
                     listarSalas();
@@ -103,13 +127,28 @@ void exibirMenuPadrao() {
                     exit(0);
                     break;
                 default:
-                    printf("Opï¿½ï¿½o invï¿½lida!\n");
+                    printf("Opção inválida!\n");
         }
         printf("\nPressione ENTER para continuar\n");
         clearInputBuffer();
     } while (opcao != 7);
 }
 
+
+
+/**
+ * @brief Exibe e gerencia o menu do administrador.
+ *
+ * Esta função apresenta uma interface para usuários administradores, permitindo que eles realizem
+ * várias tarefas administrativas, como gerenciar usuários, salas e reservas.
+ * Ela inicializa os dados de usuários e salas, e então entra em um loop para
+ * continuamente exibir opções e processar a entrada do usuário até que ele escolha sair.
+ *
+ * A função depende de variáveis globais e outras funções para gerenciar as interações
+ * do usuário e as operações do sistema.
+ *
+ * @note Esta função não recebe parâmetros e não retorna valor.
+ */
 void exibirMenuADM() {
     int opcao;
     inicializarUsuario();
@@ -117,8 +156,8 @@ void exibirMenuADM() {
 
     do {
         printf("=== ReuniON ===\n");
-        printf("1. Cadastrar usuï¿½rio\n");
-        printf("2. Alterar usuï¿½rio\n");
+        printf("1. Cadastrar usuário\n");
+        printf("2. Alterar usuário\n");
         printf("3. Cadastrar sala\n");
         printf("4. Listar salas\n");
         printf("5. Alterar sala\n");
@@ -166,11 +205,13 @@ void exibirMenuADM() {
                     exit(0);
                     break;
                 default:
-                    printf("Opï¿½ï¿½o invï¿½lida!\n");
+                    printf("Opção inválida!\n");
         }
         printf("\nPressione ENTER para continuar\n");
         clearInputBuffer();
     } while (opcao != 11);
 }
+
+
 
 

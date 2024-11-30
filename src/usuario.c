@@ -2,6 +2,8 @@
 #include <locale.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
+
 #include "../lib/usuario.h"
 
 int posicaoNovoUsuario = 0;
@@ -10,52 +12,48 @@ pUsuario vUsuarios[MAX_USUARIOS];
 
 int indiceUsuario;
 
+
 /**
- * @brief Inicializa o array de usuï¿½rios e carrega os usuï¿½rios existentes.
+ * @brief Inicializa o array de usuários e carrega os usuários existentes.
  *
- * Esta funï¿½ï¿½o inicializa o array de usuï¿½rios, definindo todas as posiï¿½ï¿½es como NULL,
- * e em seguida carrega todos os usuï¿½rios existentes do armazenamento para o array.
+ * Esta função inicializa o array global de usuários definindo todas as posições como NULL,
+ * e em seguida carrega todos os usuários existentes do banco de dados para o array.
  *
- * @return void
- *
- * @note Esta funï¿½ï¿½o modifica as variï¿½veis globais vUsuarios e posicaoNovoUsuario.
+ * @note Esta função modifica as variáveis globais vUsuarios e posicaoNovoUsuario.
+ * @note Utiliza a função carregarTodosUsuarios() para carregar os usuários existentes.
  */
 void inicializarUsuario() {
-    // Varre o vetor e coloca NULL em todas as posiï¿½ï¿½es
+    // Varre o vetor e coloca NULL em todas as posições
     for (int i = 0; i < MAX_USUARIOS; i++) {
         vUsuarios[i] = NULL;
     }
     posicaoNovoUsuario = carregarTodosUsuarios(vUsuarios);
 }
 
+
 /**
- * @brief Realiza o cadastro de um novo usuï¿½rio no sistema.
+ * @brief Cadastra um novo usuário no sistema.
  *
- * Esta funï¿½ï¿½o verifica se a posiï¿½ï¿½o atual para cadastro estï¿½ vazia. Caso esteja,
- * aloca memï¿½ria para um novo usuï¿½rio, solicita os dados de matrï¿½cula, perfil de acesso e senha,
- * e os armazena na posiï¿½ï¿½o correspondente no vetor de usuï¿½rios.
+ * Esta função realiza o cadastro de um novo usuário, solicitando informações como
+ * nome, CPF, perfil de acesso e senha. O usuário é armazenado no array global vUsuarios
+ * e salvo no banco de dados.
+ *
+ * @note Esta função não recebe parâmetros, mas utiliza e modifica variáveis globais.
+ * @note Utiliza as funções clearInputBuffer(), validarCPF(), e salvarNovoUsuarioDb().
  *
  * @return void
- *
- * @note Esta funï¿½ï¿½o modifica as variï¿½veis globais vUsuarios e posicaoNovoUsuario.
- * @note A funï¿½ï¿½o utiliza a funï¿½ï¿½o clearInputBuffer() para limpar o buffer de entrada.
- * @note A funï¿½ï¿½o utiliza a funï¿½ï¿½o carregarTodosUsuarios() para carregar os usuï¿½rios existentes.
- * @note A funï¿½ï¿½o utiliza a funï¿½ï¿½o printf() para solicitar dados ao usuï¿½rio e exibir mensagens de status.
- * @note A funï¿½ï¿½o utiliza a funï¿½ï¿½o malloc() para alocar memï¿½ria para um novo usuï¿½rio.
- * @note A funï¿½ï¿½o utiliza a funï¿½ï¿½o scanf() para ler dados do usuï¿½rio.
- * @note A funï¿½ï¿½o utiliza a funï¿½ï¿½o strcmp() para comparar strings.
  */
 void cadastroUsuario() {
-    
+
     if (vUsuarios[posicaoNovoUsuario] != NULL) {
-        printf("Posiï¿½ï¿½o jï¿½ preenchida.\n");
+        printf("Posição já preenchida.\n");
         return;
     }
 
-    // Aloca memï¿½ria para o novo usuï¿½rio
+    // Aloca memória para o novo usuário
     vUsuarios[posicaoNovoUsuario] = (pUsuario) malloc(sizeof(usuario));
     if (vUsuarios[posicaoNovoUsuario] == NULL) {
-        printf("Erro de alocaï¿½ï¿½o de memï¿½ria.\n");
+        printf("Erro de alocação de memória.\n");
         return;
     }
 
@@ -66,7 +64,7 @@ void cadastroUsuario() {
 
     clearInputBuffer();
     do{
-        printf("Digite o cpf do usuÃ¡rio: \n");
+        printf("Digite o CPF do usuário: \n");
         scanf("%s", vUsuarios[posicaoNovoUsuario]->cpf); 
     }while(validarCPF(vUsuarios[posicaoNovoUsuario]->cpf));
 
@@ -84,34 +82,33 @@ void cadastroUsuario() {
         printf("Cadastrado com sucesso!\n");
         posicaoNovoUsuario++;
     }else{
-        printf("Falha ao Cadastrar o novo usuÃ¡rio no Banco!\n");
+        printf("Falha ao Cadastrar o novo usuário no banco de dados!\n");
     }
 }
 
+
+
 /**
- * @brief Altera o perfil de um usuï¿½rio, acessï¿½vel apenas para administradores.
+ * @brief Altera os dados de um usuário existente no sistema.
  *
- * Esta funï¿½ï¿½o permite que um administrador altere o perfil de um usuï¿½rio no sistema.
- * O administrador deve fornecer sua prï¿½pria matrï¿½cula para autenticaï¿½ï¿½o
- * e, em seguida, a matrï¿½cula do usuï¿½rio cujo perfil deseja alterar.
+ * Esta função permite a alteração de diferentes campos de um usuário,
+ * incluindo nome, senha, perfil, CPF e status. O usuário é identificado
+ * pelo seu ID, e as alterações são salvas no banco de dados.
  *
- * @note Esta funï¿½ï¿½o modifica a variï¿½vel global vUsuarios.
- * @note A funï¿½ï¿½o utiliza as funï¿½ï¿½es printf() e scanf() para interaï¿½ï¿½o com o usuï¿½rio.
- * @note A funï¿½ï¿½o utiliza a funï¿½ï¿½o strcmp() para comparar strings.
- * @note A funï¿½ï¿½o utiliza fgets() para ler o novo perfil do usuï¿½rio.
- * @note A funï¿½ï¿½o utiliza strcspn() para remover o caractere de nova linha do input.
+ * @note Esta função não recebe parâmetros, mas utiliza e modifica variáveis globais.
+ * @note Utiliza as funções carregarTodosUsuarios(), validarCPF(), e alterarUsuarioDb().
  *
  * @return void
  */
 void alterarUsuario() {
 
-    printf("Digite o ID do usuï¿½rio que deseja alterar: \n");
+    printf("Digite o ID do usuário que deseja alterar: \n");
     scanf("%d", &indiceUsuario);
     if (indiceUsuario > posicaoNovoUsuario || indiceUsuario < 0){
-        printf("Usuï¿½rio nï¿½o encontrado.\n");
+        printf("Usuário não encontrado.\n");
         return;
     }
-    printf("Digite o que vocï¿½ deseja alterar:\n");
+    printf("Escolha o dado que deseja alterar:\n");
     printf("1. Nome\n");
     printf("2. Senha\n");
     printf("3. Perfil\n");
@@ -127,12 +124,12 @@ void alterarUsuario() {
             for (int j = 0; j < carregarTodosUsuarios(vUsuarios); j++) {
 
                 if (vUsuarios[j] != NULL && vUsuarios[j]->id == indiceUsuario) {
-                printf("Digite o nome do usuÃ¡rio: ");
+                printf("Digite o nome do usuário: ");
                 scanf("%s",vUsuarios[j]->nome);
                 if (alterarUsuarioDb(vUsuarios[j])){
                     printf("Nome alterado com sucesso!\n");
                 }else{
-                    printf("Falha ao alterar o Nome de UsuÃ¡rio, Tente novamente mais tarde!\n");
+                    printf("Falha ao alterar o nome de usuário. Tente novamente mais tarde!\n");
                 }
             return;
             }
@@ -143,13 +140,13 @@ void alterarUsuario() {
             // Alterar senha
             for (int j = 0; j < carregarTodosUsuarios(vUsuarios); j++) {
                 if (vUsuarios[j] != NULL && vUsuarios[j]->id == indiceUsuario) {
-                    printf("Digite a nova senha do usuÃ¡rio: ");
+                    printf("Digite a nova senha do usuário: ");
                     scanf("%s",vUsuarios[j]->senha);
 
                     if (alterarUsuarioDb(vUsuarios[j])){
                         printf("Senha alterada com sucesso!\n");
                     }else{
-                        printf("Falha ao alterar a Senha de UsuÃ¡rio, Tente novamente mais tarde!\n");
+                        printf("Falha ao alterar a senha de usuário. Tente novamente mais tarde!\n");
                     }
                 }
             }
@@ -162,10 +159,10 @@ void alterarUsuario() {
                     char* perfil = strcmp(vUsuarios[j]->perfil,"COMUM") == 0 ? "ADM" : "COMUM";
                     char escolha[6];
                     do{
-                    printf("O Perfil de acesso de %s atualmente Ã© %s.\nDeseja Altera-lo para %s? (s/n): ",
+                    printf("O Perfil de acesso de %s atualmente é %s.\nDeseja alterá-lo para %s? (s/n): ",
                     vUsuarios[j]->nome,vUsuarios[j]->perfil,perfil);
                         scanf("%s",escolha);
-                        if(strcmp(escolha,"s") != 0 && strcmp(escolha,"n") != 0) printf("OpÃ§Ã£o InvÃ¡lida!\n");
+                        if(strcmp(escolha,"s") != 0 && strcmp(escolha,"n") != 0) printf("Opção inválida!\n");
                     }while(strcmp(escolha,"s") != 0 && strcmp(escolha,"n") != 0);
 
                     if (tolower(escolha[0]) == 's'){
@@ -173,10 +170,10 @@ void alterarUsuario() {
                         if (alterarUsuarioDb(vUsuarios[j])){
                             printf("Perfil alterado com sucesso!\n");
                         }else{
-                            printf("Falha ao alterar o perfil de UsuÃ¡rio, Tente novamente mais tarde!\n");
+                            printf("Falha ao alterar o perfil de usuário. Tente novamente mais tarde!\n");
                         }
                     }else{
-                        printf("OperaÃ§Ã£o Cancelada!\n");
+                        printf("Operação cancelada!\n");
                     }
                 }
             }
@@ -185,16 +182,16 @@ void alterarUsuario() {
             // Alterar CPF
             for (int j = 0; j < carregarTodosUsuarios(vUsuarios); j++) {
                 if (vUsuarios[j] != NULL && vUsuarios[j]->id == indiceUsuario) {
-                    printf("Digite o CPF do usuÃ¡rio (Sem pontos ou traÃ§os): ");
+                    printf("Digite o CPF do usuário (Sem pontos ou traços): ");
                     do{
                         scanf("%s",vUsuarios[j]->cpf);
-                        if(validarCPF(vUsuarios[j]->cpf)==0) printf("CPF InvÃ¡lido! Digite Novamente! (Sem pontos ou traÃ§os)\n");
+                        if(validarCPF(vUsuarios[j]->cpf)==0) printf("CPF inválido! Digite novamente (sem pontos ou traços)!\n");
                     }while(validarCPF(vUsuarios[j]->cpf)==0);
 
                     if (alterarUsuarioDb(vUsuarios[j])){
                         printf("Documento alterado com sucesso!\n");
                     }else{
-                        printf("Falha ao alterar CPF de UsuÃ¡rio, Tente novamente mais tarde!\n");
+                        printf("Falha ao alterar CPF do usuário. Tente novamente mais tarde!\n");
                     }
                 }
             }
@@ -207,10 +204,10 @@ void alterarUsuario() {
                     char* estado = strcmp(vUsuarios[j]->status,"ATIVO") == 0 ? "INATIVO" : "ATIVO";
                     char escolha[6];
                     do{
-                    printf("O Status de acesso de %s atualmente Ã© %s.\nDeseja Altera-lo para %s? (s/n): ",
+                    printf("O Status de acesso de %s atualmente é %s.\nDeseja alterá-lo para %s? (s/n): ",
                     vUsuarios[j]->nome,vUsuarios[j]->status,estado);
                         scanf("%s",escolha);
-                        if(strcmp(escolha,"s") != 0 && strcmp(escolha,"n") != 0) printf("OpÃ§Ã£o InvÃ¡lida!\n");
+                        if(strcmp(escolha,"s") != 0 && strcmp(escolha,"n") != 0) printf("Opção inválida!\n");
                     }while(strcmp(escolha,"s") != 0 && strcmp(escolha,"n") != 0);
 
                     if (tolower(escolha[0]) == 's'){
@@ -218,21 +215,34 @@ void alterarUsuario() {
                         if (alterarUsuarioDb(vUsuarios[j])){
                             printf("Status alterado com sucesso!\n");
                         }else{
-                            printf("Falha ao alterar o Status de UsuÃ¡rio, Tente novamente mais tarde!\n");
+                            printf("Falha ao alterar o Status do usuário. Tente novamente mais tarde!\n");
                         }
                     }else{
-                        printf("OperaÃ§Ã£o Cancelada!\n");
+                        printf("Operação cancelada!\n");
                     }
                 }
             }
         break;
 
         default:
-        printf("Opï¿½ï¿½o invï¿½lida!\n");
+        printf("Operação inválida!\n");
         break;                
     }        
 }
 
+
+/**
+ * @brief Altera a senha de um usuário existente.
+ *
+ * Esta função permite que um usuário altere sua senha. A nova senha é solicitada
+ * ao usuário e, em seguida, atualizada no banco de dados.
+ *
+ * @param usuarioAtual Ponteiro para a estrutura do usuário cuja senha será alterada.
+ *
+ * @return void
+ *
+ * @note A função utiliza alterarUsuarioDb() para persistir a alteração no banco de dados.
+ */
 void alterarSenha(pUsuario usuarioAtual){
 
     printf("Digite a nova senha: ");
@@ -241,10 +251,26 @@ void alterarSenha(pUsuario usuarioAtual){
     if (alterarUsuarioDb(usuarioAtual)){
     printf("Senha alterada com sucesso!\n");
     }else{
-    printf("Falha ao alterar a Senha de UsuÃ¡rio, Tente novamente mais tarde!\n");
+    printf("Falha ao alterar a senha do usuário. Tente novamente mais tarde!\n");
     } 
 }
 
+
+/**
+ * @brief Localiza um usuário no sistema com base no índice e senha fornecidos.
+ *
+ * Esta função aloca memória para um usuário temporário, busca o usuário no banco de dados
+ * usando o índice e a senha fornecidos, e retorna o usuário encontrado.
+ *
+ * @param indiceUsuario O índice (ID) do usuário a ser localizado.
+ * @param senha A senha do usuário para autenticação.
+ *
+ * @return pUsuario Retorna um ponteiro para a estrutura do usuário encontrado.
+ *                  Se nenhum usuário for encontrado, retorna NULL ou um ponteiro para uma estrutura vazia,
+ *                  dependendo da implementação de localizarUsuarioDb().
+ *
+ * @note A memória alocada para userTemp deve ser liberada pelo chamador da função quando não for mais necessária.
+ */
 pUsuario localizarUsuario(int indiceUsuario, char senha[30]) {
     pUsuario userTemp = (pUsuario)malloc(sizeof(usuario));
     userTemp = localizarUsuarioDb(indiceUsuario,senha);

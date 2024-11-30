@@ -1,13 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
+
 #include "../lib/reservaDB.h"
 
-
+/**
+ * @brief Carrega todas as reservas do arquivo para um vetor de estruturas.
+ *
+ * Esta função lê o arquivo de reservas, aloca memória para cada reserva
+ * e preenche o vetor de estruturas com os dados lidos.
+ *
+ * @param vetorReservas Ponteiro para o vetor de ponteiros de estruturas de reservas
+ *                      que será preenchido com os dados lidos do arquivo.
+ *
+ * @return Retorna o ID da última reserva lida (maior ID) se a leitura for bem-sucedida,
+ *         ou 0 se o arquivo estiver vazio ou não puder ser aberto.
+ */
 int carregarTodasAsReservas(pReservas *vetorReservas){
     FILE *arquivo = fopen(PATH_RESERVA, "r");
     if (arquivo == NULL) {
-        printf("\nBanco de Dados nï¿½o encontrado!\n");
+        printf("\nBanco de Dados não encontrado!\n");
         return 0;
     }
     char linha[256];
@@ -38,10 +51,22 @@ int carregarTodasAsReservas(pReservas *vetorReservas){
 
 }
 
+
+/**
+ * @brief Salva uma nova reserva no arquivo de reservas.
+ *
+ * Esta função abre o arquivo de reservas em modo de anexação e escreve
+ * os detalhes da nova reserva no final do arquivo.
+ *
+ * @param novaReserva Ponteiro para a estrutura contendo os detalhes da nova reserva.
+ *
+ * @return Retorna 1 se a reserva foi salva com sucesso, 0 se houve falha
+ *         (arquivo não encontrado ou ID da reserva inválido).
+ */
 int salvarNovaReserva(pReservas novaReserva){
     FILE *arquivo = fopen(PATH_RESERVA, "a");
     if (arquivo == NULL) {
-        printf("\nBanco de Dados nï¿½o encontrado!\n");
+        printf("\nBanco de Dados não encontrado!\n");
         return 0;
     }
     if (novaReserva->id != 0){
@@ -63,6 +88,19 @@ int salvarNovaReserva(pReservas novaReserva){
     }
 }
 
+
+/**
+ * @brief Altera uma reserva de usuário no arquivo de reservas.
+ *
+ * Esta função lê o arquivo de reservas, procura pela reserva com o ID correspondente,
+ * e a substitui com os novos dados fornecidos. As outras reservas são mantidas inalteradas.
+ *
+ * @param reserva Ponteiro para a estrutura contendo os novos dados da reserva a ser alterada.
+ *                O ID da reserva é usado para identificar qual reserva deve ser modificada.
+ *
+ * @return Retorna 1 se a reserva foi encontrada e alterada com sucesso, 0 se a reserva
+ *         não foi encontrada ou se houve um erro ao abrir o arquivo.
+ */
 int alterarReservaUsuario(pReservas reserva){
     char *caminhoTemp = "tempReserva.csv";
     int encontrado = 0;
@@ -70,7 +108,7 @@ int alterarReservaUsuario(pReservas reserva){
     FILE *arquivoTemp = fopen(caminhoTemp, "w");
 
     if (arquivo == NULL){
-        printf("Banco de dados nï¿½o encontrado!\n");
+        printf("Banco de dados não encontrado!\n");
         fclose(arquivo);
         fclose(arquivoTemp);
         return 0;
@@ -82,7 +120,7 @@ int alterarReservaUsuario(pReservas reserva){
         strcpy(linhaAux, linha);
         linha[strcspn(linha, "\n")] = 0;
         char *registro = strtok(linha, ",");
-        
+
         if (atoi(registro) == reserva->id){
            fprintf(arquivoTemp,
             "%d,%d,%d,%s,%s,%s,%s,%d\n",
@@ -99,7 +137,7 @@ int alterarReservaUsuario(pReservas reserva){
             fputs(linhaAux, arquivoTemp);
         }
     }
-    
+
     fclose(arquivo);
     fclose(arquivoTemp);
 
@@ -109,10 +147,25 @@ int alterarReservaUsuario(pReservas reserva){
     return encontrado;
 }
 
+
+/**
+ * @brief Lista as reservas de um usuário específico ou todas as reservas para um administrador.
+ *
+ * Esta função lê o arquivo de reservas e preenche um vetor de estruturas com as reservas
+ * correspondentes ao usuário fornecido. Se o usuário for um administrador, todas as reservas
+ * são listadas.
+ *
+ * @param user Ponteiro para a estrutura do usuário cujas reservas serão listadas.
+ * @param vetorReservas Ponteiro para o vetor de ponteiros de estruturas de reservas
+ *                      que será preenchido com as reservas encontradas.
+ *
+ * @return Retorna o número de reservas encontradas e adicionadas ao vetor.
+ *         Retorna 0 se o arquivo não puder ser aberto ou estiver vazio.
+ */
 int listarReservasUsuario(pUsuario user,pReservas *vetorReservas){
     FILE *arquivo = fopen(PATH_RESERVA, "r");
     if (arquivo == NULL) {
-        printf("\nBanco de Dados nï¿½o encontrado!\n");
+        printf("\nBanco de Dados não encontrado!\n");
         return 0;
     }
     char linha[256];
@@ -150,13 +203,30 @@ int listarReservasUsuario(pUsuario user,pReservas *vetorReservas){
 
 }
 
+
+/**
+ * @brief Verifica a disponibilidade de uma sala para reserva em um determinado período.
+ *
+ * Esta função verifica se uma sala específica está disponível para reserva no período
+ * especificado, consultando o arquivo de reservas existentes.
+ *
+ * @param numeroSala O número da sala a ser verificada.
+ * @param dataInicial A data inicial da reserva desejada (formato: "DD/MM/AAAA").
+ * @param horaInicial A hora inicial da reserva desejada (formato: "HH:MM").
+ * @param dataFinal A data final da reserva desejada (formato: "DD/MM/AAAA").
+ * @param horaFinal A hora final da reserva desejada (formato: "HH:MM").
+ *
+ * @return Retorna 0 se a sala estiver disponível no período especificado,
+ *         1 se houver sobreposição com uma reserva existente, ou
+ *         0 se ocorrer um erro ao abrir o arquivo ou se o arquivo estiver vazio.
+ */
 int verificarDisponibilidade(int numeroSala, char *dataInicial, char *horaInicial, char *dataFinal, char *horaFinal){
     FILE *arquivo = fopen(PATH_RESERVA, "r");
     if (arquivo == NULL) {
-        printf("\nBanco de Dados nï¿½o encontrado!\n");
+        printf("\nBanco de Dados não encontrado!\n");
         return 0;
     }
-    
+
     //Teste para verificar se o arquivo estÃ¡ vazio
     int ch = fgetc(arquivo); // Tenta ler o primeiro caractere
     if (ch == EOF) {
@@ -195,9 +265,9 @@ int verificarDisponibilidade(int numeroSala, char *dataInicial, char *horaInicia
                         (hrFinal < horaFimLida || (hrFinal == horaFimLida && minFinal <= minFimLido))
                         ){
                             if (hrFinal+minFinal == horaIniLida+minIniLido) return 0;
-                        printf("JÃ¡ Existe reserva para essa sala nesse horÃ¡rio!\n");
+                        printf("Já existe reserva para essa sala nesse horário!\n");
                         clearInputBuffer();
-                        return 1; // SobreposiÃ§Ã£o de horarios para essa sala
+                        return 1; // Sobreposição de horarios para essa sala
                     }
                 }
             }
@@ -207,10 +277,22 @@ int verificarDisponibilidade(int numeroSala, char *dataInicial, char *horaInicia
     return 0;
 }
 
+
+/**
+ * @brief Exibe todas as reservas para uma sala específica.
+ *
+ * Esta função lê o arquivo de reservas e imprime os detalhes de todas as reservas
+ * que correspondem ao número da sala fornecido.
+ *
+ * @param numeroSala O número da sala para a qual as reservas devem ser exibidas.
+ *
+ * @return Retorna 1 se pelo menos uma reserva for encontrada e exibida para a sala especificada,
+ *         ou 0 se nenhuma reserva for encontrada ou se houver um erro ao abrir o arquivo.
+ */
 int exibirReservasPorSala(int numeroSala){
      FILE *arquivo = fopen(PATH_RESERVA, "r");
     if (arquivo == NULL) {
-        printf("\nBanco de Dados nÃ£o encontrado!\n");
+        printf("\nBanco de Dados não encontrado!\n");
         return 0;
     }
     char linha[256];
@@ -223,7 +305,7 @@ int exibirReservasPorSala(int numeroSala){
         linha[strcspn(linhaAux, "\n")] = 0;
         char *registro = strtok(linhaAux, ",");//Pega a primeira coluna o ID da reserva
         idReserva = atoi(registro);
-        registro = strtok(NULL,",");// Pega a segunda coluna, Id do UsuÃ¡rio
+        registro = strtok(NULL,",");// Pega a segunda coluna, Id do usuário
         registro = strtok(NULL,",");//Pega a terceira coluna, Numero da sala
 
         if (atoi(registro) == numeroSala){
@@ -243,3 +325,4 @@ int exibirReservasPorSala(int numeroSala){
     return encontrado;
 
 }
+

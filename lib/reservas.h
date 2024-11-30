@@ -28,31 +28,18 @@ extern pReservas vReservas[MAX_RESERVAS];
 
 void inicializarReservas();
 
-/**
-*Fun��o para Reservar uma sala, com base em sua diponibilidade.
-*
-*/
+
 int reservarSala(pUsuario nome);
 
-/**
-*Fun��o para Alterar uma reserva.
-* 
-*/
+
 int alterarReserva(pUsuario nome);
 
-/**
-*Fun��o para Cancelar uma reserva.
-* 
-*/
+
 int cancelarReserva(pUsuario nome);
 
 int listarReservas(pUsuario usuarioAtual);
 
 
-/**
-*Fun��o para verficar a disponibilidade de salas.
-* 
-*/
 int verificarDisponibilidadeDeSalas(int numeroSala, char* dataInicial);
 
 #endif

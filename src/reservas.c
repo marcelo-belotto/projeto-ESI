@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <locale.h>
+
 #include "../lib/reservas.h"
 #include "../lib/reservaDB.h"
 
@@ -9,6 +11,17 @@ pReservas novaReserva;
 pReservas vReservas[MAX_RESERVAS];
 int posicaoReservas = 0;
 
+/**
+ * @brief Inicializa o array de reservas e carrega as reservas com base no perfil do usu·rio.
+ *
+ * Esta funÁ„o inicializa o array global de reservas (vReservas) definindo todos os elementos como NULL.
+ * Em seguida, carrega as reservas no array com base no perfil do usu·rio. Se o usu·rio for um administrador,
+ * todas as reservas s„o carregadas. Caso contr·rio, apenas as reservas do usu·rio s„o carregadas.
+ *
+ * @param user Ponteiro para a estrutura de usu·rio contendo informaÁıes do usu·rio, incluindo o perfil.
+ *
+ * @return void Esta funÁ„o n„o retorna um valor.
+ */
 void inicializarReservas(pUsuario user){
     for (int i = 0; i < MAX_RESERVAS;i++){
         vReservas[i] = NULL;
@@ -20,6 +33,20 @@ void inicializarReservas(pUsuario user){
     }
 }
 
+
+
+/**
+ * @brief Realiza a reserva de uma sala de reuni„o para um usu·rio.
+ *
+ * Esta funÁ„o guia o usu·rio atravÈs do processo de reserva de uma sala,
+ * solicitando informaÁıes como n˙mero da sala, data e hora de inÌcio e fim.
+ * Verifica a disponibilidade da sala e salva a nova reserva se for possÌvel.
+ *
+ * @param user Ponteiro para a estrutura de usu·rio que est· fazendo a reserva.
+ *
+ * @return int Retorna 0 se o usu·rio cancelar a operaÁ„o ou se ocorrer um erro,
+ *             e um valor n„o especificado (possivelmente 1) se a reserva for bem-sucedida.
+ */
 int reservarSala(pUsuario user){
     char dataAux[11];
     char horaAux[6];
@@ -31,16 +58,16 @@ int reservarSala(pUsuario user){
     do{    
         listarSalas();
         do{
-        printf("\nDigite o numero da Sala: (Digite 0 para voltar ao menu anterior!) ");
+        printf("\nDigite o n˙mero da Sala: (Digite 0 para voltar ao menu anterior) ");
         scanf("%d",&novaReserva->numeroSala);
         if (novaReserva->numeroSala == 0){
             free(novaReserva);
             return 0;
         }   
-            if(verificarExistenciaDeSala(novaReserva->numeroSala) == 0) printf("Numero de sala Inexistente! Tente novamente!\n");
+            if(verificarExistenciaDeSala(novaReserva->numeroSala) == 0) printf("N˙mero de sala inexistente! Tente novamente!\n");
         }while(verificarExistenciaDeSala(novaReserva->numeroSala) == 0);
         do{
-            printf("Digite a Data de Inicio da Reuni√£o (dd/mm/yyyy): ");
+            printf("Digite a data de inÌcio da reuni„o (dd/mm/yyyy): ");
             scanf("%s",dataAux);
         }while(validarData(dataAux) == 0);
         clearInputBuffer();
@@ -49,23 +76,23 @@ int reservarSala(pUsuario user){
         verificarDisponibilidadeDeSalas(novaReserva->numeroSala,novaReserva->dataInicio);
 
         do{
-            printf("Digite a hora de Inicio da Reuni√£o (HH:MM): ");
+            printf("Digite a hora de inÌcio da reuni„o (HH:MM): ");
             scanf("%s",horaAux);
         }while(validarHora(horaAux,novaReserva->dataInicio) == 0);
         clearInputBuffer();
         strcpy(novaReserva->horaInicio,horaAux);
 
         do{
-            printf("Digite a Data de Final da Reuni√£o (dd/mm/yyyy): ");
+            printf("Digite a data de fim da reuni„o (dd/mm/yyyy): ");
             scanf("%s",dataAux);
         }while(validarData(dataAux) == 0);
         clearInputBuffer();
         strcpy(novaReserva->dataFinal,dataAux);
 
         do{
-            printf("Digite a hora de Final da Reuni√£o (HH:MM): ");
+            printf("Digite a hora de fim da reuni„o (HH:MM): ");
             scanf("%s",horaAux);
-            if(comparaHoras(novaReserva->horaInicio,horaAux) != 0) printf("Hora Final n√£o pode se menor que a hora inicial!\n");
+            if(comparaHoras(novaReserva->horaInicio,horaAux) != 0) printf("Hora final n„o pode se menor que a hora inicial!\n");
         }while(validarHora(horaAux,novaReserva->dataFinal) == 0 || comparaHoras(novaReserva->horaInicio,horaAux) != 0);
         clearInputBuffer();
         strcpy(novaReserva->horaFinal,horaAux);
@@ -78,10 +105,23 @@ int reservarSala(pUsuario user){
     if (salvarNovaReserva(novaReserva)){
         printf("Reserva efetuada com sucesso!\n");
     }else{
-        printf("Falha ao Reservar sala de Reuni√£o, Tente novamente mais tarde!\n");
+        printf("Falha ao Reservar sala de reuni„o. Tente novamente!\n");
     }
 }
 
+/**
+ * @brief Altera uma reserva existente para um usu·rio.
+ *
+ * Esta funÁ„o permite que um usu·rio altere uma reserva existente. Ela lista as reservas
+ * disponÌveis, solicita ao usu·rio que escolha uma reserva para alterar, e ent„o guia o
+ * usu·rio atravÈs do processo de modificaÁ„o dos detalhes da reserva, incluindo a sala,
+ * data e hora de inÌcio e fim.
+ *
+ * @param user Ponteiro para a estrutura de usu·rio que est· alterando a reserva.
+ *
+ * @return int Retorna 1 se a reserva for alterada com sucesso, 0 se a operaÁ„o for
+ *             cancelada ou se ocorrer um erro durante o processo de alteraÁ„o.
+ */
 int alterarReserva(pUsuario user){
     int idReserva;
     pReservas reservaAlterada;
@@ -118,7 +158,7 @@ int alterarReserva(pUsuario user){
                 break;
             } 
         }
-        if (!idCorrespondente) printf("Id da reserva n√£o aceito, Tente Novamente!\n");
+        if (!idCorrespondente) printf("Id da reserva n„o aceito. Tente Novamente!\n");
     }while(idCorrespondente == 0);
 
     reservaAlterada->id = idReserva;
@@ -126,13 +166,13 @@ int alterarReserva(pUsuario user){
     do{
         do{
             listarSalas();
-            printf("\nDigite o numero da Sala: ");
+            printf("\nDigite o n˙mero da Sala: ");
             scanf("%d",&reservaAlterada->numeroSala);
-            if (verificarExistenciaDeSala(reservaAlterada->numeroSala) == 0) printf("Numero de sala Inexistente! Tente novamente!\n");
+            if (verificarExistenciaDeSala(reservaAlterada->numeroSala) == 0) printf("N˙mero de sala inexistente! Tente novamente!\n");
         }while(verificarExistenciaDeSala(reservaAlterada->numeroSala) == 0);
 
         do{
-            printf("Digite a Data de Inicio da Reuni√£o (dd/mm/yyyy): ");
+            printf("Digite a data de inÌcio da reuni„o (dd/mm/yyyy): ");
             scanf("%s",dataAux);
         }while(validarData(dataAux) == 0);
         clearInputBuffer();
@@ -141,23 +181,23 @@ int alterarReserva(pUsuario user){
         verificarDisponibilidadeDeSalas(reservaAlterada->numeroSala,reservaAlterada->dataInicio);
 
         do{
-                printf("Digite a hora de Inicio da Reuni√£o (HH:MM): ");
+                printf("Digite a hora de inÌcio da reuni„o (HH:MM): ");
                 scanf("%s",horaAux);
         }while(validarHora(horaAux,reservaAlterada->dataInicio) == 0);
         clearInputBuffer();
         strcpy(reservaAlterada->horaInicio,horaAux);
 
         do{
-            printf("Digite a Data de Final da Reuni√£o (dd/mm/yyyy): ");
+            printf("Digite a data final da reuni„o (dd/mm/yyyy): ");
             scanf("%s",dataAux);
         }while(validarData(dataAux) == 0);
         clearInputBuffer();
         strcpy(reservaAlterada->dataFinal,dataAux);
 
         do{
-            printf("Digite a hora de Final da Reuni√£o (HH:MM): ");
+            printf("Digite a hora final da reuni„o (HH:MM): ");
             scanf("%s",horaAux);
-            if(comparaHoras(reservaAlterada->horaInicio,horaAux) != 0) printf("Hora Final n√£o pode se menor que a hora inicial!\n");
+            if(comparaHoras(reservaAlterada->horaInicio,horaAux) != 0) printf("Hora final n„o pode se menor que a hora inicial!\n");
         }while(validarHora(horaAux,reservaAlterada->dataFinal) == 0 || comparaHoras(reservaAlterada->horaInicio,horaAux) != 0);
         clearInputBuffer();
         strcpy(reservaAlterada->horaFinal,horaAux);
@@ -176,22 +216,35 @@ int alterarReserva(pUsuario user){
     if (alterarReservaUsuario(reservaAlterada) == 1){
         printf("Reserva alterada com sucesso!\n");
     }else{
-        printf("Falha ao Reservar sala de Reuni√£o, Tente novamente mais tarde!\n");
+        printf("Falha ao reservar sala de reuni„o. Tente novamente!\n");
     }
 
     return 1;
 }
 
+
+/**
+ * @brief Cancela uma reserva existente para um usu·rio.
+ *
+ * Esta funÁ„o permite que um usu·rio cancele uma de suas reservas existentes.
+ * Ela lista as reservas ativas do usu·rio, solicita o ID da reserva a ser cancelada,
+ * e ent„o processa o cancelamento, atualizando o status da reserva.
+ *
+ * @param user Ponteiro para a estrutura de usu·rio que est· cancelando a reserva.
+ *
+ * @return int Retorna 1 se a reserva for cancelada com sucesso, 0 se a operaÁ„o for
+ *             cancelada pelo usu·rio ou se ocorrer um erro durante o processo de cancelamento.
+ */
 int cancelarReserva(pUsuario user){
 
     inicializarReservas(user);
     if(vReservas[0] == NULL){
-        printf("Sem Reservas para cancelar!\n");
+        printf("Sem reservas para cancelar!\n");
         return 0;
     }else{
         for (int i = 0; i < MAX_RESERVAS && vReservas[i] != NULL;i++){
             if (vReservas[i]->status == 1){
-                printf("ID: %d, N√∫mero da Sala:%d, Data de Inicio: %s %s - Data Final: %s %s\n",
+                printf("ID: %d, N˙mero da Sala:%d, Data Inicial: %s %s - Data Final: %s %s\n",
                 vReservas[i]->id,
                 vReservas[i]->numeroSala,
                 vReservas[i]->dataInicio,
@@ -203,11 +256,11 @@ int cancelarReserva(pUsuario user){
     }
 
     int idReserva;
-    printf("\nDigite o ID da reserva que deseja cancelar: (Digite 0 para voltar ao menu Anterior): ");
+    printf("\nDigite o ID da reserva que deseja cancelar: (Digite 0 para voltar ao menu anterior): ");
     scanf("%d", &idReserva);
     clearInputBuffer();
     if(idReserva == 0){
-        printf("Opera√ß√£o Cancelada!");
+        printf("OperaÁ„o cancelada!");
         return 0;
     } 
 
@@ -233,31 +286,54 @@ int cancelarReserva(pUsuario user){
 
 }
 
+
+/**
+ * @brief Lista todas as reservas para o usu·rio atual.
+ *
+ * Esta funÁ„o inicializa as reservas para o usu·rio atual e ent„o exibe
+ * uma lista de todas as reservas encontradas. Se n„o houver reservas,
+ * uma mensagem apropriada È exibida.
+ *
+ * @param usuarioAtual Ponteiro para a estrutura de usu·rio contendo informaÁıes
+ *                     do usu·rio atual.
+ */
 int listarReservas(pUsuario usuarioAtual){
-    
+
     inicializarReservas(usuarioAtual);
     if (posicaoReservas == 0){
-        printf("Nenhuma Reserva Encontrada!\n");
+        printf("Nenhuma reserva encontrada!\n");
     }
     for (int i = 0; i < MAX_RESERVAS && vReservas[i] != NULL;i++){
-        printf("Reserva N¬∫: %d - Sala: %d Data Inicial: %s %s - Data Final: %s %s Ativa?: %s\n",
+        printf("Reserva N∫: %d - Sala: %d Data Inicial: %s %s - Data Final: %s %s Ativa? %s\n",
         vReservas[i]->id,
         vReservas[i]->numeroSala,
         vReservas[i]->dataInicio,
         vReservas[i]->horaInicio,
         vReservas[i]->dataFinal,
         vReservas[i]->horaFinal,
-        vReservas[i]->status == 1? "SIM": "N√ÉO");
+        vReservas[i]->status == 1? "SIM": "N√O");
     }
 }
 
+
+/**
+ * @brief Verifica e exibe os hor·rios indisponÌveis para uma sala em uma data especÌfica.
+ *
+ * Esta funÁ„o carrega todas as reservas, verifica as reservas existentes para a sala
+ * e data especificadas, e exibe os hor·rios que j· est„o reservados (indisponÌveis).
+ *
+ * @param numeroSala O n˙mero da sala para verificar a disponibilidade.
+ * @param dataInicial A data para a qual se deseja verificar a disponibilidade (formato: "dd/mm/yyyy").
+ *
+ * @return int Sempre retorna 0, indicando que a funÁ„o foi executada.
+ */
 int verificarDisponibilidadeDeSalas(int numeroSala, char* dataInicial){
     int existemAgendamentos = 0;
     carregarTodasAsReservas(vReservas);
-    printf("Hor√°rios INDISPON√çVEIS para reserva da sala %d no dia %s:\n\n",numeroSala,dataInicial);
+    printf("Hor·rios indisponÌveis para reserva da sala %d no dia %s:\n\n",numeroSala,dataInicial);
     for(int i = 0; i < MAX_RESERVAS && vReservas[i] != NULL;i++){
         if (numeroSala == vReservas[i]->numeroSala && (strcmp(vReservas[i]->dataInicio,dataInicial) == 0) && vReservas[i]->status == 1){
-                printf("Data de Inicio: %s %s - Data Final: %s %s\n",
+                printf("Data inicial: %s %s - Data final: %s %s\n",
                 vReservas[i]->dataInicio,
                 vReservas[i]->horaInicio,
                 vReservas[i]->dataFinal,
@@ -265,7 +341,7 @@ int verificarDisponibilidadeDeSalas(int numeroSala, char* dataInicial){
                 existemAgendamentos++;
         }
     }
-    if (!existemAgendamentos) printf("N√£o existem agendamentos para o dia!");
+    if (!existemAgendamentos) printf("N„o existem agendamentos para o dia especificado!");
     puts("");
     return 0;
 }

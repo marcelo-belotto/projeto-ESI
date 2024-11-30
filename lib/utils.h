@@ -3,13 +3,13 @@
 
 #include <ctype.h>
 /**
- * Fun√ß√£o para deixar texto em caixa alta
+ * FunÁ„o para deixar texto em caixa alta
  * @param str string a ser modificada
  */
 void toUppercase(char *str);
 
 /**
- * Fun√ß√£o para limpar o buffer - alternativa ao fflush(stdin)
+ * FunÁ„o para limpar o buffer - alternativa ao fflush(stdin)
  * @return 0 para conclu√≠do
  */
 int clearInputBuffer();

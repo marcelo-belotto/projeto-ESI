@@ -10,7 +10,7 @@ typedef struct Usuario usuario;
 typedef usuario *pUsuario;
 
 /**
-* Carrega os dados de todos os Usuarios (Primeira carga) e retorna a posi√ß√£o do ultimo √≠ndice
+* Carrega os dados de todos os Usuarios (Primeira carga) e retorna a posiÁ„o do ultimo Ìndice
 * @param usuarios Vetor de ponteiros com os ponteiros para as structs de usuario
 * @return retorna o Valor do indice final
 */
@@ -18,23 +18,23 @@ int carregarTodosUsuarios(pUsuario *usuarios);
 
 /**
 * Salva um Novo usuario no banco de dados (Arquivo CSV)
-* @param usuario Struct do novo usu√°rio
-* @return Retorna 0 se usuario n√£o for salvo e 1 se for salvo
+* @param usuario Struct do novo usu·rio
+* @return Retorna 0 se usuario n„o for salvo e 1 se for salvo
 */
 int salvarNovoUsuarioDb(pUsuario usuario);
 
 /**
-* Altera as informa√ß√µes do Usuario
-* @param usuario Ponteiro para o usu√°rio a ser alterado
-* @return Retorna 0 se usuario n√£o for alterado e 1 se for alterado
+* Altera as informaÁıes do usu·rio
+* @param usuario Ponteiro para o usu·rio a ser alterado
+* @return Retorna 0 se usuario n„o for alterado e 1 se for alterado
 */
 int alterarUsuarioDb(pUsuario usuario);
 
 /**
-* Localiza as informa√ß√µes do Usuario
-* @param id Numero de Identifica√ß√£o do usu√°rio a ser pesquisado
-* @param senha Senha do usu√°rio para autentica√ß√£o
-* @return Retorna um ponteiro para usuario se encontrado e NULL se n√£o encontrado
+* Localiza as informaÁıes do Usuario
+* @param id Numero de indentificaÁ„o do usu·rio a ser pesquisado
+* @param senha Senha do usu·rio para autenticaÁ„o
+* @return Retorna um ponteiro para usuario se encontrado e NULL se n„o encontrado
 */
 pUsuario localizarUsuarioDb(int id, char* senha);
 
