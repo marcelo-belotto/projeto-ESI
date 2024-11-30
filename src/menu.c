@@ -24,18 +24,18 @@ void logarMenu() {
     char opcao;
 
     do {
-        printf("=== ReuniON ===\n");
+        printf("\n=== ReuniON ===\n");
         printf("1. Fazer login\n");
         printf("2. Sair\n");
-        printf("Escolha uma opção: ");
+        printf("\nEscolha uma opção: ");
         scanf(" %c", &opcao);
         clearInputBuffer();
 
         if (opcao == '2') {
-            printf("Saindo do sistema...\n");
+            printf("\nSaindo do sistema...\n");
             exit(0);  // Termina o programa
         } else if (opcao == '1') {
-            printf("Digite seu id: ");
+            printf("\nDigite seu id: ");
             scanf("%d", &idUsuario);
             clearInputBuffer();
 
@@ -43,17 +43,17 @@ void logarMenu() {
             scanf("%31[^\n]", senhaTemporaria);
             clearInputBuffer();
 
-            if (idUsuario == 0 && strcmp(senhaTemporaria,"ADMIN") == 0){
-                    usuarioTemp = (pUsuario)malloc(sizeof(usuario));
-                    usuarioTemp->id = 0;
-                    strcpy(usuarioTemp->cpf,"00000000000");
-                    strcpy(usuarioTemp->nome,"ADMIN");
-                    strcpy(usuarioTemp->perfil,"ADM");
-                    strcpy(usuarioTemp->status,"ATIVO");
-                    strcpy(usuarioTemp->senha,"ADMIN");
-                    exibirMenuADM();
-                    break;
-            } 
+            if (idUsuario == 0 && strcmp(senhaTemporaria, "ADMIN") == 0) {
+                usuarioTemp = (pUsuario)malloc(sizeof(usuario));
+                usuarioTemp->id = 0;
+                strcpy(usuarioTemp->cpf, "00000000000");
+                strcpy(usuarioTemp->nome, "ADMIN");
+                strcpy(usuarioTemp->perfil, "ADM");
+                strcpy(usuarioTemp->status, "ATIVO");
+                strcpy(usuarioTemp->senha, "ADMIN");
+                exibirMenuADM();
+                break;
+            }
 
             usuarioTemp = localizarUsuario(idUsuario, senhaTemporaria);
 
@@ -64,14 +64,16 @@ void logarMenu() {
                 } else if (strcmp(usuarioTemp->perfil, "ADM") == 0) {
                     exibirMenuADM();
                     break;
-                }  
-                printf("Dados inválidos! Verifique id e senha.\n");
+                }
             } else {
-                printf("Opção inválida! Tente novamente.\n");
+                printf("\nVerifique o ID e a senha e tente novamente.\n");
             }
+        } else {
+            printf("\nOpção inválida! Escolha 1 para Fazer login ou 2 para Sair.\n");
         }
     } while (1);
 }
+
 
 
 
@@ -92,14 +94,14 @@ void exibirMenuPadrao() {
     inicializarSalas();
 
     do {
-        printf("=== ReuniON ===\n");
+        printf("\n=== ReuniON ===\n");
         printf("1. Listar salas\n");
         printf("2. Reservar sala\n");
         printf("3. Listar reservas\n");
         printf("4. Alterar reserva\n");
         printf("5. Cancelar reserva\n");
         printf("6. Alterar senha\n");
-        printf("7. Sair\n");
+        printf("7. Sair\n\n");
 
         opcao = obterOpcao();
 
@@ -123,11 +125,11 @@ void exibirMenuPadrao() {
                     alterarSenha(usuarioTemp);
                     break;
                 case 7:
-                    printf("Saindo... \n");
+                    printf("\nSaindo...");
                     exit(0);
                     break;
                 default:
-                    printf("Opção inválida!\n");
+                    printf("\nOpção inválida!");
         }
         printf("\nPressione ENTER para continuar\n");
         clearInputBuffer();
@@ -155,7 +157,7 @@ void exibirMenuADM() {
     inicializarSalas();
 
     do {
-        printf("=== ReuniON ===\n");
+        printf("\n=== ReuniON ===\n");
         printf("1. Cadastrar usuário\n");
         printf("2. Alterar usuário\n");
         printf("3. Cadastrar sala\n");
@@ -166,7 +168,7 @@ void exibirMenuADM() {
         printf("8. Alterar reserva\n");
         printf("9. Cancelar reserva\n");
         printf("10. Alterar senha\n");
-        printf("11. Sair\n");
+        printf("11. Sair\n\n");
 
         opcao = obterOpcao();       
         switch(opcao){
@@ -201,11 +203,11 @@ void exibirMenuADM() {
                     alterarSenha(usuarioTemp);
                     break;
                 case 11:
-                    printf("Saindo ... \n");
+                    printf("\nSaindo...");
                     exit(0);
                     break;
                 default:
-                    printf("Opção inválida!\n");
+                    printf("\nOpção inválida!");
         }
         printf("\nPressione ENTER para continuar\n");
         clearInputBuffer();

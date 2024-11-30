@@ -102,7 +102,7 @@ int alterarSalaDb(pSalas sala){
     FILE *arquivoTemp = fopen(caminhoTemp, "w");
 
     if (arquivo == NULL){
-        printf("Banco de dados não encontrado!\n");
+        printf("\nBanco de dados não encontrado!\n");
         fclose(arquivo);
         fclose(arquivoTemp);
         return 0;

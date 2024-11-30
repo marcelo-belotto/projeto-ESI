@@ -185,9 +185,9 @@ pUsuario localizarUsuarioDb(int id,char* senha){
     fclose(arquivo);
 
     if (usuarioTemp == NULL){
-        printf("Usuário não encontrado!\n");
+        printf("\nUsuário não encontrado!\n");
     }else if (strcmp(senha,usuarioTemp->senha) != 0){
-        printf("Senha incorreta!\n");
+        printf("\nSenha incorreta!\n");
         return NULL;
     }
     return usuarioTemp;

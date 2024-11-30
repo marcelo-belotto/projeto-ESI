@@ -46,43 +46,43 @@ void inicializarUsuario() {
 void cadastroUsuario() {
 
     if (vUsuarios[posicaoNovoUsuario] != NULL) {
-        printf("Posição já preenchida.\n");
+        printf("\nPosição já preenchida.\n");
         return;
     }
 
     // Aloca memória para o novo usuário
     vUsuarios[posicaoNovoUsuario] = (pUsuario) malloc(sizeof(usuario));
     if (vUsuarios[posicaoNovoUsuario] == NULL) {
-        printf("Erro de alocação de memória.\n");
+        printf("\nErro de alocação de memória.\n");
         return;
     }
 
     vUsuarios[posicaoNovoUsuario]->id = posicaoNovoUsuario+1;
 
-    printf("Digite o nome: \n");
+    printf("\nDigite o nome: \n");
     scanf("%30[^\n]", vUsuarios[posicaoNovoUsuario]->nome); 
 
     clearInputBuffer();
     do{
-        printf("Digite o CPF do usuário: \n");
+        printf("\nDigite o CPF do usuário: \n");
         scanf("%s", vUsuarios[posicaoNovoUsuario]->cpf); 
     }while(validarCPF(vUsuarios[posicaoNovoUsuario]->cpf));
 
     clearInputBuffer();
-    printf("Escolha o perfil de acesso: \n");
+    printf("\nEscolha o perfil de acesso: \n");
     scanf("%30[^\n]", vUsuarios[posicaoNovoUsuario]->perfil); 
 
     clearInputBuffer();
-    printf("Digite a senha: \n");
+    printf("\nDigite a senha: \n");
     scanf("%30[^\n]", vUsuarios[posicaoNovoUsuario]->senha); 
 
     strcpy(vUsuarios[posicaoNovoUsuario]->status,"ATIVO");
 
     if (salvarNovoUsuarioDb(vUsuarios[posicaoNovoUsuario])==1){
-        printf("Cadastrado com sucesso!\n");
+        printf("\nCadastrado com sucesso!\n");
         posicaoNovoUsuario++;
     }else{
-        printf("Falha ao Cadastrar o novo usuário no banco de dados!\n");
+        printf("\nFalha ao Cadastrar o novo usuário no banco de dados!\n");
     }
 }
 
@@ -102,18 +102,18 @@ void cadastroUsuario() {
  */
 void alterarUsuario() {
 
-    printf("Digite o ID do usuário que deseja alterar: \n");
+    printf("\nDigite o ID do usuário que deseja alterar: \n");
     scanf("%d", &indiceUsuario);
     if (indiceUsuario > posicaoNovoUsuario || indiceUsuario < 0){
-        printf("Usuário não encontrado.\n");
+        printf("\nUsuário não encontrado.\n");
         return;
     }
-    printf("Escolha o dado que deseja alterar:\n");
+    printf("\nEscolha o dado que deseja alterar:\n");
     printf("1. Nome\n");
     printf("2. Senha\n");
     printf("3. Perfil\n");
     printf("4. CPF\n");
-    printf("5. Status\n");
+    printf("5. Status\n\n");
 
     int escolha;
     scanf("%d", &escolha);
@@ -124,12 +124,12 @@ void alterarUsuario() {
             for (int j = 0; j < carregarTodosUsuarios(vUsuarios); j++) {
 
                 if (vUsuarios[j] != NULL && vUsuarios[j]->id == indiceUsuario) {
-                printf("Digite o nome do usuário: ");
+                printf("\nDigite o nome do usuário: ");
                 scanf("%s",vUsuarios[j]->nome);
                 if (alterarUsuarioDb(vUsuarios[j])){
-                    printf("Nome alterado com sucesso!\n");
+                    printf("\nNome alterado com sucesso!\n");
                 }else{
-                    printf("Falha ao alterar o nome de usuário. Tente novamente mais tarde!\n");
+                    printf("\nFalha ao alterar o nome de usuário. Tente novamente mais tarde!\n");
                 }
             return;
             }
@@ -140,13 +140,13 @@ void alterarUsuario() {
             // Alterar senha
             for (int j = 0; j < carregarTodosUsuarios(vUsuarios); j++) {
                 if (vUsuarios[j] != NULL && vUsuarios[j]->id == indiceUsuario) {
-                    printf("Digite a nova senha do usuário: ");
+                    printf("\nDigite a nova senha do usuário: ");
                     scanf("%s",vUsuarios[j]->senha);
 
                     if (alterarUsuarioDb(vUsuarios[j])){
-                        printf("Senha alterada com sucesso!\n");
+                        printf("\nSenha alterada com sucesso!\n");
                     }else{
-                        printf("Falha ao alterar a senha de usuário. Tente novamente mais tarde!\n");
+                        printf("\nFalha ao alterar a senha de usuário. Tente novamente mais tarde!\n");
                     }
                 }
             }
@@ -159,7 +159,7 @@ void alterarUsuario() {
                     char* perfil = strcmp(vUsuarios[j]->perfil,"COMUM") == 0 ? "ADM" : "COMUM";
                     char escolha[6];
                     do{
-                    printf("O Perfil de acesso de %s atualmente é %s.\nDeseja alterá-lo para %s? (s/n): ",
+                    printf("\nO Perfil de acesso de %s atualmente é %s.\nDeseja alterá-lo para %s? (s/n): ",
                     vUsuarios[j]->nome,vUsuarios[j]->perfil,perfil);
                         scanf("%s",escolha);
                         if(strcmp(escolha,"s") != 0 && strcmp(escolha,"n") != 0) printf("Opção inválida!\n");
@@ -168,12 +168,12 @@ void alterarUsuario() {
                     if (tolower(escolha[0]) == 's'){
                         strcpy(vUsuarios[j]->perfil,perfil);
                         if (alterarUsuarioDb(vUsuarios[j])){
-                            printf("Perfil alterado com sucesso!\n");
+                            printf("\nPerfil alterado com sucesso!\n");
                         }else{
-                            printf("Falha ao alterar o perfil de usuário. Tente novamente mais tarde!\n");
+                            printf("\nFalha ao alterar o perfil de usuário. Tente novamente mais tarde!\n");
                         }
                     }else{
-                        printf("Operação cancelada!\n");
+                        printf("\nOperação cancelada!\n");
                     }
                 }
             }
@@ -182,16 +182,16 @@ void alterarUsuario() {
             // Alterar CPF
             for (int j = 0; j < carregarTodosUsuarios(vUsuarios); j++) {
                 if (vUsuarios[j] != NULL && vUsuarios[j]->id == indiceUsuario) {
-                    printf("Digite o CPF do usuário (Sem pontos ou traços): ");
+                    printf("\nDigite o CPF do usuário (Sem pontos ou traços): ");
                     do{
                         scanf("%s",vUsuarios[j]->cpf);
-                        if(validarCPF(vUsuarios[j]->cpf)==0) printf("CPF inválido! Digite novamente (sem pontos ou traços)!\n");
+                        if(validarCPF(vUsuarios[j]->cpf)==0) printf("\nCPF inválido! Digite novamente (sem pontos ou traços)!\n");
                     }while(validarCPF(vUsuarios[j]->cpf)==0);
 
                     if (alterarUsuarioDb(vUsuarios[j])){
-                        printf("Documento alterado com sucesso!\n");
+                        printf("\nDocumento alterado com sucesso!\n");
                     }else{
-                        printf("Falha ao alterar CPF do usuário. Tente novamente mais tarde!\n");
+                        printf("\nFalha ao alterar CPF do usuário. Tente novamente mais tarde!\n");
                     }
                 }
             }
@@ -204,7 +204,7 @@ void alterarUsuario() {
                     char* estado = strcmp(vUsuarios[j]->status,"ATIVO") == 0 ? "INATIVO" : "ATIVO";
                     char escolha[6];
                     do{
-                    printf("O Status de acesso de %s atualmente é %s.\nDeseja alterá-lo para %s? (s/n): ",
+                    printf("\nO Status de acesso de %s atualmente é %s.\nDeseja alterá-lo para %s? (s/n): ",
                     vUsuarios[j]->nome,vUsuarios[j]->status,estado);
                         scanf("%s",escolha);
                         if(strcmp(escolha,"s") != 0 && strcmp(escolha,"n") != 0) printf("Opção inválida!\n");
@@ -213,19 +213,19 @@ void alterarUsuario() {
                     if (tolower(escolha[0]) == 's'){
                         strcpy(vUsuarios[j]->status,estado);
                         if (alterarUsuarioDb(vUsuarios[j])){
-                            printf("Status alterado com sucesso!\n");
+                            printf("\nStatus alterado com sucesso!\n");
                         }else{
-                            printf("Falha ao alterar o Status do usuário. Tente novamente mais tarde!\n");
+                            printf("\nFalha ao alterar o Status do usuário. Tente novamente mais tarde!\n");
                         }
                     }else{
-                        printf("Operação cancelada!\n");
+                        printf("\nOperação cancelada!\n");
                     }
                 }
             }
         break;
 
         default:
-        printf("Operação inválida!\n");
+        printf("\nOperação inválida!\n");
         break;                
     }        
 }
@@ -245,13 +245,13 @@ void alterarUsuario() {
  */
 void alterarSenha(pUsuario usuarioAtual){
 
-    printf("Digite a nova senha: ");
+    printf("\nDigite a nova senha: ");
     scanf("%s",usuarioAtual->senha);
 
     if (alterarUsuarioDb(usuarioAtual)){
-    printf("Senha alterada com sucesso!\n");
+    printf("\nSenha alterada com sucesso!\n");
     }else{
-    printf("Falha ao alterar a senha do usuário. Tente novamente mais tarde!\n");
+    printf("\nFalha ao alterar a senha do usuário. Tente novamente mais tarde!\n");
     } 
 }
 

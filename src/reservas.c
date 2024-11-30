@@ -58,16 +58,16 @@ int reservarSala(pUsuario user){
     do{    
         listarSalas();
         do{
-        printf("\nDigite o número da Sala: (Digite 0 para voltar ao menu anterior) ");
+        printf("\nDigite o número da sala (digite 0 para voltar ao menu anterior): ");
         scanf("%d",&novaReserva->numeroSala);
         if (novaReserva->numeroSala == 0){
             free(novaReserva);
             return 0;
         }   
-            if(verificarExistenciaDeSala(novaReserva->numeroSala) == 0) printf("Número de sala inexistente! Tente novamente!\n");
+            if(verificarExistenciaDeSala(novaReserva->numeroSala) == 0) printf("\nNúmero de sala inexistente! Tente novamente!\n");
         }while(verificarExistenciaDeSala(novaReserva->numeroSala) == 0);
         do{
-            printf("Digite a data de início da reunião (dd/mm/yyyy): ");
+            printf("\nDigite a data de início da reunião (dd/mm/yyyy): ");
             scanf("%s",dataAux);
         }while(validarData(dataAux) == 0);
         clearInputBuffer();
@@ -76,23 +76,23 @@ int reservarSala(pUsuario user){
         verificarDisponibilidadeDeSalas(novaReserva->numeroSala,novaReserva->dataInicio);
 
         do{
-            printf("Digite a hora de início da reunião (HH:MM): ");
+            printf("\nDigite a hora de início da reunião (HH:MM): ");
             scanf("%s",horaAux);
         }while(validarHora(horaAux,novaReserva->dataInicio) == 0);
         clearInputBuffer();
         strcpy(novaReserva->horaInicio,horaAux);
 
         do{
-            printf("Digite a data de fim da reunião (dd/mm/yyyy): ");
+            printf("\nDigite a data de fim da reunião (dd/mm/yyyy): ");
             scanf("%s",dataAux);
         }while(validarData(dataAux) == 0);
         clearInputBuffer();
         strcpy(novaReserva->dataFinal,dataAux);
 
         do{
-            printf("Digite a hora de fim da reunião (HH:MM): ");
+            printf("\nDigite a hora de fim da reunião (HH:MM): ");
             scanf("%s",horaAux);
-            if(comparaHoras(novaReserva->horaInicio,horaAux) != 0) printf("Hora final não pode se menor que a hora inicial!\n");
+            if(comparaHoras(novaReserva->horaInicio,horaAux) != 0) printf("\nHora final não pode se menor que a hora inicial!\n");
         }while(validarHora(horaAux,novaReserva->dataFinal) == 0 || comparaHoras(novaReserva->horaInicio,horaAux) != 0);
         clearInputBuffer();
         strcpy(novaReserva->horaFinal,horaAux);
@@ -103,9 +103,9 @@ int reservarSala(pUsuario user){
     novaReserva->status = 1;
 
     if (salvarNovaReserva(novaReserva)){
-        printf("Reserva efetuada com sucesso!\n");
+        printf("\nReserva efetuada com sucesso!\n");
     }else{
-        printf("Falha ao Reservar sala de reunião. Tente novamente!\n");
+        printf("\nFalha ao Reservar sala de reunião. Tente novamente!\n");
     }
 }
 
@@ -145,7 +145,7 @@ int alterarReserva(pUsuario user){
     }
     int idCorrespondente = 0;
     do{
-        printf("\nDigite  o ID da reserva que deseja alterar (Digite 0 para voltar): ");
+        printf("\nDigite  o ID da reserva que deseja alterar (digite 0 para voltar): ");
         scanf("%d",&idReserva);
         if(idReserva == 0){
             printf("OperaÃ§Ã£o Cancelada!\n");
@@ -158,7 +158,7 @@ int alterarReserva(pUsuario user){
                 break;
             } 
         }
-        if (!idCorrespondente) printf("Id da reserva não aceito. Tente Novamente!\n");
+        if (!idCorrespondente) printf("\nId da reserva não aceito. Tente Novamente!\n");
     }while(idCorrespondente == 0);
 
     reservaAlterada->id = idReserva;
@@ -168,11 +168,11 @@ int alterarReserva(pUsuario user){
             listarSalas();
             printf("\nDigite o número da Sala: ");
             scanf("%d",&reservaAlterada->numeroSala);
-            if (verificarExistenciaDeSala(reservaAlterada->numeroSala) == 0) printf("Número de sala inexistente! Tente novamente!\n");
+            if (verificarExistenciaDeSala(reservaAlterada->numeroSala) == 0) printf("\nNúmero de sala inexistente! Tente novamente!\n");
         }while(verificarExistenciaDeSala(reservaAlterada->numeroSala) == 0);
 
         do{
-            printf("Digite a data de início da reunião (dd/mm/yyyy): ");
+            printf("\nDigite a data de início da reunião (dd/mm/yyyy): ");
             scanf("%s",dataAux);
         }while(validarData(dataAux) == 0);
         clearInputBuffer();
@@ -181,23 +181,23 @@ int alterarReserva(pUsuario user){
         verificarDisponibilidadeDeSalas(reservaAlterada->numeroSala,reservaAlterada->dataInicio);
 
         do{
-                printf("Digite a hora de início da reunião (HH:MM): ");
+                printf("\nDigite a hora de início da reunião (HH:MM): ");
                 scanf("%s",horaAux);
         }while(validarHora(horaAux,reservaAlterada->dataInicio) == 0);
         clearInputBuffer();
         strcpy(reservaAlterada->horaInicio,horaAux);
 
         do{
-            printf("Digite a data final da reunião (dd/mm/yyyy): ");
+            printf("\nDigite a data final da reunião (dd/mm/yyyy): ");
             scanf("%s",dataAux);
         }while(validarData(dataAux) == 0);
         clearInputBuffer();
         strcpy(reservaAlterada->dataFinal,dataAux);
 
         do{
-            printf("Digite a hora final da reunião (HH:MM): ");
+            printf("\nDigite a hora final da reunião (HH:MM): ");
             scanf("%s",horaAux);
-            if(comparaHoras(reservaAlterada->horaInicio,horaAux) != 0) printf("Hora final não pode se menor que a hora inicial!\n");
+            if(comparaHoras(reservaAlterada->horaInicio,horaAux) != 0) printf("\nHora final não pode se menor que a hora inicial!\n");
         }while(validarHora(horaAux,reservaAlterada->dataFinal) == 0 || comparaHoras(reservaAlterada->horaInicio,horaAux) != 0);
         clearInputBuffer();
         strcpy(reservaAlterada->horaFinal,horaAux);
@@ -214,9 +214,9 @@ int alterarReserva(pUsuario user){
     reservaAlterada->status = 1; 
 
     if (alterarReservaUsuario(reservaAlterada) == 1){
-        printf("Reserva alterada com sucesso!\n");
+        printf("\nReserva alterada com sucesso!\n");
     }else{
-        printf("Falha ao reservar sala de reunião. Tente novamente!\n");
+        printf("\nFalha ao reservar sala de reunião. Tente novamente!\n");
     }
 
     return 1;
@@ -239,12 +239,12 @@ int cancelarReserva(pUsuario user){
 
     inicializarReservas(user);
     if(vReservas[0] == NULL){
-        printf("Sem reservas para cancelar!\n");
+        printf("\nSem reservas para cancelar!\n");
         return 0;
     }else{
         for (int i = 0; i < MAX_RESERVAS && vReservas[i] != NULL;i++){
             if (vReservas[i]->status == 1){
-                printf("ID: %d, Número da Sala:%d, Data Inicial: %s %s - Data Final: %s %s\n",
+                printf("\nID: %d, Número da Sala:%d, Data Inicial: %s %s - Data Final: %s %s\n",
                 vReservas[i]->id,
                 vReservas[i]->numeroSala,
                 vReservas[i]->dataInicio,
@@ -256,11 +256,11 @@ int cancelarReserva(pUsuario user){
     }
 
     int idReserva;
-    printf("\nDigite o ID da reserva que deseja cancelar: (Digite 0 para voltar ao menu anterior): ");
+    printf("\nDigite o ID da reserva que deseja cancelar (digite 0 para voltar ao menu anterior): ");
     scanf("%d", &idReserva);
     clearInputBuffer();
     if(idReserva == 0){
-        printf("Operação cancelada!");
+        printf("\nOperação cancelada!");
         return 0;
     } 
 
@@ -277,10 +277,10 @@ int cancelarReserva(pUsuario user){
     reservaParaCancelar->status = 0;
 
     if(alterarReservaUsuario(reservaParaCancelar)){
-        printf("Reserva cancelada com sucesso!\n");
+        printf("\nReserva cancelada com sucesso!\n");
         return 1; 
     } else {
-        printf("Erro ao cancelar a reserva!\n");
+        printf("\nErro ao cancelar a reserva!\n");
         return 0;
     }
 
@@ -301,10 +301,10 @@ int listarReservas(pUsuario usuarioAtual){
 
     inicializarReservas(usuarioAtual);
     if (posicaoReservas == 0){
-        printf("Nenhuma reserva encontrada!\n");
+        printf("\nNenhuma reserva encontrada!\n");
     }
     for (int i = 0; i < MAX_RESERVAS && vReservas[i] != NULL;i++){
-        printf("Reserva Nº: %d - Sala: %d Data Inicial: %s %s - Data Final: %s %s Ativa? %s\n",
+        printf("\nReserva Nº: %d - Sala: %d Data Inicial: %s %s - Data Final: %s %s Ativa? %s\n",
         vReservas[i]->id,
         vReservas[i]->numeroSala,
         vReservas[i]->dataInicio,
@@ -330,10 +330,10 @@ int listarReservas(pUsuario usuarioAtual){
 int verificarDisponibilidadeDeSalas(int numeroSala, char* dataInicial){
     int existemAgendamentos = 0;
     carregarTodasAsReservas(vReservas);
-    printf("Horários indisponíveis para reserva da sala %d no dia %s:\n\n",numeroSala,dataInicial);
+    printf("\nHorários indisponíveis para reserva da sala %d no dia %s:\n\n",numeroSala,dataInicial);
     for(int i = 0; i < MAX_RESERVAS && vReservas[i] != NULL;i++){
         if (numeroSala == vReservas[i]->numeroSala && (strcmp(vReservas[i]->dataInicio,dataInicial) == 0) && vReservas[i]->status == 1){
-                printf("Data inicial: %s %s - Data final: %s %s\n",
+                printf("\nData inicial: %s %s - Data final: %s %s\n",
                 vReservas[i]->dataInicio,
                 vReservas[i]->horaInicio,
                 vReservas[i]->dataFinal,
@@ -341,7 +341,7 @@ int verificarDisponibilidadeDeSalas(int numeroSala, char* dataInicial){
                 existemAgendamentos++;
         }
     }
-    if (!existemAgendamentos) printf("Não existem agendamentos para o dia especificado!");
+    if (!existemAgendamentos) printf("\nNão existem agendamentos para o dia especificado!");
     puts("");
     return 0;
 }

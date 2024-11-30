@@ -102,11 +102,11 @@ int validarCPF(char* cpf) {
 int obterOpcao() {
         int opcao;
         char buffer[10];
-        printf("Escolha uma opção: ");
+        printf("\nEscolha uma opção: ");
         do{
                 fgets(buffer, sizeof(buffer), stdin);
                 //clearInputBuffer();
-                if (sscanf(buffer, "%d", &opcao) == 0) printf("Valor inserido incorreto, digite novamente!\n");
+                if (sscanf(buffer, "%d", &opcao) == 0) printf("\nValor inserido incorreto, digite novamente!\n");
         } while (sscanf(buffer, "%d", &opcao) == 0);
         return opcao;
 }
@@ -152,25 +152,25 @@ int validarData(char *data) {
 
     // Verifica o formato da data: DD/MM/AAAA
     if (strlen(data) != 10 || data[2] != '/' || data[5] != '/') {
-        printf("Data inválida: formato errado. Use DD/MM/AAAA.\n");
+        printf("\nData inválida: formato errado. Use DD/MM/AAAA.\n");
         return 0;
     }
 
     // Tenta converter a string para inteiros
     if (sscanf(data, "%d/%d/%d", &dia, &mes, &ano) != 3) {
-        printf("Data inválida: não pôde ser convertida para números.\n");
+        printf("\nData inválida: não pôde ser convertida para números.\n");
         return 0;
     }
 
     // Validação do ano
     if (ano < anoAtual) {
-        printf("Data inválida: ano menor que o ano corrente.\n");
+        printf("\nData inválida: ano menor que o ano corrente.\n");
         return 0;
     }
 
     // Validação do mês
     if (mes < 1 || mes > 12) {
-        printf("Data inválida: mês inválido.\n");
+        printf("\nData inválida: mês inválido.\n");
         return 0;
     }
 
@@ -181,14 +181,14 @@ int validarData(char *data) {
     }
 
     if (dia < 1 || dia > dias_no_mes[mes - 1]) {
-        printf("Data inválida: dia inválido para o mês.\n");
+        printf("\nData inválida: dia inválido para o mês.\n");
         return 0;
     }
 
     // Comparação com a data atual (ano, mês e dia)
     if ((ano == anoAtual && mes < mesAtual) || 
         (ano == anoAtual && mes == mesAtual && dia < diaAtual)) {
-        printf("Data inválida: data está no passado.\n");
+        printf("\nData inválida: data está no passado.\n");
         return 0;
     }
 
@@ -222,31 +222,31 @@ int validarHora(char *hora, char *data) {
 
     // Verifica o formato da hora: HH:MM (5 caracteres e ':' na posiÃ§Ã£o 2)
     if (strlen(hora) != 5 || hora[2] != ':') {
-        printf("Hora inválida: formato errado. Use HH:MM.\n");
+        printf("\nHora inválida: formato errado. Use HH:MM.\n");
         return 0;
     }
 
     // Converte a string para inteiros
     if (sscanf(hora, "%d:%d", &hh, &mm) != 2) {
-        printf("Hora inválida: erro ao converter para números.\n");
+        printf("\nHora inválida: erro ao converter para números.\n");
         return 0;
     }
 
     // Tenta converter a string para inteiros
     if (sscanf(data, "%d/%d/%d", &dia, &mes, &ano) != 3) {
-        printf("Data inválida: não pode ser convertida para números.\n");
+        printf("\nData inválida: não pode ser convertida para números.\n");
         return 0;
     }
 
     // Valida o intervalo das horas (0-23)
     if (hh < 0 || hh > 23) {
-        printf("Hora inválida: horas fora do intervalo (0-23).\n");
+        printf("\nHora inválida: horas fora do intervalo (0-23).\n");
         return 0;
     }
 
     // Valida o intervalo dos minutos (0-59)
     if (mm < 0 || mm > 59) {
-        printf("Hora inválida: minutos fora do intervalo (0-59).\n");
+        printf("\nHora inválida: minutos fora do intervalo (0-59).\n");
         return 0;
     }
     // Verifica se a data passada por parÃ¢metro Ã© hoje
@@ -254,7 +254,7 @@ int validarHora(char *hora, char *data) {
 
     // Compara a hora fornecida com a hora atual
     if ((hh < horaAtual && eHoje) || ((hh == horaAtual && mm < minutoAtual) && eHoje)) {
-        printf("A hora fornecida (%02d:%02d) é menor que a hora atual (%02d:%02d).\n", hh, mm, horaAtual, minutoAtual);
+        printf("\nA hora fornecida (%02d:%02d) é menor que a hora atual (%02d:%02d).\n", hh, mm, horaAtual, minutoAtual);
         return 0; // A hora fornecida é menor
     }
 
@@ -310,14 +310,14 @@ int verificarSobreposicao(char *dataInicial, char *horaInicial, char *dataFinal,
     // Montar a estrutura de tempo para a data e hora inicial
     if (sscanf(dataInicial, "%d/%d/%d", &inicio.tm_mday, &inicio.tm_mon, &inicio.tm_year) != 3 ||
         sscanf(horaInicial, "%d:%d", &inicio.tm_hour, &inicio.tm_min) != 2) {
-        printf("Erro ao processar a data ou hora inicial.\n");
+        printf("\nErro ao processar a data ou hora inicial.\n");
         return -1;
     }
 
     // Montar a estrutura de tempo para a data e hora final
     if (sscanf(dataFinal, "%d/%d/%d", &fim.tm_mday, &fim.tm_mon, &fim.tm_year) != 3 ||
         sscanf(horaFinal, "%d:%d", &fim.tm_hour, &fim.tm_min) != 2) {
-        printf("Erro ao processar a data ou hora final.\n");
+        printf("\nErro ao processar a data ou hora final.\n");
         return -1;
     }
 
@@ -332,16 +332,16 @@ int verificarSobreposicao(char *dataInicial, char *horaInicial, char *dataFinal,
     time_t tempoFinal = mktime(&fim);
 
     if (tempoInicial == -1 || tempoFinal == -1) {
-        printf("Erro ao converter para tempo.\n");
+        printf("\nErro ao converter para tempo.\n");
         return -1;
     }
 
     // Comparar os tempos
     if (tempoInicial < tempoFinal) {
-        printf("Datas e horários não sobrepõem.\n");
+        printf("\nDatas e horários não sobrepõem.\n");
         return 0; // NÃ£o hÃ¡ sobreposiÃ§Ã£o
     } else {
-        printf("Datas e horários sobrepõem.\n");
+        printf("\nDatas e horários sobrepõem.\n");
         return 1; // HÃ¡ sobreposiÃ§Ã£o
     }
 }

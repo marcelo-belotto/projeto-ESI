@@ -66,7 +66,7 @@ int carregarTodasAsReservas(pReservas *vetorReservas){
 int salvarNovaReserva(pReservas novaReserva){
     FILE *arquivo = fopen(PATH_RESERVA, "a");
     if (arquivo == NULL) {
-        printf("\nBanco de Dados não encontrado!\n");
+        printf("\nBanco de dados não encontrado!\n");
         return 0;
     }
     if (novaReserva->id != 0){
@@ -108,7 +108,7 @@ int alterarReservaUsuario(pReservas reserva){
     FILE *arquivoTemp = fopen(caminhoTemp, "w");
 
     if (arquivo == NULL){
-        printf("Banco de dados não encontrado!\n");
+        printf("\nBanco de dados não encontrado!\n");
         fclose(arquivo);
         fclose(arquivoTemp);
         return 0;
@@ -165,7 +165,7 @@ int alterarReservaUsuario(pReservas reserva){
 int listarReservasUsuario(pUsuario user,pReservas *vetorReservas){
     FILE *arquivo = fopen(PATH_RESERVA, "r");
     if (arquivo == NULL) {
-        printf("\nBanco de Dados não encontrado!\n");
+        printf("\nBanco de dados não encontrado!\n");
         return 0;
     }
     char linha[256];
@@ -223,7 +223,7 @@ int listarReservasUsuario(pUsuario user,pReservas *vetorReservas){
 int verificarDisponibilidade(int numeroSala, char *dataInicial, char *horaInicial, char *dataFinal, char *horaFinal){
     FILE *arquivo = fopen(PATH_RESERVA, "r");
     if (arquivo == NULL) {
-        printf("\nBanco de Dados não encontrado!\n");
+        printf("\nBanco de dados não encontrado!\n");
         return 0;
     }
 
@@ -265,7 +265,7 @@ int verificarDisponibilidade(int numeroSala, char *dataInicial, char *horaInicia
                         (hrFinal < horaFimLida || (hrFinal == horaFimLida && minFinal <= minFimLido))
                         ){
                             if (hrFinal+minFinal == horaIniLida+minIniLido) return 0;
-                        printf("Já existe reserva para essa sala nesse horário!\n");
+                        printf("\nJá existe reserva para essa sala nesse horário!\n");
                         clearInputBuffer();
                         return 1; // Sobreposição de horarios para essa sala
                     }
@@ -292,7 +292,7 @@ int verificarDisponibilidade(int numeroSala, char *dataInicial, char *horaInicia
 int exibirReservasPorSala(int numeroSala){
      FILE *arquivo = fopen(PATH_RESERVA, "r");
     if (arquivo == NULL) {
-        printf("\nBanco de Dados não encontrado!\n");
+        printf("\nBanco de dados não encontrado!\n");
         return 0;
     }
     char linha[256];
@@ -309,15 +309,15 @@ int exibirReservasPorSala(int numeroSala){
         registro = strtok(NULL,",");//Pega a terceira coluna, Numero da sala
 
         if (atoi(registro) == numeroSala){
-            printf("ID da Reserva: %d\n",idReserva);
+            printf("\nID da Reserva: %d",idReserva);
             registro = strtok(NULL,",");
-            printf("Data Inicial: %s ",registro);
+            printf("\nData Inicial: %s",registro);
             registro = strtok(NULL,",");
-            printf("Hora Inicial: %s \n",registro);
+            printf("\nHora Inicial: %s",registro);
             registro = strtok(NULL,",");
-            printf("Data Final: %s ",registro);
+            printf("\nData Final: %s",registro);
             registro = strtok(NULL,",");
-            printf("Hora Final: %s \n\n",registro);
+            printf("\nHora Final: %s\n",registro);
         encontrado = 1;
         }
 }
