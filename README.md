@@ -258,8 +258,6 @@ Para navegar, digite o número correspondente à opção desejada.
 
 Escolha uma opção: 2
 
-Escolha o tipo de sala: GA
-
 Salas cadastradas:
 Número da sala: 02
 Tipo da sala: GA
@@ -267,6 +265,10 @@ Status atual da sala: Ativa
 
 Número da sala: 06
 Tipo da sala: GA
+Status atual da sala: Ativa
+
+Número da sala: 08
+Tipo da sala: MC
 Status atual da sala: Ativa
 
 Escolha o número da sala: 02
@@ -303,7 +305,7 @@ Sala GA - 02 reservada com sucesso.
 ### Fluxos de Exceção
 
 * **Erro na autenticação:**\
-  O sistema bloqueia o acesso após 3 tentativas falhas.
+  O sistema solicita nova tentativa de login.
 * **Conflito de agendamento:**\
   O sistema solicita ajustes na data ou sala para evitar conflitos.
 
